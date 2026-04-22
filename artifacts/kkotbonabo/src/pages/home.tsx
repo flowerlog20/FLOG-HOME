@@ -23,92 +23,110 @@ export default function Home() {
     <>
       {/* HERO SECTION */}
       <section className="relative h-screen w-full bg-foreground text-background overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-luminosity"></div>
-        <div className="absolute inset-0 bg-foreground/30"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-[center_20%] opacity-35 mix-blend-luminosity"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/10 to-foreground/80"></div>
 
-        {/* Top-right: Vertical tagline */}
+        {/* Top strip — micro metadata bar */}
+        <motion.div
+          initial={{ opacity: 0, y: -6 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 1 }}
+          className="absolute top-0 left-0 right-0 z-10 mt-[72px] md:mt-[80px] px-6 md:px-12"
+        >
+          <div className="flex justify-between items-center py-3 border-t border-white/10">
+            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">FLower lOG</span>
+            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">Seoul · Est. 2024</span>
+            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35 hidden md:block">20대 기록 저장소</span>
+          </div>
+        </motion.div>
+
+        {/* BLOOM — floating top-right accent */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.6, duration: 1.2 }}
-          className="absolute top-8 right-6 md:right-16 z-10 hidden md:block"
-          style={{ writingMode: "vertical-rl" }}
+          transition={{ delay: 1.4, duration: 1.5 }}
+          className="absolute top-[22%] right-6 md:right-12 z-10 text-right"
         >
-          <span className="font-sans text-[9px] tracking-[0.32em] uppercase text-white/35">꽃을 보듯 나를 보다</span>
+          <p className="font-sans text-[9px] tracking-[0.55em] text-white/25 uppercase">BLOOM</p>
         </motion.div>
 
-        {/* Center-right: Issue number (decorative) */}
+        {/* Registration cross — decorative print element */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1, duration: 1.5 }}
-          className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2 z-10 hidden lg:flex flex-col items-center gap-3"
+          transition={{ delay: 1.8, duration: 1 }}
+          className="absolute top-[38%] right-[18%] z-10 hidden lg:block"
         >
-          <div className="w-[1px] h-14 bg-white/15"></div>
-          <span className="font-serif text-[10px] text-white/25 italic">No.01</span>
-          <div className="w-[1px] h-14 bg-white/15"></div>
+          <div className="relative w-5 h-5 opacity-20">
+            <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-white -translate-y-1/2"></div>
+            <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white -translate-x-1/2"></div>
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full border border-white"></div>
+          </div>
         </motion.div>
 
-        {/* Main title — bottom-left, massive, editorial */}
-        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-12 pb-20">
-          <motion.div
-            initial="hidden"
-            animate="show"
-            variants={container}
-          >
-            {/* Metadata row */}
-            <motion.div
-              variants={item}
-              className="flex items-center gap-6 mb-5"
-            >
-              <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/40">Vol. 1 · 2024</span>
-              <div className="h-[1px] w-12 bg-white/20"></div>
-              <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/40">Record of Youth</span>
-            </motion.div>
+        {/* MAIN TITLE BLOCK */}
+        <div className="absolute inset-0 flex flex-col justify-center z-10 px-6 md:px-12">
+          <motion.div initial="hidden" animate="show" variants={container}>
 
-            {/* Headline — left-aligned, bleeds to edge */}
+            {/* FLOWER — full-width, light weight */}
             <div className="overflow-hidden">
               <motion.h1
                 variants={item}
-                className="font-serif leading-[0.9] text-[13vw] md:text-[11vw] lg:text-[10vw] text-white whitespace-nowrap"
+                className="font-serif font-light leading-[0.82] tracking-[-0.02em] text-[18vw] md:text-[16vw] lg:text-[15vw] text-white -ml-1"
               >
-                가장 찬란한
+                FLOWER
               </motion.h1>
             </div>
 
-            {/* Second line — indented + italic, with description inline on desktop */}
-            <div className="flex items-end gap-8 overflow-hidden">
-              <motion.h1
+            {/* Divider + LOG row */}
+            <div className="flex items-center gap-5 mt-1 md:mt-2">
+              <motion.div
                 variants={item}
-                className="font-serif italic leading-[0.9] text-[13vw] md:text-[11vw] lg:text-[10vw] text-white/85 whitespace-nowrap pl-[5vw] md:pl-[7vw]"
+                className="flex items-center gap-4 ml-[8vw] md:ml-[10vw]"
               >
-                우리의 계절
-              </motion.h1>
-              <motion.p
-                variants={item}
-                className="hidden lg:block font-sans font-light text-[11px] text-white/40 max-w-[180px] leading-relaxed pb-2 shrink-0"
-              >
-                20대의 젊음을<br />기록으로 남기는<br />비영리단체
-              </motion.p>
+                <div className="h-[1px] w-10 bg-white/30"></div>
+              </motion.div>
+              <div className="overflow-hidden flex-1">
+                <motion.h1
+                  variants={item}
+                  className="font-sans font-light leading-[0.85] tracking-[0.12em] text-[10vw] md:text-[9vw] lg:text-[8vw] text-white/60 ml-[8vw] md:ml-[10vw]"
+                >
+                  LOG
+                </motion.h1>
+              </div>
             </div>
+
           </motion.div>
         </div>
+
+        {/* BLOOM ARCHIVE — bottom left */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1.2 }}
+          className="absolute bottom-10 left-6 md:left-12 z-10"
+        >
+          <div className="flex items-center gap-4">
+            <span className="font-sans text-[9px] tracking-[0.5em] uppercase text-white/35">Bloom Archive</span>
+            <div className="h-[1px] w-6 bg-white/20"></div>
+            <span className="font-sans text-[9px] tracking-[0.5em] uppercase text-white/25">No.01</span>
+          </div>
+        </motion.div>
 
         {/* Scroll indicator — bottom right */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1 }}
+          transition={{ delay: 2.2, duration: 1 }}
           className="absolute bottom-8 right-6 md:right-12 flex flex-col items-center gap-3 z-10"
         >
-          <div className="w-[1px] h-14 bg-white/25 overflow-hidden relative">
+          <div className="w-[1px] h-12 bg-white/20 overflow-hidden relative">
             <motion.div
               animate={{ y: ["0%", "100%", "0%"] }}
               transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-x-0 top-0 h-1/2 bg-white/70"
+              className="absolute inset-x-0 top-0 h-1/2 bg-white/60"
             />
           </div>
-          <span className="font-sans text-[9px] tracking-[0.3em] uppercase text-white/35" style={{ writingMode: "vertical-rl" }}>Scroll</span>
         </motion.div>
       </section>
 
@@ -213,7 +231,7 @@ export default function Home() {
         >
           <h2 className="font-serif text-4xl md:text-6xl italic">우리와 함께 피어나요</h2>
           <p className="font-sans font-light text-lg text-white/70">
-            꽃보나보의 에디터, 포토그래퍼, 그리고 모델이 되어주세요.
+            FLOG의 에디터, 포토그래퍼, 그리고 모델이 되어주세요.
           </p>
           <Link href="/join" className="inline-block bg-background text-foreground px-12 py-5 font-sans tracking-widest text-sm uppercase hover:bg-primary hover:text-background transition-colors duration-500">
             Join Us

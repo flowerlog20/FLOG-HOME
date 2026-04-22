@@ -20,8 +20,8 @@ export function Navbar() {
       className="fixed top-0 left-0 right-0 z-50 mix-blend-difference"
     >
       <div className="container mx-auto px-6 py-6 md:px-12 md:py-8 flex justify-between items-center text-[#fbfaf6]">
-        <Link href="/" className="font-serif text-xl tracking-widest uppercase hover:opacity-70 transition-opacity">
-          꽃보나보
+        <Link href="/" className="font-sans font-light text-xl tracking-[0.2em] uppercase hover:opacity-70 transition-opacity">
+          FLOG
         </Link>
         <nav className="hidden md:flex space-x-8 text-sm tracking-widest font-sans font-light">
           {links.map((link) => (

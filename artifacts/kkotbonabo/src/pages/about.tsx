@@ -37,7 +37,7 @@ export default function About() {
             <h2 className="font-serif text-3xl">우리의 이야기</h2>
             <div className="space-y-6 font-sans font-light leading-loose text-foreground/80">
               <p>
-                꽃보나보는 20대의 젊음을 기록으로 남기는 활동을 하고 있는 비영리단체입니다. 주된 활동으로는 20대 라이프 매거진 발간, 마인드 프로필 등 현대를 살아가는 20대의 라이프스타일과 내면을 기록으로 남기는 활동을 진행하고 있습니다.
+                FLOG(꽃보나보)는 20대의 젊음을 기록으로 남기는 활동을 하고 있는 비영리단체입니다. 주된 활동으로는 20대 라이프 매거진 발간, 마인드 프로필 등 현대를 살아가는 20대의 라이프스타일과 내면을 기록으로 남기는 활동을 진행하고 있습니다.
               </p>
               <p>
                 "꽃을 보듯 나를 보다"의 이름처럼 20대를 살아가는 모두가 스스로 꽃임을 깨닫기를 바라고, 먼 훗날 우리의 젊은 시절을 추억할 수 있는 20대 기록 저장소가 되겠습니다.
@@ -54,7 +54,7 @@ export default function About() {
             transition={{ duration: 1 }}
             className="text-center space-y-16"
           >
-            <h2 className="font-serif text-3xl">팀 꽃보나보</h2>
+            <h2 className="font-serif text-3xl">Team FLOG</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
               {[
                 { role: "Editor in Chief", desc: "기록의 방향을 잡고 이야기를 엮어냅니다." },
