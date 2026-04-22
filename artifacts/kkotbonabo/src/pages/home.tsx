@@ -23,8 +23,8 @@ export default function Home() {
     <>
       {/* HERO SECTION */}
       <section className="relative h-screen w-full bg-foreground text-background overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-[center_20%] opacity-35 mix-blend-luminosity"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/60 via-foreground/10 to-foreground/80"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-[center_20%] opacity-50 mix-blend-luminosity"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/40 via-foreground/5 to-foreground/60"></div>
 
         {/* Top strip — micro metadata bar */}
         <motion.div
@@ -40,60 +40,49 @@ export default function Home() {
           </div>
         </motion.div>
 
-        {/* BLOOM — floating top-right accent */}
+        {/* Left edge label — vertical */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.4, duration: 1.5 }}
-          className="absolute top-[22%] right-6 md:right-12 z-10 text-right"
+          transition={{ delay: 1.6, duration: 1.4 }}
+          className="absolute left-5 md:left-8 top-1/2 -translate-y-1/2 z-10 hidden md:block"
+          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
         >
-          <p className="font-sans text-[9px] tracking-[0.55em] text-white/25 uppercase">BLOOM</p>
+          <span className="font-sans text-[8px] tracking-[0.4em] uppercase text-white/25">Bloom Archive No.01</span>
         </motion.div>
 
-        {/* Registration cross — decorative print element */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.8, duration: 1 }}
-          className="absolute top-[38%] right-[18%] z-10 hidden lg:block"
-        >
-          <div className="relative w-5 h-5 opacity-20">
-            <div className="absolute top-1/2 left-0 right-0 h-[1px] bg-white -translate-y-1/2"></div>
-            <div className="absolute left-1/2 top-0 bottom-0 w-[1px] bg-white -translate-x-1/2"></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 rounded-full border border-white"></div>
-          </div>
-        </motion.div>
-
-        {/* MAIN TITLE BLOCK */}
-        <div className="absolute inset-0 flex flex-col justify-center z-10 px-6 md:px-12">
+        {/* MAIN TITLE BLOCK — split axis composition */}
+        <div className="absolute inset-0 flex flex-col justify-center z-10">
           <motion.div initial="hidden" animate="show" variants={container}>
 
-            {/* FLOWER — full-width, light weight */}
-            <div className="overflow-hidden">
+            {/* FLOWER — right-anchored, above the line */}
+            <div className="overflow-hidden pr-6 md:pr-12">
               <motion.h1
                 variants={item}
-                className="font-serif font-light leading-[0.82] tracking-[-0.02em] text-[18vw] md:text-[16vw] lg:text-[15vw] text-white -ml-1"
+                className="font-serif font-light leading-[0.85] tracking-[-0.01em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white text-right"
               >
                 FLOWER
               </motion.h1>
             </div>
 
-            {/* Divider + LOG row */}
-            <div className="flex items-center gap-5 mt-1 md:mt-2">
-              <motion.div
+            {/* Center axis — full-width rule with small marker */}
+            <motion.div
+              variants={item}
+              className="relative flex items-center my-3 md:my-4"
+            >
+              <div className="flex-1 h-[1px] bg-white/20"></div>
+              <span className="font-sans text-[8px] tracking-[0.4em] text-white/25 px-4 uppercase shrink-0">FLower lOG</span>
+              <div className="flex-1 h-[1px] bg-white/20"></div>
+            </motion.div>
+
+            {/* LOG — left-offset, below the line */}
+            <div className="overflow-hidden pl-6 md:pl-12">
+              <motion.h1
                 variants={item}
-                className="flex items-center gap-4 ml-[8vw] md:ml-[10vw]"
+                className="font-serif font-light leading-[0.85] tracking-[0.08em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white/65 pl-[20vw] md:pl-[24vw]"
               >
-                <div className="h-[1px] w-10 bg-white/30"></div>
-              </motion.div>
-              <div className="overflow-hidden flex-1">
-                <motion.h1
-                  variants={item}
-                  className="font-sans font-light leading-[0.85] tracking-[0.12em] text-[10vw] md:text-[9vw] lg:text-[8vw] text-white/60 ml-[8vw] md:ml-[10vw]"
-                >
-                  LOG
-                </motion.h1>
-              </div>
+                LOG
+              </motion.h1>
             </div>
 
           </motion.div>
