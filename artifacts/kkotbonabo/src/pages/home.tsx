@@ -120,18 +120,54 @@ export default function Home() {
       </section>
 
       {/* PHILOSOPHY SECTION */}
-      <section className="py-32 md:py-48 bg-background relative z-10">
-        <div className="container mx-auto px-6 md:px-12 max-w-4xl text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-          >
-            <h2 className="font-serif text-3xl md:text-5xl leading-relaxed md:leading-relaxed text-foreground">
-              "20대를 살아가는 모두가 스스로 <span className="text-primary italic">꽃</span>임을 깨닫기를 바라고, 먼 훗날 우리의 젊은 시절을 추억할 수 있는 <span className="border-b border-foreground pb-1">기록 저장소</span>가 되겠습니다."
-            </h2>
-          </motion.div>
+      <section className="py-24 md:py-36 bg-background relative z-10 overflow-hidden">
+        <div className="container mx-auto px-6 md:px-12">
+          <div className="flex gap-10 md:gap-20 items-start">
+
+            {/* Left: vertical label */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              whileInView={{ opacity: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="hidden md:flex flex-col items-center gap-4 pt-1 shrink-0"
+            >
+              <div className="w-[1px] h-10 bg-foreground/20"></div>
+              <span
+                className="font-sans text-[8px] tracking-[0.45em] uppercase text-foreground/30"
+                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
+              >
+                Philosophy
+              </span>
+            </motion.div>
+
+            {/* Right: quote in Hahmlet, cascading layout */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-80px" }}
+              transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
+              className="max-w-lg"
+            >
+              <p
+                className="text-xl md:text-2xl leading-[1.9] text-foreground/75 font-light"
+                style={{ fontFamily: "'Hahmlet', serif" }}
+              >
+                20대를 살아가는 모두가 스스로 꽃임을 깨닫기를 바라고,
+              </p>
+              <p
+                className="text-xl md:text-2xl leading-[1.9] text-foreground/50 font-light mt-1 ml-6 md:ml-10"
+                style={{ fontFamily: "'Hahmlet', serif" }}
+              >
+                먼 훗날 우리의 젊은 시절을 추억할 수 있는 기록 저장소가 되겠습니다.
+              </p>
+              <div className="mt-8 ml-1 flex items-center gap-3">
+                <div className="w-4 h-[1px] bg-foreground/20"></div>
+                <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/30">FLOG · 꽃보나보</span>
+              </div>
+            </motion.div>
+
+          </div>
         </div>
       </section>
 
