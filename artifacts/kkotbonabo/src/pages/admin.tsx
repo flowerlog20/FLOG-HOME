@@ -9,7 +9,7 @@ import {
   DEFAULT_ISSUES,
   type MagazineIssue,
 } from "@/lib/magazine-store";
-import { FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash, FaChevronDown, FaChevronUp } from "react-icons/fa";
+import { FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash, FaChevronDown, FaChevronUp, FaTimes } from "react-icons/fa";
 
 function LoginForm({ onLogin }: { onLogin: () => void }) {
   const [pw, setPw] = useState("");
@@ -377,7 +377,7 @@ export default function Admin() {
 
         <div className="space-y-3">
           {issues.map((issue, idx) => (
-            <div key={idx} className="relative group">
+            <div key={idx} className="relative">
               <IssueEditor
                 issue={issue}
                 index={idx}
@@ -389,9 +389,11 @@ export default function Admin() {
               />
               <button
                 onClick={() => removeIssue(idx)}
-                className="absolute top-4 right-10 opacity-0 group-hover:opacity-100 font-sans text-[8px] tracking-widest uppercase text-red-400/60 hover:text-red-500 transition-all"
+                className="absolute top-3.5 right-3 text-red-500 hover:text-red-600 transition-colors"
+                aria-label="이슈 삭제"
+                title="이슈 삭제"
               >
-                이슈 삭제
+                <FaTimes className="text-sm" />
               </button>
             </div>
           ))}
