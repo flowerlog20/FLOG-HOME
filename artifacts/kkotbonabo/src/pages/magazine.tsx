@@ -1,76 +1,12 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import mag1 from "@/assets/images/magazine_1.jpg";
-import mag2 from "@/assets/images/magazine_2.jpg";
-import mag3 from "@/assets/images/magazine_3.jpg";
-
-const issues = [
-  {
-    id: "03",
-    title: "여름의 잔상",
-    date: "2024 Summer",
-    image: mag1,
-    desc: "뜨겁고 찬란했던, 그래서 더 아쉬운 우리의 계절에 대하여.",
-    pages: [
-      mag1,
-      "https://images.unsplash.com/photo-1501854140801-50d01698950b?w=800&q=80",
-      "https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80",
-      "https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?w=800&q=80",
-    ],
-    captions: [
-      "Cover — 여름의 잔상",
-      "그 여름, 우리는 모든 것이 영원할 것이라 믿었다.",
-      "뜨거운 햇살 아래 잠시 멈춘 시간들.",
-      "계절이 지나도 남아있는 기억의 온도.",
-    ],
-  },
-  {
-    id: "02",
-    title: "새벽 두 시",
-    date: "2024 Spring",
-    image: mag2,
-    desc: "가장 깊은 밤, 홀로 깨어있는 시간 속 요동치는 마음들.",
-    pages: [
-      mag2,
-      "https://images.unsplash.com/photo-1519681393784-d120267933ba?w=800&q=80",
-      "https://images.unsplash.com/photo-1514565131-fce0801e6785?w=800&q=80",
-      "https://images.unsplash.com/photo-1508739773434-c26b3d09e071?w=800&q=80",
-    ],
-    captions: [
-      "Cover — 새벽 두 시",
-      "아무도 없는 새벽, 도시는 조용히 숨을 쉰다.",
-      "이 시간에만 존재하는 나만의 세계.",
-      "밤이 깊을수록 생각은 선명해진다.",
-    ],
-  },
-  {
-    id: "01",
-    title: "첫 만남",
-    date: "2023 Winter",
-    image: mag3,
-    desc: "우리가 처음 마주한 순간, 서툴지만 솔직했던 기록의 시작.",
-    pages: [
-      mag3,
-      "https://images.unsplash.com/photo-1549465220-1a8b9238cd48?w=800&q=80",
-      "https://images.unsplash.com/photo-1455582916367-25f75bfc6710?w=800&q=80",
-      "https://images.unsplash.com/photo-1416339306562-f3d12fefd36f?w=800&q=80",
-    ],
-    captions: [
-      "Cover — 첫 만남",
-      "처음은 언제나 서툴고, 그래서 아름답다.",
-      "우리가 처음 꽃을 건넸던 그 골목.",
-      "끝을 모른 채 시작한 이야기들.",
-    ],
-  },
-];
-
-type Issue = typeof issues[0];
+import { getMagazineIssues, type MagazineIssue } from "@/lib/magazine-store";
 
 function MagazineModal({
   issue,
   onClose,
 }: {
-  issue: Issue;
+  issue: MagazineIssue;
   onClose: () => void;
 }) {
   const [page, setPage] = useState(0);
@@ -150,7 +86,6 @@ function MagazineModal({
               />
             </AnimatePresence>
 
-            {/* Left / Right tap zones */}
             <button
               onClick={prev}
               disabled={page === 0}
@@ -179,7 +114,6 @@ function MagazineModal({
             {issue.captions[page]}
           </p>
 
-          {/* Page navigation */}
           <div className="flex items-center gap-4">
             <button
               onClick={prev}
@@ -206,7 +140,12 @@ function MagazineModal({
 }
 
 export default function Magazine() {
-  const [openIssue, setOpenIssue] = useState<Issue | null>(null);
+  const [openIssue, setOpenIssue] = useState<MagazineIssue | null>(null);
+  const [issues, setIssues] = useState<MagazineIssue[]>([]);
+
+  useEffect(() => {
+    setIssues(getMagazineIssues());
+  }, []);
 
   return (
     <div className="bg-[#fbfaf6] min-h-screen pt-32 pb-24">
@@ -234,7 +173,6 @@ export default function Magazine() {
               transition={{ duration: 1 }}
               className={`flex flex-col ${idx % 2 === 1 ? "md:flex-row-reverse" : "md:flex-row"} gap-12 md:gap-24 items-center`}
             >
-              {/* A4 cover image */}
               <div
                 className="w-full md:w-5/12 bg-muted relative overflow-hidden group cursor-pointer"
                 style={{ aspectRatio: "2159 / 2794" }}
@@ -248,7 +186,6 @@ export default function Magazine() {
                 <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/10 transition-colors duration-500" />
               </div>
 
-              {/* Text */}
               <div className="w-full md:w-1/2 space-y-6">
                 <span className="font-sans text-xs tracking-widest uppercase text-primary border-b border-primary/30 pb-1">
                   Issue {issue.id}

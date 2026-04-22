@@ -1,4 +1,6 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
+import { FaLock } from "react-icons/fa";
 
 export function Footer() {
   return (
@@ -25,7 +27,15 @@ export function Footer() {
           <ul className="space-y-4 font-sans font-light text-sm tracking-wide">
             <li>info@flog.kr</li>
             <li>Seoul, South Korea</li>
-            <li>Instagram</li>
+            <li>
+              <Link
+                href="/admin"
+                className="inline-flex items-center gap-2 text-muted-foreground/50 hover:text-muted-foreground transition-colors text-xs tracking-widest uppercase"
+              >
+                <FaLock className="text-[9px]" />
+                관리자 페이지
+              </Link>
+            </li>
           </ul>
         </div>
       </div>
