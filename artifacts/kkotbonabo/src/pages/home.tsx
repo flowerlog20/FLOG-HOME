@@ -23,45 +23,93 @@ export default function Home() {
     <>
       {/* HERO SECTION */}
       <section className="relative h-screen w-full bg-foreground text-background overflow-hidden">
-        {/* Placeholder background, later can be an image */}
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-center opacity-40 mix-blend-luminosity"></div>
         <div className="absolute inset-0 bg-foreground/30"></div>
-        
-        <div className="relative h-full container mx-auto px-6 md:px-12 flex flex-col justify-center items-center text-center">
-          <motion.div 
-            variants={container}
+
+        {/* Top-right: Vertical tagline */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.6, duration: 1.2 }}
+          className="absolute top-8 right-6 md:right-16 z-10 hidden md:block"
+          style={{ writingMode: "vertical-rl" }}
+        >
+          <span className="font-sans text-[9px] tracking-[0.32em] uppercase text-white/35">꽃을 보듯 나를 보다</span>
+        </motion.div>
+
+        {/* Center-right: Issue number (decorative) */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1, duration: 1.5 }}
+          className="absolute right-6 md:right-16 top-1/2 -translate-y-1/2 z-10 hidden lg:flex flex-col items-center gap-3"
+        >
+          <div className="w-[1px] h-14 bg-white/15"></div>
+          <span className="font-serif text-[10px] text-white/25 italic">No.01</span>
+          <div className="w-[1px] h-14 bg-white/15"></div>
+        </motion.div>
+
+        {/* Main title — bottom-left, massive, editorial */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-12 pb-20">
+          <motion.div
             initial="hidden"
             animate="show"
-            className="space-y-6 max-w-3xl"
+            variants={container}
           >
-            <motion.p variants={item} className="font-sans font-light tracking-[0.3em] text-sm md:text-base text-primary/80">
-              꽃을 보듯 나를 보다
-            </motion.p>
-            <motion.h1 variants={item} className="font-serif text-5xl md:text-7xl lg:text-8xl leading-tight">
-              가장 찬란한<br />
-              <span className="italic">우리의 계절</span>
-            </motion.h1>
-            <motion.p variants={item} className="font-sans font-light text-lg md:text-xl text-white/70 max-w-lg mx-auto pt-8">
-              꽃보나보는 20대의 젊음을 기록으로 남기는 활동을 하고 있는 비영리단체입니다.
-            </motion.p>
-          </motion.div>
+            {/* Metadata row */}
+            <motion.div
+              variants={item}
+              className="flex items-center gap-6 mb-5"
+            >
+              <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/40">Vol. 1 · 2024</span>
+              <div className="h-[1px] w-12 bg-white/20"></div>
+              <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/40">Record of Youth</span>
+            </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 2, duration: 1 }}
-            className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center space-y-4"
-          >
-            <span className="font-sans text-xs tracking-widest uppercase">Scroll to explore</span>
-            <div className="w-[1px] h-16 bg-white/30 overflow-hidden relative">
-              <motion.div 
-                animate={{ y: ["0%", "100%", "0%"] }}
-                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-                className="absolute inset-x-0 top-0 h-1/2 bg-white"
-              />
+            {/* Headline — left-aligned, bleeds to edge */}
+            <div className="overflow-hidden">
+              <motion.h1
+                variants={item}
+                className="font-serif leading-[0.9] text-[13vw] md:text-[11vw] lg:text-[10vw] text-white whitespace-nowrap"
+              >
+                가장 찬란한
+              </motion.h1>
+            </div>
+
+            {/* Second line — indented + italic, with description inline on desktop */}
+            <div className="flex items-end gap-8 overflow-hidden">
+              <motion.h1
+                variants={item}
+                className="font-serif italic leading-[0.9] text-[13vw] md:text-[11vw] lg:text-[10vw] text-white/85 whitespace-nowrap pl-[5vw] md:pl-[7vw]"
+              >
+                우리의 계절
+              </motion.h1>
+              <motion.p
+                variants={item}
+                className="hidden lg:block font-sans font-light text-[11px] text-white/40 max-w-[180px] leading-relaxed pb-2 shrink-0"
+              >
+                20대의 젊음을<br />기록으로 남기는<br />비영리단체
+              </motion.p>
             </div>
           </motion.div>
         </div>
+
+        {/* Scroll indicator — bottom right */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+          className="absolute bottom-8 right-6 md:right-12 flex flex-col items-center gap-3 z-10"
+        >
+          <div className="w-[1px] h-14 bg-white/25 overflow-hidden relative">
+            <motion.div
+              animate={{ y: ["0%", "100%", "0%"] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+              className="absolute inset-x-0 top-0 h-1/2 bg-white/70"
+            />
+          </div>
+          <span className="font-sans text-[9px] tracking-[0.3em] uppercase text-white/35" style={{ writingMode: "vertical-rl" }}>Scroll</span>
+        </motion.div>
       </section>
 
       {/* PHILOSOPHY SECTION */}
