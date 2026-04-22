@@ -1,0 +1,44 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "eFv5Wu8Arz56sDKI4TExI"
+uri = "file://artifacts/kkotbonabo/src/assets/images/hero.jpg"
+type = "image"
+title = "delicate aesthetic flowers soft natural light close up blush tones"
+
+[[outputs]]
+id = "Kcu_AQsNaNhB40im-XU5B"
+uri = "file://artifacts/kkotbonabo/src/assets/images/magazine_1.jpg"
+type = "image"
+title = "indie magazine on table aesthetic cafe warm light"
+
+[[outputs]]
+id = "tHsG-Huea0LaSqIcE_n5F"
+uri = "file://artifacts/kkotbonabo/src/assets/images/magazine_2.jpg"
+type = "image"
+title = "indie magazine on table aesthetic cafe warm light"
+
+[[outputs]]
+id = "IE3wQ7HAR7wqmVtr13Sai"
+uri = "file://artifacts/kkotbonabo/src/assets/images/magazine_3.jpg"
+type = "image"
+title = "indie magazine on table aesthetic cafe warm light"
+
+[[outputs]]
+id = "6ZqSzR_uR6yWKN6uAptHn"
+uri = "file://artifacts/kkotbonabo/src/assets/images/profile_1.jpg"
+type = "image"
+title = "aesthetic candid young korean adult natural light film grain style"
+
+[[outputs]]
+id = "6eicivVlkbd_f5AQecqiv"
+uri = "file://artifacts/kkotbonabo/src/assets/images/profile_2.jpg"
+type = "image"
+title = "aesthetic candid young korean adult natural light film grain style"
+
+[[outputs]]
+id = "Nck5ONYGeOfdmNOlLQHCN"
+uri = "file://artifacts/kkotbonabo/src/assets/images/profile_3.jpg"
+type = "image"
+title = "aesthetic candid young korean adult natural light film grain style"
