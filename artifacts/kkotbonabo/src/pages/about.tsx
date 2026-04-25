@@ -12,7 +12,7 @@ export default function About() {
           className="space-y-8 text-center"
         >
           <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">About Us</span>
-          <h1 className="font-serif text-4xl md:text-6xl">꽃을 보듯 나를 보다</h1>
+          <h1 className="font-serif text-4xl md:text-6xl">FLOWER LOG</h1>
         </motion.div>
 
         <div className="mt-24 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">

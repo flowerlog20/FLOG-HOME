@@ -113,7 +113,7 @@ export function Navbar() {
                   <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/30">FLower lOG</p>
                   <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/20 mt-1">Seoul · Est. 2024</p>
                 </div>
-                <p className="font-sans text-[10px] tracking-[0.3em] text-background/20 uppercase">꽃을 보듯 나를 보다</p>
+                <p className="font-sans text-[10px] tracking-[0.3em] text-background/20 uppercase">FLOWER LOG</p>
               </div>
             </div>
           </motion.div>
