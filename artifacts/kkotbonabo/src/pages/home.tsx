@@ -23,8 +23,8 @@ export default function Home() {
     <>
       {/* HERO SECTION */}
       <section className="relative h-screen w-full bg-foreground text-background overflow-hidden">
-        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-[center_20%] opacity-75 mix-blend-luminosity"></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/25 via-foreground/5 to-foreground/40"></div>
+        <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop')] bg-cover bg-[center_20%] opacity-100 mix-blend-luminosity"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-foreground/15 via-foreground/0 to-foreground/25"></div>
 
         {/* Top strip — micro metadata bar */}
         <motion.div
