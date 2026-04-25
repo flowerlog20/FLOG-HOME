@@ -153,13 +153,13 @@ export default function Home() {
                 className="text-xl md:text-2xl leading-[1.9] text-foreground/75 font-light"
                 style={{ fontFamily: "'Hahmlet', serif" }}
               >
-                20대를 살아가는 모두가 스스로 꽃임을 깨닫기를 바라고,
+                우리는 20대를 기록합니다. 가장 젊은 날의 고민, 관계, 라이프스타일 그리고 내면의 목소리까지.
               </p>
               <p
                 className="text-xl md:text-2xl leading-[1.9] text-foreground/50 font-light mt-1 ml-6 md:ml-10"
                 style={{ fontFamily: "'Hahmlet', serif" }}
               >
-                먼 훗날 우리의 젊은 시절을 추억할 수 있는 기록 저장소가 되겠습니다.
+                불안과 설렘, 성장의 모든 결을 담아, 먼 훗날 당신이 꺼내볼 수 있는 기억의 서랍이 되겠습니다.
               </p>
               <div className="mt-8 ml-1 flex items-center gap-3">
                 <div className="w-4 h-[1px] bg-foreground/20"></div>
