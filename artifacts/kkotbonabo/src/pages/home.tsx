@@ -59,7 +59,7 @@ export default function Home() {
             <div className="overflow-hidden pr-6 md:pr-12">
               <motion.h1
                 variants={item}
-                className="font-serif font-light leading-[0.85] tracking-[-0.01em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white text-right"
+                className="font-sans font-light leading-[0.85] tracking-[-0.01em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white text-right"
               >
                 FLOWER
               </motion.h1>
@@ -79,7 +79,7 @@ export default function Home() {
             <div className="overflow-hidden pl-6 md:pl-12">
               <motion.h1
                 variants={item}
-                className="font-serif font-light leading-[0.85] tracking-[0.08em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white/65 pl-[20vw] md:pl-[24vw]"
+                className="font-sans font-light leading-[0.85] tracking-[0.08em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white/65 pl-[20vw] md:pl-[24vw]"
               >
                 LOG
               </motion.h1>
