@@ -42,3 +42,39 @@ id = "Nck5ONYGeOfdmNOlLQHCN"
 uri = "file://artifacts/kkotbonabo/src/assets/images/profile_3.jpg"
 type = "image"
 title = "aesthetic candid young korean adult natural light film grain style"
+
+[[outputs]]
+id = "RT7mY0MH5UgkfmDFqHAZE"
+uri = "file://attached_assets/image_search/cam_1_vintage-dark-camera.jpg"
+type = "image"
+title = "① 빈티지 카메라, 어두운 배경"
+
+[[outputs]]
+id = "bsHLWgoDewTZrrORRUK7Z"
+uri = "file://attached_assets/image_search/cam_2_film-camera-bokeh.jpg"
+type = "image"
+title = "② 필름 카메라, 보케 빛"
+
+[[outputs]]
+id = "9Ue1ZSWHO_Ky2E9OV2a7w"
+uri = "file://attached_assets/image_search/cam_3_analog-camera-moody.jpg"
+type = "image"
+title = "③ 아날로그 카메라, 무드 있는"
+
+[[outputs]]
+id = "nLu3qfAGaAgmML02a3c85"
+uri = "file://attached_assets/image_search/cam_4_vintage-camera-texture.jpg"
+type = "image"
+title = "④ 빈티지 카메라, 질감"
+
+[[outputs]]
+id = "J9_RMQBrvCOl451bmUGJI"
+uri = "file://attached_assets/image_search/cam_5_film-camera-dreamy.jpg"
+type = "image"
+title = "⑤ 필름 카메라, 몽환적"
+
+[[outputs]]
+id = "YGkNfNt12C-oA1y7remBh"
+uri = "file://attached_assets/image_search/cam_6_camera-shadow-light.jpg"
+type = "image"
+title = "⑥ 카메라 + 빛과 그림자"
