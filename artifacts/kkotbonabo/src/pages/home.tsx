@@ -192,7 +192,7 @@ export default function Home() {
             >
               <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Publication</span>
               <h3 className="font-serif text-4xl md:text-5xl">20대 라이프 매거진</h3>
-              <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">당신의 오늘은 어떤 페이지입니까? FLOG는 20대의 일상을 활자로 새겨, 오래 남을 이야기로 만듭니다.</p>
+              <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">20대의 고민과 관계, 라이프스타일을 진솔하게 담은 독립 매거진. 매 호, 우리의 계절을 기록합니다. </p>
               <div className="pt-8">
                 <Link href="/magazine" className="inline-block border-b border-foreground pb-1 font-sans text-sm tracking-widest uppercase hover:text-primary hover:border-primary transition-colors">
                   Explore Archive
