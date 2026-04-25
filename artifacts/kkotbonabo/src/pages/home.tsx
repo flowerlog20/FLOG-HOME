@@ -233,7 +233,7 @@ export default function Home() {
               transition={{ duration: 1 }}
               className="aspect-[4/5] bg-muted relative overflow-hidden md:col-start-2"
             >
-              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=2576&auto=format&fit=crop')] bg-cover bg-center opacity-90 hover:scale-105 transition-transform duration-1000"></div>
+              <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1617611519550-4375695b85fe?w=900&auto=format&fit=crop&q=60')] bg-cover bg-center opacity-90 hover:scale-105 transition-transform duration-1000"></div>
             </motion.div>
 
           </div>
