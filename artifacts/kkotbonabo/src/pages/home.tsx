@@ -118,7 +118,6 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-
       {/* PHILOSOPHY SECTION */}
       <section className="py-24 md:py-36 bg-background relative z-10 overflow-hidden">
         <div className="container mx-auto px-6 md:px-12">
@@ -170,7 +169,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* MAGAZINE PREVIEW */}
       <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-6 md:px-12">
@@ -194,9 +192,7 @@ export default function Home() {
             >
               <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Publication</span>
               <h3 className="font-serif text-4xl md:text-5xl">20대 라이프 매거진</h3>
-              <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">
-                현대를 살아가는 20대의 라이프스타일과 내면을 활자로 기록합니다. 종이의 질감, 잉크의 냄새, 그리고 우리의 이야기.
-              </p>
+              <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">당신의 오늘은 어떤 페이지입니까? FLOG는 20대의 일상을 활자로 새겨, 오래 남을 이야기로 만듭니다.</p>
               <div className="pt-8">
                 <Link href="/magazine" className="inline-block border-b border-foreground pb-1 font-sans text-sm tracking-widest uppercase hover:text-primary hover:border-primary transition-colors">
                   Explore Archive
@@ -206,7 +202,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* MIND PROFILE PREVIEW */}
       <section className="py-24 md:py-48 bg-background">
         <div className="container mx-auto px-6 md:px-12">
@@ -244,7 +239,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* CTA SECTION */}
       <section className="py-32 bg-foreground text-background text-center px-6">
         <motion.div
