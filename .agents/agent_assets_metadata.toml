@@ -78,3 +78,39 @@ id = "YGkNfNt12C-oA1y7remBh"
 uri = "file://attached_assets/image_search/cam_6_camera-shadow-light.jpg"
 type = "image"
 title = "⑥ 카메라 + 빛과 그림자"
+
+[[outputs]]
+id = "_eK1pPEh67szMaw-87p9u"
+uri = "file://attached_assets/image_search/cf_1_camera-flowers-1.jpg"
+type = "image"
+title = "① 카메라 + 꽃 A"
+
+[[outputs]]
+id = "yAv55D5yOf_cPCvleaq70"
+uri = "file://attached_assets/image_search/cf_2_camera-flowers-2.jpg"
+type = "image"
+title = "② 카메라 + 꽃 B"
+
+[[outputs]]
+id = "VWvh9vBlOg0NCIGhisa3N"
+uri = "file://attached_assets/image_search/cf_3_camera-flowers-3.jpg"
+type = "image"
+title = "③ 카메라 + 꽃 C"
+
+[[outputs]]
+id = "08TE-VunEy-ylQq3hoDBB"
+uri = "file://attached_assets/image_search/cf_4_camera-flowers-4.jpg"
+type = "image"
+title = "④ 카메라 + 꽃 D"
+
+[[outputs]]
+id = "ZbSFoyeCNbuYW3qnW8Tzd"
+uri = "file://attached_assets/image_search/cf_5_camera-flowers-5.jpg"
+type = "image"
+title = "⑤ 카메라 + 꽃 E"
+
+[[outputs]]
+id = "ewtXpr2cXLu87czmIGxdm"
+uri = "file://attached_assets/image_search/cf_6_camera-flowers-6.jpg"
+type = "image"
+title = "⑥ 카메라 + 꽃 F"
