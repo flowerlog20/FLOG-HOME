@@ -157,7 +157,7 @@ export default function Magazine() {
           className="mb-24 md:w-1/2"
         >
           <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Archive</span>
-          <h1 className="font-sans font-light text-5xl mt-4 mb-6 tracking-[0.15em]">Magazine</h1>
+          <h1 className="font-serif text-5xl mt-4 mb-6">Magazine</h1>
           <p className="font-sans font-light text-foreground/70 leading-relaxed">
             종이 위에 활자로 새긴 우리의 일상. 20대의 고민, 사랑, 그리고 라이프스타일을 진솔하게 담아냅니다.
           </p>

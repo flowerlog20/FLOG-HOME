@@ -12,7 +12,7 @@ export default function Join() {
           className="space-y-12"
         >
           <div>
-            <h1 className="font-sans font-light text-5xl md:text-7xl mb-6 tracking-[0.15em]">Join Us</h1>
+            <h1 className="font-serif text-5xl md:text-7xl mb-6">Join Us</h1>
             <p className="font-sans font-light text-foreground/70 text-lg max-w-xl leading-relaxed">
               우리의 계절을 함께 기록할 분들을 기다립니다. 당신의 시선으로 담아낼 20대는 어떤 모습인가요?
             </p>

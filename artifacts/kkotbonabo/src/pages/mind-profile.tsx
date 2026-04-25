@@ -43,7 +43,7 @@ export default function MindProfile() {
                 className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-[1.02] transition-all duration-[2s] ease-out" 
               />
               <div className="absolute inset-0 flex items-center justify-center bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                <span className="font-sans font-light text-white tracking-widest">View Portrait</span>
+                <span className="font-serif text-white italic tracking-widest">View Portrait</span>
               </div>
             </motion.div>
           ))}

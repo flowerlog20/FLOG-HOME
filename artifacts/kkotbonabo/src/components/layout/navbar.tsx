@@ -97,7 +97,7 @@ export function Navbar() {
                       href={link.href}
                       onClick={() => setIsOpen(false)}
                       className={cn(
-                        "block font-sans font-light text-5xl tracking-[0.1em] text-background/80 hover:text-background transition-colors leading-tight py-2",
+                        "block font-serif text-5xl text-background/80 hover:text-background transition-colors leading-tight py-2",
                         location === link.href && "text-background/40"
                       )}
                       data-testid={`link-mobile-${link.href.replace("/", "")}`}
