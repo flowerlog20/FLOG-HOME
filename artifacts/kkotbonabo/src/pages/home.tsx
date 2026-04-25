@@ -163,7 +163,7 @@ export default function Home() {
               </p>
               <div className="mt-8 ml-1 flex items-center gap-3">
                 <div className="w-4 h-[1px] bg-foreground/20"></div>
-                <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/30">FLOG · 꽃보나보</span>
+                <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/30">FLOG</span>
               </div>
             </motion.div>
 

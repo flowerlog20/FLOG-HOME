@@ -11,7 +11,7 @@ export function Footer() {
             <h2 className="font-serif font-light text-6xl md:text-7xl tracking-[0.08em] leading-none mb-4">FLOG</h2>
             <div className="flex items-center gap-3 mt-3">
               <div className="w-6 h-[1px] bg-white/20"></div>
-              <p className="font-sans text-[9px] tracking-[0.4em] text-white/30 uppercase">FLower lOG · 꽃보나보</p>
+              <p className="font-sans text-[9px] tracking-[0.4em] text-white/30 uppercase">FLower lOG</p>
             </div>
           </div>
         </div>
