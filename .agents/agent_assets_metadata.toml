@@ -114,3 +114,33 @@ id = "ewtXpr2cXLu87czmIGxdm"
 uri = "file://attached_assets/image_search/cf_6_camera-flowers-6.jpg"
 type = "image"
 title = "⑥ 카메라 + 꽃 F"
+
+[[outputs]]
+id = "dRSHvfu1-VzXqFY-vcz4F"
+uri = "file://attached_assets/image_search/light_1_빛-투과-꽃잎.jpg"
+type = "image"
+title = "① 빛 투과 꽃잎"
+
+[[outputs]]
+id = "xOzzFdlCVeBhFk50Dqe-Z"
+uri = "file://attached_assets/image_search/light_2_흰꽃-빛.jpg"
+type = "image"
+title = "② 흰 꽃 + 빛 번짐"
+
+[[outputs]]
+id = "zW1ZV2dWz4gyLl_U00iPu"
+uri = "file://attached_assets/image_search/light_3_벚꽃-빛번짐.jpg"
+type = "image"
+title = "③ 벚꽃 + 보케 빛"
+
+[[outputs]]
+id = "UgswDTFwiC27M0xSpxUnh"
+uri = "file://attached_assets/image_search/light_4_핑크달리아.jpg"
+type = "image"
+title = "④ 핑크 달리아 소프트"
+
+[[outputs]]
+id = "FpXbqda3W8MGYPfAkHTXu"
+uri = "file://attached_assets/image_search/light_5_장미-빛.jpg"
+type = "image"
+title = "⑤ 장미 + 자연광"
