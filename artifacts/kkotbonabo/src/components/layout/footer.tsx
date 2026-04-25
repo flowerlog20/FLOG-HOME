@@ -6,12 +6,14 @@ export function Footer() {
   return (
     <footer className="bg-foreground text-background py-20 md:py-32">
       <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-        <div className="col-span-1 md:col-span-2 lg:col-span-2">
-          <h2 className="font-sans font-light text-3xl tracking-[0.15em] mb-2">FLOG</h2>
-          <p className="font-sans text-[10px] tracking-[0.3em] text-muted-foreground/60 uppercase mb-6">FLower lOG · 꽃보나보</p>
-          <p className="font-sans font-light text-muted-foreground max-w-sm leading-relaxed">
-            꽃을 보듯 나를 보다. 20대를 살아가는 모두가 스스로 꽃임을 깨닫기를 바라고, 먼 훗날 우리의 젊은 시절을 추억할 수 있는 20대 기록 저장소가 되겠습니다.
-          </p>
+        <div className="col-span-1 md:col-span-2 lg:col-span-2 flex flex-col justify-between">
+          <div>
+            <h2 className="font-serif font-light text-6xl md:text-7xl tracking-[0.08em] leading-none mb-4">FLOG</h2>
+            <div className="flex items-center gap-3 mt-3">
+              <div className="w-6 h-[1px] bg-white/20"></div>
+              <p className="font-sans text-[9px] tracking-[0.4em] text-white/30 uppercase">FLower lOG · 꽃보나보</p>
+            </div>
+          </div>
         </div>
         <div>
           <h3 className="font-sans text-xs tracking-widest text-muted-foreground mb-6 uppercase">Navigation</h3>
