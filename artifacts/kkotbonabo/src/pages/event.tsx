@@ -132,11 +132,10 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
           defaultValue=""
         >
           <option value="" disabled>선택</option>
-          <option value="인스타그램">인스타그램</option>
+          <option value="SNS">SNS</option>
           <option value="지인 추천">지인 추천</option>
           <option value="FLOG 매거진">FLOG 매거진</option>
-          <option value="학교 / 학과 공지">학교 / 학과 공지</option>
-          <option value="포스터 / 전단지">포스터 / 전단지</option>
+          <option value="광고">광고</option>
           <option value="기타">기타</option>
         </select>
       </Field>
