@@ -84,6 +84,17 @@ export function Navbar() {
             transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
             className="fixed inset-0 z-[60] bg-foreground flex flex-col"
           >
+            {/* 닫기 버튼 */}
+            <button
+              onClick={() => setIsOpen(false)}
+              aria-label="메뉴 닫기"
+              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-background/60 hover:text-background transition-colors"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+
             <div className="flex flex-col justify-end h-full px-8 pb-16 pt-28">
               <nav className="flex flex-col gap-2">
                 {links.map((link, i) => (
@@ -109,12 +120,12 @@ export function Navbar() {
                 ))}
               </nav>
 
-              <div className="mt-auto pt-16 border-t border-white/10 flex justify-between items-end">
+              <div className="mt-auto pt-16 border-t border-white/20 flex justify-between items-end">
                 <div>
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/30">FLower lOG</p>
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/20 mt-1">Seoul · Est. 2024</p>
+                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/60">FLower lOG</p>
+                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/40 mt-1">Seoul · Est. 2024</p>
                 </div>
-                <p className="font-sans text-[10px] tracking-[0.3em] text-background/20 uppercase">FLOWER LOG</p>
+                <p className="font-sans text-[10px] tracking-[0.3em] text-background/40 uppercase">FLOWER LOG</p>
               </div>
             </div>
           </motion.div>
