@@ -82,7 +82,7 @@ export function Navbar() {
             animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
             exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
             transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-40 bg-foreground flex flex-col"
+            className="fixed inset-0 z-[60] bg-foreground flex flex-col"
           >
             <div className="flex flex-col justify-end h-full px-8 pb-16 pt-28">
               <nav className="flex flex-col gap-2">
