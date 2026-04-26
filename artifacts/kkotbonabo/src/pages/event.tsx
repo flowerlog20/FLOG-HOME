@@ -1,6 +1,161 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { getEventData, type EventData } from "@/lib/magazine-store";
+
+/* ─── 입력 필드 스타일 ─── */
+const fieldCls = "w-full bg-transparent border-b border-foreground/20 focus:border-foreground/60 outline-none py-3 font-sans font-light text-sm text-foreground placeholder:text-foreground/30 transition-colors";
+const labelCls = "block font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40 mb-2";
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <label className={labelCls}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
+/* ─── 신청 폼 ─── */
+function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: string }) {
+  const [submitted, setSubmitted] = useState(false);
+  const formRef = useRef<HTMLFormElement>(null);
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!formsUrl) return;
+    const form = e.currentTarget;
+    const data = new FormData(form);
+    try {
+      await fetch(formsUrl, {
+        method: "POST",
+        body: data,
+        headers: { Accept: "application/json" },
+      });
+      setSubmitted(true);
+    } catch {
+      alert("제출 중 오류가 발생했습니다. 다시 시도해주세요.");
+    }
+  };
+
+  if (submitted) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="text-center py-20 border border-border"
+      >
+        <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/30 mb-4">신청 완료</p>
+        <p className="font-serif text-2xl mb-3">감사합니다</p>
+        <p className="font-sans font-light text-foreground/55 text-sm">참가 신청이 접수되었습니다.</p>
+      </motion.div>
+    );
+  }
+
+  return (
+    <form
+      ref={formRef}
+      onSubmit={formsUrl ? handleSubmit : (e) => e.preventDefault()}
+      action={formsUrl || undefined}
+      method="POST"
+      className="max-w-2xl mx-auto space-y-10"
+    >
+      {/* 이름 + 성별 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <Field label="이름">
+          <input
+            className={fieldCls}
+            name="이름"
+            type="text"
+            required
+            placeholder="홍길동"
+          />
+        </Field>
+        <Field label="성별">
+          <select
+            className={`${fieldCls} appearance-none cursor-pointer`}
+            name="성별"
+            required
+            defaultValue=""
+          >
+            <option value="" disabled>선택</option>
+            <option value="여성">여성</option>
+            <option value="남성">남성</option>
+            <option value="기타/응답 거부">기타 / 응답 거부</option>
+          </select>
+        </Field>
+      </div>
+
+      {/* 나이 + 전화번호 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <Field label="나이">
+          <input
+            className={fieldCls}
+            name="나이"
+            type="number"
+            min={1}
+            max={99}
+            required
+            placeholder="25"
+          />
+        </Field>
+        <Field label="전화번호">
+          <input
+            className={fieldCls}
+            name="전화번호"
+            type="tel"
+            required
+            placeholder="010-0000-0000"
+          />
+        </Field>
+      </div>
+
+      {/* 거주지 */}
+      <Field label="거주지">
+        <input
+          className={fieldCls}
+          name="거주지"
+          type="text"
+          required
+          placeholder="서울 마포구"
+        />
+      </Field>
+
+      {/* 유입경로 */}
+      <Field label="본 행사를 어떻게 알게 되셨나요?">
+        <select
+          className={`${fieldCls} appearance-none cursor-pointer`}
+          name="유입경로"
+          required
+          defaultValue=""
+        >
+          <option value="" disabled>선택</option>
+          <option value="인스타그램">인스타그램</option>
+          <option value="지인 추천">지인 추천</option>
+          <option value="FLOG 매거진">FLOG 매거진</option>
+          <option value="학교 / 학과 공지">학교 / 학과 공지</option>
+          <option value="포스터 / 전단지">포스터 / 전단지</option>
+          <option value="기타">기타</option>
+        </select>
+      </Field>
+
+      {/* Submit */}
+      <div className="pt-6 border-t border-border flex flex-col items-center gap-4">
+        {!formsUrl && (
+          <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/30">
+            신청 접수가 곧 시작됩니다
+          </p>
+        )}
+        <button
+          type="submit"
+          disabled={!formsUrl}
+          className="w-full md:w-auto font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 disabled:bg-foreground/15 disabled:text-foreground/30 transition-colors"
+        >
+          신청하기
+        </button>
+      </div>
+    </form>
+  );
+}
 
 export default function Event() {
   const [event, setEvent] = useState<EventData | null>(null);
@@ -115,7 +270,7 @@ export default function Event() {
           </motion.div>
         )}
 
-        {/* Formsfree */}
+        {/* Application Form */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -123,26 +278,15 @@ export default function Event() {
           transition={{ duration: 1 }}
           className="border-t border-border pt-16"
         >
-          <div className="text-center space-y-3 mb-12">
+          <div className="text-center space-y-3 mb-16">
             <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
             <h2 className="font-serif text-3xl md:text-4xl">신청하기</h2>
-            <p className="font-sans font-light text-foreground/60 text-sm">아래 양식을 작성해 참가 신청을 완료해주세요.</p>
+            <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
+              아래 양식을 작성해 참가 신청을 완료해주세요.
+            </p>
           </div>
 
-          {event.formsUrl ? (
-            <iframe
-              src={event.formsUrl}
-              width="100%"
-              height="600"
-              frameBorder="0"
-              title="S-LOG 신청서"
-              className="w-full border border-border"
-            />
-          ) : (
-            <div className="text-center py-16 border border-dashed border-border text-foreground/30">
-              <p className="font-sans text-xs tracking-widest uppercase">신청 폼이 준비 중입니다</p>
-            </div>
-          )}
+          <ApplyForm formsUrl={event.formsUrl} eventTitle={event.title} />
         </motion.div>
       </div>
     </div>
