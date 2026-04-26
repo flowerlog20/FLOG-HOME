@@ -225,16 +225,21 @@ export default function Event() {
         </motion.div>
 
         {/* Poster */}
-        {event.posterUrl && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1, delay: 0.2 }}
-            className="w-full max-w-sm mx-auto aspect-[3/4] bg-muted overflow-hidden mb-20"
-          >
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="w-full max-w-sm mx-auto aspect-[3/4] mb-20 overflow-hidden"
+        >
+          {event.posterUrl ? (
             <img src={event.posterUrl} alt={event.title} className="w-full h-full object-cover" />
-          </motion.div>
-        )}
+          ) : (
+            <div className="w-full h-full border border-dashed border-foreground/15 flex flex-col items-center justify-center gap-3">
+              <span className="font-sans text-[8px] tracking-[0.45em] uppercase text-foreground/20">Poster</span>
+              <span className="font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/15">준비 중</span>
+            </div>
+          )}
+        </motion.div>
 
         {/* Event Info */}
         <motion.div
