@@ -18,13 +18,16 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 /* ─── 신청 폼 ─── */
 function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: string }) {
   const [submitted, setSubmitted] = useState(false);
+  const [privacyAgreed, setPrivacyAgreed] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formsUrl) return;
+    if (!privacyAgreed) return;
     const form = e.currentTarget;
     const data = new FormData(form);
+    data.set("개인정보 수집·이용 동의", "동의함");
     try {
       await fetch(formsUrl, {
         method: "POST",
@@ -138,8 +141,43 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
         </select>
       </Field>
 
+      {/* 개인정보 수집·이용 동의 */}
+      <div className="border border-foreground/10 p-6 space-y-4">
+        <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40">
+          개인정보 수집·이용 동의
+        </p>
+        <div className="font-sans text-[11px] text-foreground/50 leading-relaxed space-y-1.5">
+          <p><span className="text-foreground/70">수집 항목</span> — 이름, 성별, 나이, 전화번호, 거주지, 유입경로</p>
+          <p><span className="text-foreground/70">수집 목적</span> — S-LOG 행사 참가 신청 접수 및 행사 운영</p>
+          <p><span className="text-foreground/70">보유 기간</span> — 행사 종료 후 30일 이내 파기</p>
+          <p className="pt-1 text-foreground/35">
+            위 개인정보 수집·이용에 동의하지 않을 권리가 있으나, 동의하지 않을 경우 신청이 제한될 수 있습니다.
+          </p>
+        </div>
+        <label className="flex items-center gap-3 cursor-pointer group">
+          <div
+            onClick={() => setPrivacyAgreed(v => !v)}
+            className={`w-4 h-4 border flex items-center justify-center shrink-0 transition-colors ${
+              privacyAgreed ? "bg-foreground border-foreground" : "border-foreground/30 group-hover:border-foreground/60"
+            }`}
+          >
+            {privacyAgreed && (
+              <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
+                <path d="M1 3L3 5L7 1" stroke="#f4f3ef" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            )}
+          </div>
+          <span
+            onClick={() => setPrivacyAgreed(v => !v)}
+            className="font-sans text-[11px] text-foreground/65 select-none"
+          >
+            개인정보 수집·이용에 동의합니다 <span className="text-foreground/35">(필수)</span>
+          </span>
+        </label>
+      </div>
+
       {/* Submit */}
-      <div className="pt-6 border-t border-border flex flex-col items-center gap-4">
+      <div className="pt-2 flex flex-col items-center gap-4">
         {!formsUrl && (
           <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/30">
             신청 접수가 곧 시작됩니다
@@ -147,11 +185,16 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
         )}
         <button
           type="submit"
-          disabled={!formsUrl}
-          className="w-full md:w-auto font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 disabled:bg-foreground/15 disabled:text-foreground/30 transition-colors"
+          disabled={!formsUrl || !privacyAgreed}
+          className="w-full md:w-auto font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 disabled:bg-foreground/15 disabled:text-foreground/30 disabled:cursor-not-allowed transition-colors"
         >
           신청하기
         </button>
+        {!privacyAgreed && formsUrl && (
+          <p className="font-sans text-[9px] text-foreground/30 tracking-wide">
+            개인정보 수집·이용에 동의해주세요
+          </p>
+        )}
       </div>
     </form>
   );
