@@ -11,6 +11,7 @@ export function Navbar() {
     { href: "/about", label: "ABOUT" },
     { href: "/magazine", label: "MAGAZINE" },
     { href: "/mind-profile", label: "MIND PROFILE" },
+    { href: "/event", label: "EVENT" },
     { href: "/join", label: "JOIN" },
   ];
 
