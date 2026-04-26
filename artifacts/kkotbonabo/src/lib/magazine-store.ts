@@ -75,6 +75,56 @@ export const DEFAULT_ISSUES: MagazineIssue[] = [
 const STORAGE_KEY = "flog_magazine_issues";
 const AUTH_KEY = "flog_admin_auth";
 const ADMIN_PASSWORD = "flog2024";
+const EVENT_KEY = "flog_event_data";
+
+export interface EventActivity {
+  name: string;
+  desc: string;
+}
+
+export interface EventData {
+  active: boolean;
+  title: string;
+  subtitle: string;
+  posterUrl: string;
+  date: string;
+  location: string;
+  description: string;
+  activities: EventActivity[];
+  galleryImages: string[];
+  formsUrl: string;
+}
+
+export const DEFAULT_EVENT: EventData = {
+  active: true,
+  title: "S-LOG",
+  subtitle: "STRESS LOG",
+  posterUrl: "",
+  date: "2025년 5월 31일 (토)",
+  location: "서울 (장소 미정)",
+  description: "일상의 스트레스를 해소하고 나만의 것을 손으로 직접 만들어보는 오프라인 체험 행사입니다.",
+  activities: [
+    { name: "비즈 팔찌 만들기", desc: "나만의 컬러와 패턴으로 세상에 하나뿐인 비즈 팔찌를 만들어보세요." },
+    { name: "나만의 키캡 만들기", desc: "커스텀 디자인으로 키보드 키캡을 직접 제작하는 체험입니다." },
+    { name: "스트레스 파쇄 부스", desc: "종이 파쇄기에 스트레스 요인을 적어 직접 갈아버리세요." },
+  ],
+  galleryImages: [],
+  formsUrl: "",
+};
+
+export function getEventData(): EventData {
+  try {
+    const raw = localStorage.getItem(EVENT_KEY);
+    if (!raw) return DEFAULT_EVENT;
+    return JSON.parse(raw) as EventData;
+  } catch {
+    return DEFAULT_EVENT;
+  }
+}
+
+export function saveEventData(data: EventData): void {
+  localStorage.setItem(EVENT_KEY, JSON.stringify(data));
+}
 
 export function getMagazineIssues(): MagazineIssue[] {
   try {

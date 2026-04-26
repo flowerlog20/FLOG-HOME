@@ -12,7 +12,9 @@ import Magazine from "@/pages/magazine";
 import MindProfile from "@/pages/mind-profile";
 import Join from "@/pages/join";
 import Admin from "@/pages/admin";
+import Event from "@/pages/event";
 import NotFound from "@/pages/not-found";
+import { EventPopup } from "@/components/EventPopup";
 
 const queryClient = new QueryClient();
 
@@ -33,10 +35,12 @@ function Router() {
               <Route path="/magazine" component={Magazine} />
               <Route path="/mind-profile" component={MindProfile} />
               <Route path="/join" component={Join} />
+              <Route path="/event" component={Event} />
               <Route component={NotFound} />
             </Switch>
           </main>
           <Footer />
+          <EventPopup />
         </div>
       </Route>
     </Switch>

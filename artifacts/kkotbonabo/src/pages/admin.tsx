@@ -7,7 +7,11 @@ import {
   isAdminLoggedIn,
   setAdminLoggedIn,
   DEFAULT_ISSUES,
+  getEventData,
+  saveEventData,
+  DEFAULT_EVENT,
   type MagazineIssue,
+  type EventData,
 } from "@/lib/magazine-store";
 import {
   FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -290,21 +294,145 @@ function IssueEditor({
   );
 }
 
+/* ─── EVENT EDITOR ───────────────────────────────────────── */
+function EventEditor({ event, onChange }: { event: EventData; onChange: (e: EventData) => void }) {
+  const set = (field: keyof EventData, val: unknown) => onChange({ ...event, [field]: val });
+
+  const setActivity = (i: number, field: "name" | "desc", val: string) => {
+    const acts = [...event.activities];
+    acts[i] = { ...acts[i], [field]: val };
+    onChange({ ...event, activities: acts });
+  };
+
+  const addActivity = () =>
+    onChange({ ...event, activities: [...event.activities, { name: "", desc: "" }] });
+
+  const removeActivity = (i: number) =>
+    onChange({ ...event, activities: event.activities.filter((_, idx) => idx !== i) });
+
+  const setGallery = (i: number, val: string) => {
+    const imgs = [...event.galleryImages];
+    imgs[i] = val;
+    onChange({ ...event, galleryImages: imgs });
+  };
+
+  const addGallery = () => onChange({ ...event, galleryImages: [...event.galleryImages, ""] });
+  const removeGallery = (i: number) =>
+    onChange({ ...event, galleryImages: event.galleryImages.filter((_, idx) => idx !== i) });
+
+  return (
+    <div className="space-y-8">
+      {/* Active toggle */}
+      <div className="flex items-center justify-between py-3 border-b border-foreground/8">
+        <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/50">팝업 활성화</span>
+        <button
+          onClick={() => set("active", !event.active)}
+          className={`relative w-11 h-6 rounded-full transition-colors ${event.active ? "bg-foreground" : "bg-foreground/20"}`}
+        >
+          <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${event.active ? "left-6" : "left-1"}`} />
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="이벤트 제목">
+          <input className={inputCls} value={event.title} onChange={e => set("title", e.target.value)} placeholder="S-LOG" />
+        </Field>
+        <Field label="부제 (Subtitle)">
+          <input className={inputCls} value={event.subtitle} onChange={e => set("subtitle", e.target.value)} placeholder="STRESS LOG" />
+        </Field>
+        <Field label="포스터 이미지 URL">
+          <input className={inputCls} value={event.posterUrl} onChange={e => set("posterUrl", e.target.value)} placeholder="https://..." />
+        </Field>
+        <Field label="Formsfree URL">
+          <input className={inputCls} value={event.formsUrl} onChange={e => set("formsUrl", e.target.value)} placeholder="https://formfree.io/..." />
+        </Field>
+        <Field label="일시">
+          <input className={inputCls} value={event.date} onChange={e => set("date", e.target.value)} placeholder="2025년 5월 31일 (토)" />
+        </Field>
+        <Field label="장소">
+          <input className={inputCls} value={event.location} onChange={e => set("location", e.target.value)} placeholder="서울 홍대" />
+        </Field>
+      </div>
+
+      <Field label="행사 소개">
+        <textarea
+          className={`${inputCls} resize-none min-h-[72px]`}
+          value={event.description}
+          onChange={e => set("description", e.target.value)}
+          placeholder="행사 소개 문구"
+        />
+      </Field>
+
+      {/* Activities */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <span className="font-sans text-[8.5px] tracking-[0.38em] uppercase text-foreground/35">프로그램</span>
+          <button onClick={addActivity} className="flex items-center gap-1.5 font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/40 hover:text-foreground/70 transition-colors">
+            <FaPlus className="text-[7px]" /> 추가
+          </button>
+        </div>
+        <div className="space-y-4">
+          {event.activities.map((act, i) => (
+            <div key={i} className="flex gap-3 items-start">
+              <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-3">
+                <input className={inputCls} value={act.name} onChange={e => setActivity(i, "name", e.target.value)} placeholder="활동명" />
+                <input className={inputCls} value={act.desc} onChange={e => setActivity(i, "desc", e.target.value)} placeholder="설명" />
+              </div>
+              <button onClick={() => removeActivity(i)} className="mt-2 text-red-400 hover:text-red-500 transition-colors shrink-0">
+                <FaTrash className="text-[10px]" />
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Gallery Images */}
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <span className="font-sans text-[8.5px] tracking-[0.38em] uppercase text-foreground/35">예시 이미지 URL</span>
+          <button onClick={addGallery} className="flex items-center gap-1.5 font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/40 hover:text-foreground/70 transition-colors">
+            <FaPlus className="text-[7px]" /> 추가
+          </button>
+        </div>
+        <div className="space-y-3">
+          {event.galleryImages.map((img, i) => (
+            <div key={i} className="flex gap-3 items-center">
+              <input className={`${inputCls} flex-1`} value={img} onChange={e => setGallery(i, e.target.value)} placeholder="https://..." />
+              <button onClick={() => removeGallery(i)} className="text-red-400 hover:text-red-500 transition-colors shrink-0">
+                <FaTrash className="text-[10px]" />
+              </button>
+            </div>
+          ))}
+          {event.galleryImages.length === 0 && (
+            <p className="font-sans text-[9px] text-foreground/25 tracking-wide">이미지 URL을 추가해주세요</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ─── MAIN ADMIN PAGE ────────────────────────────────────── */
 export default function Admin() {
   const [loggedIn, setLoggedIn] = useState(isAdminLoggedIn());
   const [issues, setIssues] = useState<MagazineIssue[]>([]);
+  const [eventData, setEventData] = useState<EventData>(DEFAULT_EVENT);
   const [saved, setSaved] = useState(false);
+  const [activeTab, setActiveTab] = useState<"magazine" | "event">("event");
   const [, navigate] = useLocation();
 
   useEffect(() => {
-    if (loggedIn) setIssues(getMagazineIssues());
+    if (loggedIn) {
+      setIssues(getMagazineIssues());
+      setEventData(getEventData());
+    }
   }, [loggedIn]);
 
   const handleLogout = () => { setAdminLoggedIn(false); setLoggedIn(false); };
 
   const handleSave = () => {
     saveMagazineIssues(issues);
+    saveEventData(eventData);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };
@@ -370,53 +498,92 @@ export default function Admin() {
       {/* ── Page content ── */}
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 md:px-8 py-8 pb-28">
 
-        {/* Section header */}
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">
-              Magazine Issues Editor
-            </p>
-            <h2 className="font-serif text-[22px] text-foreground/80">매거진 관리</h2>
-          </div>
-          <div className="flex items-center gap-3">
+        {/* Tabs */}
+        <div className="flex gap-6 border-b border-foreground/10 mb-8">
+          {(["event", "magazine"] as const).map(tab => (
             <button
-              onClick={handleReset}
-              className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`font-sans text-[9px] tracking-[0.4em] uppercase pb-3 border-b-2 transition-colors ${
+                activeTab === tab
+                  ? "border-foreground text-foreground"
+                  : "border-transparent text-foreground/35 hover:text-foreground/60"
+              }`}
             >
-              초기화
+              {tab === "event" ? "이벤트 관리" : "매거진 관리"}
             </button>
-            <button
-              onClick={addIssue}
-              className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.3em] uppercase bg-foreground text-background px-4 py-2 hover:bg-foreground/80 transition-colors"
-            >
-              <FaPlus className="text-[7px]" /> 새 이슈
-            </button>
-          </div>
-        </div>
-
-        {/* Divider */}
-        <div className="w-full h-px bg-foreground/8 mb-5" />
-
-        {/* Issue list */}
-        <div className="space-y-2">
-          {issues.map((issue, idx) => (
-            <IssueEditor
-              key={idx}
-              issue={issue}
-              onDelete={() => removeIssue(idx)}
-              onChange={(updated) => {
-                const next = [...issues];
-                next[idx] = updated;
-                setIssues(next);
-              }}
-            />
           ))}
-          {issues.length === 0 && (
-            <div className="text-center py-16 border border-dashed border-foreground/10">
-              <p className="font-sans text-[10px] tracking-widest uppercase text-foreground/25">이슈가 없습니다</p>
-            </div>
-          )}
         </div>
+
+        {/* Event tab */}
+        {activeTab === "event" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Event Editor</p>
+                <h2 className="font-serif text-[22px] text-foreground/80">이벤트 관리</h2>
+              </div>
+              <button
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setEventData(DEFAULT_EVENT); }}
+                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              >
+                초기화
+              </button>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-6" />
+            <div className="bg-white border border-foreground/8 p-6">
+              <EventEditor event={eventData} onChange={setEventData} />
+            </div>
+          </div>
+        )}
+
+        {/* Magazine tab */}
+        {activeTab === "magazine" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">
+                  Magazine Issues Editor
+                </p>
+                <h2 className="font-serif text-[22px] text-foreground/80">매거진 관리</h2>
+              </div>
+              <div className="flex items-center gap-3">
+                <button
+                  onClick={handleReset}
+                  className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+                >
+                  초기화
+                </button>
+                <button
+                  onClick={addIssue}
+                  className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.3em] uppercase bg-foreground text-background px-4 py-2 hover:bg-foreground/80 transition-colors"
+                >
+                  <FaPlus className="text-[7px]" /> 새 이슈
+                </button>
+              </div>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-5" />
+            <div className="space-y-2">
+              {issues.map((issue, idx) => (
+                <IssueEditor
+                  key={idx}
+                  issue={issue}
+                  onDelete={() => removeIssue(idx)}
+                  onChange={(updated) => {
+                    const next = [...issues];
+                    next[idx] = updated;
+                    setIssues(next);
+                  }}
+                />
+              ))}
+              {issues.length === 0 && (
+                <div className="text-center py-16 border border-dashed border-foreground/10">
+                  <p className="font-sans text-[10px] tracking-widest uppercase text-foreground/25">이슈가 없습니다</p>
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </main>
 
       {/* ── Sticky save bar ── */}
