@@ -4,8 +4,6 @@ import { Link, useLocation } from "wouter";
 import { FaTimes } from "react-icons/fa";
 import { getEventData } from "@/lib/magazine-store";
 
-const POPUP_KEY = "flog_popup_dismissed";
-
 export function EventPopup() {
   const [visible, setVisible] = useState(false);
   const [location] = useLocation();
@@ -14,15 +12,11 @@ export function EventPopup() {
   useEffect(() => {
     if (!event.active) return;
     if (location !== "/") return;
-    const dismissed = sessionStorage.getItem(POPUP_KEY);
-    if (!dismissed) {
-      const t = setTimeout(() => setVisible(true), 600);
-      return () => clearTimeout(t);
-    }
+    const t = setTimeout(() => setVisible(true), 600);
+    return () => clearTimeout(t);
   }, [event.active, location]);
 
   const close = () => {
-    sessionStorage.setItem(POPUP_KEY, "1");
     setVisible(false);
   };
 
