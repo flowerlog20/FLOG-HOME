@@ -62,14 +62,11 @@ export function EventPopup() {
                   className="w-full h-full object-cover"
                 />
               ) : (
-                <div className="w-full h-full flex flex-col items-center justify-center bg-foreground text-background px-8 text-center gap-4">
-                  <span className="font-sans text-[9px] tracking-[0.5em] uppercase text-white/40">FLOG presents</span>
-                  <h2 className="font-serif text-5xl text-white">{event.title}</h2>
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-white/50">{event.subtitle}</p>
-                  <div className="w-8 h-[1px] bg-white/20 mt-2" />
-                  <p className="font-sans font-light text-white/60 text-sm leading-relaxed">{event.date}</p>
-                  <p className="font-sans font-light text-white/40 text-xs">{event.location}</p>
-                </div>
+                <img
+                  src="/slog-poster.jpg"
+                  alt="S-LOG 포스터"
+                  className="w-full h-full object-cover"
+                />
               )}
             </div>
 
