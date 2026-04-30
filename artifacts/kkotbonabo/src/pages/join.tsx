@@ -123,9 +123,7 @@ export default function Join() {
           <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/25">
             FLOWER LOG · Seoul · Est. 2024
           </p>
-          <p className="font-sans font-light text-foreground/35 text-xs">
-            20대의 기록을 꽃을 보듯 바라보다
-          </p>
+          <p className="font-sans font-light text-foreground/35 text-xs">20대 시절을 기록으로 남기다</p>
         </motion.div>
 
       </div>
