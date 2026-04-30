@@ -21,7 +21,7 @@ export default function Join() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 pt-12 border-t border-border">
             <div className="space-y-8">
               <div className="space-y-2">
-                <h3 className="font-serif text-2xl">에디터 / 작가</h3>
+                <h3 className="font-serif text-2xl">매거진 인터뷰</h3>
                 <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">일상의 사소한 조각들을 기록으로 남기다.</p>
               </div>
               <div className="space-y-2">
