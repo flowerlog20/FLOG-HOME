@@ -46,15 +46,22 @@ export default function Join() {
           transition={{ duration: 1 }}
           className="mb-20"
         >
-          <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/35 mb-4">
+          <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/30 mb-10">
             Join FLOG
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl leading-tight mb-8">
-            당신의 이야기를<br />기록하겠습니다
-          </h1>
-          <p className="font-sans font-light text-foreground/55 text-sm leading-loose max-w-lg">
-            FLOG는 20대의 평범한 하루에서 특별함을 발견하는 팀입니다.<br />
-            인터뷰, 프로필, 협업 — 어떤 방식으로든 함께할 수 있습니다.
+          <div className="mb-10 space-y-1">
+            <h1 className="font-serif text-6xl md:text-7xl leading-none">
+              당신의
+            </h1>
+            <h1 className="font-serif text-6xl md:text-7xl leading-none pl-10 md:pl-20 text-foreground/50">
+              이야기를,
+            </h1>
+            <h1 className="font-serif text-6xl md:text-7xl leading-none">
+              기록합니다.
+            </h1>
+          </div>
+          <p className="font-sans text-[10px] tracking-[0.45em] uppercase text-foreground/35">
+            인터뷰 &nbsp;·&nbsp; 프로필 &nbsp;·&nbsp; 협업
           </p>
         </motion.div>
 
