@@ -17,7 +17,7 @@ const items = [
     title: "마인드 프로필",
     en: "Mind Profile",
     desc: "나는 어떤 사람인가.\n외면이 아닌 내면을 기록하는 FLOG만의 프로필 촬영.\n심리 기반 질문지와 함께 나를 사진으로 담아냅니다.",
-    note: "촬영 진행 일정은 별도 안내됩니다.",
+    note: "진행 일정은 별도 안내드립니다.",
     cta: "자세히 보기",
     href: "/mind-profile",
     external: false,
