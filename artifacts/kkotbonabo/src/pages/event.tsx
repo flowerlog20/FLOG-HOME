@@ -178,7 +178,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
           >
             {privacyAgreed && (
               <svg width="8" height="6" viewBox="0 0 8 6" fill="none">
-                <path d="M1 3L3 5L7 1" stroke="#f4f3ef" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M1 3L3 5L7 1" stroke="hsl(var(--background))" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             )}
           </div>
@@ -368,7 +368,7 @@ export default function Event() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="border-t border-border pt-16 mt-16"
+            className="dark bg-background mt-16 -mx-6 md:-mx-12 px-6 md:px-12 py-16"
           >
             <div className="text-center space-y-3 mb-16">
               <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">신청 양식</span>
