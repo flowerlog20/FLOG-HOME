@@ -229,7 +229,7 @@ export default function Event() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
-          className="w-full max-w-sm mx-auto aspect-[3/4] mb-20 overflow-hidden"
+          className="w-full max-w-sm mx-auto aspect-[905/1280] mb-20 overflow-hidden"
         >
           {event.posterUrl ? (
             <img src={event.posterUrl} alt={event.title} className="w-full h-full object-cover" />
