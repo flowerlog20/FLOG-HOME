@@ -193,11 +193,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
 
       {/* Submit */}
       <div className="pt-2 flex flex-col items-center gap-4">
-        {!formsUrl && (
-          <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/30">
-            신청 접수가 곧 시작됩니다
-          </p>
-        )}
+
         <button
           type="submit"
           disabled={!formsUrl || !privacyAgreed || !formValid}
