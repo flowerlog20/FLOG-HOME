@@ -22,9 +22,7 @@ export default function Join() {
             <div className="space-y-8">
               <div className="space-y-2">
                 <h3 className="font-serif text-2xl">에디터 / 작가</h3>
-                <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">
-                  일상의 사소한 조각들을 글로 엮어낼 사람. 자신만의 문체를 가진 분을 환영합니다.
-                </p>
+                <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">일상의 사소한 조각들을 기록으로 남기다.</p>
               </div>
               <div className="space-y-2">
                 <h3 className="font-serif text-2xl">포토그래퍼</h3>
