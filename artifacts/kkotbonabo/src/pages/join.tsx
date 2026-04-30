@@ -30,9 +30,7 @@ export default function Join() {
               </div>
               <div className="space-y-2">
                 <h3 className="font-serif text-2xl">협업 문의</h3>
-                <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">
-                  자신의 20대를 아름다운 기록으로 남기고 싶은 분. 꾸밈없는 당신의 모습을 찾습니다.
-                </p>
+                <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">FLOG와 함께 20대 기록 활동에 동참하실 분을 기다립니다.</p>
               </div>
             </div>
 
