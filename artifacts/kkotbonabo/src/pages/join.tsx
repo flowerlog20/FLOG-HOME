@@ -25,7 +25,7 @@ export default function Join() {
                 <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">일상의 사소한 조각들을 기록으로 남기다.</p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-serif text-2xl">포토그래퍼</h3>
+                <h3 className="font-serif text-2xl">마인드 프로필</h3>
                 <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">나의 내면을 기록으로 남기다.</p>
               </div>
               <div className="space-y-2">
