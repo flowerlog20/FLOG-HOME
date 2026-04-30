@@ -54,7 +54,7 @@ export function EventPopup() {
             </button>
 
             {/* Poster image */}
-            <div className="w-full aspect-[3/4] bg-muted relative overflow-hidden">
+            <div className="w-full aspect-[905/1280] bg-muted relative overflow-hidden">
               {event.posterUrl ? (
                 <img
                   src={event.posterUrl}
