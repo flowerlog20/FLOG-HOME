@@ -26,9 +26,7 @@ export default function Join() {
               </div>
               <div className="space-y-2">
                 <h3 className="font-serif text-2xl">포토그래퍼</h3>
-                <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">
-                  필름 혹은 디지털로 그날의 온도를 담아낼 사람. 사람을 향한 따뜻한 시선이 필요합니다.
-                </p>
+                <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">나의 내면을 기록으로 남기다.</p>
               </div>
               <div className="space-y-2">
                 <h3 className="font-serif text-2xl">프로필 모델</h3>
