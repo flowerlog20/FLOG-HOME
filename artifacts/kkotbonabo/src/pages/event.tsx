@@ -16,9 +16,17 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 }
 
 /* ─── 신청 폼 ─── */
+function formatPhone(value: string) {
+  const digits = value.replace(/\D/g, "").slice(0, 11);
+  if (digits.length <= 3) return digits;
+  if (digits.length <= 7) return `${digits.slice(0, 3)}-${digits.slice(3)}`;
+  return `${digits.slice(0, 3)}-${digits.slice(3, 7)}-${digits.slice(7)}`;
+}
+
 function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: string }) {
   const [submitted, setSubmitted] = useState(false);
   const [privacyAgreed, setPrivacyAgreed] = useState(false);
+  const [phoneValue, setPhoneValue] = useState("");
   const formRef = useRef<HTMLFormElement>(null);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -83,7 +91,6 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
             <option value="" disabled>선택</option>
             <option value="여성">여성</option>
             <option value="남성">남성</option>
-            <option value="기타/응답 거부">기타 / 응답 거부</option>
           </select>
         </Field>
       </div>
@@ -108,6 +115,8 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
             type="tel"
             required
             placeholder="010-0000-0000"
+            value={phoneValue}
+            onChange={(e) => setPhoneValue(formatPhone(e.target.value))}
           />
         </Field>
       </div>
