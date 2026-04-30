@@ -85,7 +85,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
             name="이름"
             type="text"
             required
-            placeholder="홍길동"
+            placeholder=""
           />
         </Field>
         <Field label="성별">
@@ -112,7 +112,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
             min={1}
             max={99}
             required
-            placeholder="25"
+            placeholder=""
           />
         </Field>
         <Field label="전화번호">
@@ -135,7 +135,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
           name="거주지"
           type="text"
           required
-          placeholder="서울 마포구"
+          placeholder="서울 서초구 반포동"
         />
       </Field>
 
