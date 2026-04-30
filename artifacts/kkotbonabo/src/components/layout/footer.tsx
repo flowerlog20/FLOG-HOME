@@ -27,7 +27,7 @@ export function Footer() {
         <div>
           <h3 className="font-sans text-xs tracking-widest text-muted-foreground mb-6 uppercase">Contact</h3>
           <ul className="space-y-4 font-sans font-light text-sm tracking-wide">
-            <li>info@flog.kr</li>
+            <li>flowerlog20@gmail.com</li>
             <li>Seoul, South Korea</li>
             <li>
               <Link
