@@ -49,7 +49,7 @@ export default function Join() {
           <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/35 mb-4">
             Join FLOG
           </p>
-          <h1 className="font-serif text-5xl md:text-6xl leading-tight mb-8">
+          <h1 className="font-serif leading-tight mb-8" style={{ fontSize: 'clamp(1.75rem, 8.5vw, 3.75rem)' }}>
             당신의 이야기를<br />기록하겠습니다
           </h1>
           <p className="font-sans font-light text-foreground/55 text-sm leading-loose max-w-lg">
