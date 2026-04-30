@@ -29,7 +29,7 @@ export default function Join() {
                 <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">나의 내면을 기록으로 남기다.</p>
               </div>
               <div className="space-y-2">
-                <h3 className="font-serif text-2xl">프로필 모델</h3>
+                <h3 className="font-serif text-2xl">협업 문의</h3>
                 <p className="font-sans font-light text-sm text-muted-foreground leading-relaxed">
                   자신의 20대를 아름다운 기록으로 남기고 싶은 분. 꾸밈없는 당신의 모습을 찾습니다.
                 </p>
