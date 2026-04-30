@@ -27,12 +27,18 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
   const [submitted, setSubmitted] = useState(false);
   const [privacyAgreed, setPrivacyAgreed] = useState(false);
   const [phoneValue, setPhoneValue] = useState("");
+  const [formValid, setFormValid] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+
+  const checkFormValid = () => {
+    setFormValid(formRef.current?.checkValidity() ?? false);
+  };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formsUrl) return;
     if (!privacyAgreed) return;
+    if (!formRef.current?.checkValidity()) return;
     const form = e.currentTarget;
     const data = new FormData(form);
     data.set("개인정보 수집·이용 동의", "동의함");
@@ -66,6 +72,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
     <form
       ref={formRef}
       onSubmit={formsUrl ? handleSubmit : (e) => e.preventDefault()}
+      onChange={checkFormValid}
       action={formsUrl || undefined}
       method="POST"
       className="max-w-2xl mx-auto space-y-10"
@@ -193,7 +200,7 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
         )}
         <button
           type="submit"
-          disabled={!formsUrl || !privacyAgreed}
+          disabled={!formsUrl || !privacyAgreed || !formValid}
           className="w-full md:w-auto font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 disabled:bg-foreground/15 disabled:text-foreground/30 disabled:cursor-not-allowed transition-colors"
         >
           신청하기
