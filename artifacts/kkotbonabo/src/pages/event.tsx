@@ -217,10 +217,19 @@ function ApplyForm({ formsUrl, eventTitle }: { formsUrl: string; eventTitle: str
 
 export default function Event() {
   const [event, setEvent] = useState<EventData | null>(null);
+  const [showForm, setShowForm] = useState(false);
+  const formSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setEvent(getEventData());
   }, []);
+
+  const handleOpenForm = () => {
+    setShowForm(true);
+    setTimeout(() => {
+      formSectionRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 100);
+  };
 
   if (!event) return null;
 
@@ -333,24 +342,47 @@ export default function Event() {
           </motion.div>
         )}
 
-        {/* Application Form */}
+        {/* Apply CTA */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 1 }}
-          className="border-t border-border pt-16"
+          className="border-t border-border pt-16 text-center space-y-6"
         >
-          <div className="text-center space-y-3 mb-16">
-            <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
-            <h2 className="font-serif text-3xl md:text-4xl">신청하기</h2>
-            <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
-              아래 양식을 작성해 참가 신청을 완료해주세요.
-            </p>
-          </div>
-
-          <ApplyForm formsUrl={event.formsUrl} eventTitle={event.title} />
+          <span className="block font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
+          <h2 className="font-serif text-3xl md:text-4xl">참가 신청</h2>
+          <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
+            신청 양식은 아래 버튼을 눌러 확인할 수 있습니다.
+          </p>
+          {!showForm && (
+            <button
+              onClick={handleOpenForm}
+              className="font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 transition-colors"
+            >
+              신청하기
+            </button>
+          )}
         </motion.div>
+
+        {/* Application Form — shown after clicking */}
+        {showForm && (
+          <motion.div
+            ref={formSectionRef}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            className="border-t border-border pt-16 mt-16"
+          >
+            <div className="text-center space-y-3 mb-16">
+              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">신청 양식</span>
+              <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
+                아래 양식을 작성해 참가 신청을 완료해주세요.
+              </p>
+            </div>
+            <ApplyForm formsUrl={event.formsUrl} eventTitle={event.title} />
+          </motion.div>
+        )}
       </div>
     </div>
   );
