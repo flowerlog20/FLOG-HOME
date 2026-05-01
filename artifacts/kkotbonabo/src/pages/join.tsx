@@ -2,9 +2,9 @@ import React, { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 // Formspree URL — 각 양식에 맞는 ID로 교체하세요
-const INTERVIEW_FORM_URL = "https://formspree.io/f/YOUR_INTERVIEW_FORM_ID";
-const PROFILE_FORM_URL  = "https://formspree.io/f/YOUR_PROFILE_FORM_ID";
-const COLLAB_FORM_URL   = "https://formspree.io/f/YOUR_COLLAB_FORM_ID";
+const INTERVIEW_FORM_URL = "https://formspree.io/f/xvzloppj";
+const PROFILE_FORM_URL  = "https://formspree.io/f/xqenakoz";
+const COLLAB_FORM_URL   = "https://formspree.io/f/xlgzdeke";
 
 const fieldCls = "w-full bg-transparent border-b border-foreground/20 focus:border-foreground/60 outline-none py-3 font-sans font-light text-sm text-foreground placeholder:text-foreground/30 transition-colors";
 const labelCls = "block font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40 mb-2";
