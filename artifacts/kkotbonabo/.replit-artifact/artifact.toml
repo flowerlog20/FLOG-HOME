@@ -1,6 +1,6 @@
 kind = "web"
 previewPath = "/"
-title = "꽃보나보"
+title = "FLOG"
 version = "1.0.0"
 id = "artifacts/kkotbonabo"
 router = "path"
