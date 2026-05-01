@@ -99,7 +99,7 @@ export const DEFAULT_EVENT: EventData = {
   active: true,
   title: "S-LOG",
   subtitle: "STRESS LOG",
-  posterUrl: "",
+  posterUrl: "/slog-poster.jpg",
   date: "2025년 5월 31일 (토)",
   location: "서울 (장소 미정)",
   description: "일상의 스트레스를 해소하고 나만의 것을 손으로 직접 만들어보는 오프라인 체험 행사입니다.",
@@ -116,7 +116,12 @@ export function getEventData(): EventData {
   try {
     const raw = localStorage.getItem(EVENT_KEY);
     if (!raw) return DEFAULT_EVENT;
-    return JSON.parse(raw) as EventData;
+    const stored = JSON.parse(raw) as EventData;
+    return {
+      ...DEFAULT_EVENT,
+      ...stored,
+      posterUrl: stored.posterUrl || DEFAULT_EVENT.posterUrl,
+    };
   } catch {
     return DEFAULT_EVENT;
   }
