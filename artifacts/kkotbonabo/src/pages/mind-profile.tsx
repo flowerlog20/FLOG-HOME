@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import prof1 from "@/assets/images/profile_1.jpg";
-import prof2 from "@/assets/images/profile_2.jpg";
-import prof3 from "@/assets/images/profile_3.jpg";
 import { getMindProfileDataFromDB, DEFAULT_MIND_PROFILE, type MindProfileData } from "@/lib/magazine-store";
 
-const FALLBACKS = [prof1, prof2, prof3];
+const FALLBACKS = [
+  "/mind-profile/profile_1.jpg",
+  "/mind-profile/profile_2.jpg",
+  "/mind-profile/profile_3.jpg",
+];
 
 const LAYOUTS = [
   { span: "col-span-1 md:col-span-2", aspect: "aspect-[16/9]" },
