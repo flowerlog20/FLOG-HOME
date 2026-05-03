@@ -1,5 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { getJoinDataFromDB, DEFAULT_JOIN, type JoinData } from "@/lib/magazine-store";
 
 // Formspree URL — 각 양식에 맞는 ID로 교체하세요
 const INTERVIEW_FORM_URL = "https://formspree.io/f/xvzloppj";
@@ -183,41 +184,15 @@ function PrivacyBlock({ agreed, onToggle }: { agreed: boolean; onToggle: () => v
   );
 }
 
-/* ─── 섹션 데이터 ─── */
-const items = [
-  {
-    index: "01",
-    title: "매거진 인터뷰",
-    en: "Magazine Interview",
-    desc: "당신의 일상, 고민, 그리고 20대라는 시간.\nFLOG는 평범한 하루 안에서 특별한 이야기를 발견합니다.\n우리가 당신의 이야기를 기록하겠습니다.",
-    note: "별도의 조건 없이 누구나 신청 가능합니다.",
-    cta: "인터뷰 신청",
-    formUrl: INTERVIEW_FORM_URL,
-    FormComponent: InterviewForm,
-  },
-  {
-    index: "02",
-    title: "마인드 프로필",
-    en: "Mind Profile",
-    desc: "나는 어떤 사람인가.\n외면이 아닌 내면을 기록하는 FLOG만의 프로필 촬영.\n심리 기반 질문지와 함께 나를 사진으로 담아냅니다.",
-    note: "진행 일정은 별도 안내드립니다.",
-    cta: "프로필 신청",
-    formUrl: PROFILE_FORM_URL,
-    FormComponent: InterviewForm,
-  },
-  {
-    index: "03",
-    title: "협업 및 문의",
-    en: "Collaboration",
-    desc: "브랜드, 공간, 창작자 누구와도 열려 있습니다.\n20대의 감각으로 함께 만들어갈 수 있다면,\nFLOG는 언제든 대화할 준비가 되어 있습니다.",
-    note: "문의는 이메일로 받고 있습니다.",
-    cta: "문의하기",
-    formUrl: COLLAB_FORM_URL,
-    FormComponent: CollabForm,
-  },
+const FORM_META = [
+  { formUrl: INTERVIEW_FORM_URL, FormComponent: InterviewForm },
+  { formUrl: PROFILE_FORM_URL,  FormComponent: InterviewForm },
+  { formUrl: COLLAB_FORM_URL,   FormComponent: CollabForm },
 ];
 
-function ItemSection({ item, index }: { item: typeof items[number]; index: number }) {
+type MergedItem = JoinData["items"][number] & { formUrl: string; FormComponent: React.ComponentType<{ formUrl: string }> };
+
+function ItemSection({ item, index }: { item: MergedItem; index: number }) {
   const [open, setOpen] = useState(false);
   const { FormComponent } = item;
 
@@ -269,6 +244,17 @@ function ItemSection({ item, index }: { item: typeof items[number]; index: numbe
 }
 
 export default function Join() {
+  const [joinData, setJoinData] = useState<JoinData>(DEFAULT_JOIN);
+
+  useEffect(() => {
+    getJoinDataFromDB().then(setJoinData);
+  }, []);
+
+  const mergedItems: MergedItem[] = joinData.items.map((item, i) => ({
+    ...item,
+    ...(FORM_META[i] ?? FORM_META[FORM_META.length - 1]),
+  }));
+
   return (
     <div className="bg-background min-h-screen pt-28 pb-24">
       <div className="container mx-auto px-6 md:px-12 max-w-4xl">
@@ -292,7 +278,7 @@ export default function Join() {
 
         {/* Items */}
         <div className="border-t border-border">
-          {items.map((item, i) => (
+          {mergedItems.map((item, i) => (
             <ItemSection key={item.index} item={item} index={i} />
           ))}
         </div>

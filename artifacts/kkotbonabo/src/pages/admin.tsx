@@ -6,13 +6,27 @@ import {
   getEventDataFromDB,
   saveEventDataToDB,
   saveMagazineIssues,
+  getAboutDataFromDB,
+  saveAboutDataToDB,
+  getMindProfileDataFromDB,
+  saveMindProfileDataToDB,
+  getJoinDataFromDB,
+  saveJoinDataToDB,
   checkAdminPassword,
   isAdminLoggedIn,
   setAdminLoggedIn,
   DEFAULT_ISSUES,
   DEFAULT_EVENT,
+  DEFAULT_ABOUT,
+  DEFAULT_MIND_PROFILE,
+  DEFAULT_JOIN,
   type MagazineIssue,
   type EventData,
+  type AboutData,
+  type AboutWhatWeDoItem,
+  type MindProfileData,
+  type JoinData,
+  type JoinItem,
 } from "@/lib/magazine-store";
 import {
   FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -443,19 +457,129 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
   );
 }
 
+/* ─── ABOUT EDITOR ────────────────────────────────────────── */
+function AboutEditor({ about, onChange }: { about: AboutData; onChange: (a: AboutData) => void }) {
+  const setItem = (i: number, field: keyof AboutWhatWeDoItem, val: string) => {
+    const next = [...about.whatWeDo];
+    next[i] = { ...next[i], [field]: val };
+    onChange({ ...about, whatWeDo: next });
+  };
+
+  return (
+    <div className="space-y-8">
+      <Field label="우리의 이야기 (본문)">
+        <textarea
+          className={`${inputCls} resize-none min-h-[100px]`}
+          value={about.story}
+          onChange={e => onChange({ ...about, story: e.target.value })}
+          placeholder="우리는 20대를 기록합니다..."
+        />
+      </Field>
+
+      <div>
+        <span className="font-sans text-[8.5px] tracking-[0.38em] uppercase text-foreground/35 block mb-4">What We Do 항목</span>
+        <div className="space-y-6">
+          {about.whatWeDo.map((item, i) => (
+            <div key={i} className="border border-foreground/8 p-4 space-y-3">
+              <span className="font-sans text-[8px] tracking-widest text-foreground/30 uppercase">{item.num}</span>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <Field label="제목">
+                  <input className={inputCls} value={item.title} onChange={e => setItem(i, "title", e.target.value)} />
+                </Field>
+                <Field label="English">
+                  <input className={inputCls} value={item.en} onChange={e => setItem(i, "en", e.target.value)} />
+                </Field>
+              </div>
+              <Field label="설명">
+                <textarea
+                  className={`${inputCls} resize-none min-h-[64px]`}
+                  value={item.desc}
+                  onChange={e => setItem(i, "desc", e.target.value)}
+                />
+              </Field>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ─── MIND PROFILE EDITOR ─────────────────────────────────── */
+function MindProfileEditor({ data, onChange }: { data: MindProfileData; onChange: (d: MindProfileData) => void }) {
+  return (
+    <div className="space-y-8">
+      <Field label="소개 문구 (줄바꿈 가능)">
+        <textarea
+          className={`${inputCls} resize-none min-h-[100px]`}
+          value={data.subtitle}
+          onChange={e => onChange({ ...data, subtitle: e.target.value })}
+          placeholder="가장 나다운 순간..."
+        />
+      </Field>
+    </div>
+  );
+}
+
+/* ─── JOIN EDITOR ─────────────────────────────────────────── */
+function JoinEditor({ data, onChange }: { data: JoinData; onChange: (d: JoinData) => void }) {
+  const setItem = (i: number, field: keyof JoinItem, val: string) => {
+    const next = [...data.items];
+    next[i] = { ...next[i], [field]: val };
+    onChange({ ...data, items: next });
+  };
+
+  return (
+    <div className="space-y-6">
+      {data.items.map((item, i) => (
+        <div key={i} className="border border-foreground/8 p-5 space-y-4">
+          <span className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/30">{item.index} — {item.title}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field label="제목">
+              <input className={inputCls} value={item.title} onChange={e => setItem(i, "title", e.target.value)} />
+            </Field>
+            <Field label="English">
+              <input className={inputCls} value={item.en} onChange={e => setItem(i, "en", e.target.value)} />
+            </Field>
+            <Field label="버튼 텍스트 (CTA)">
+              <input className={inputCls} value={item.cta} onChange={e => setItem(i, "cta", e.target.value)} />
+            </Field>
+            <Field label="노트 (작은 안내 문구)">
+              <input className={inputCls} value={item.note} onChange={e => setItem(i, "note", e.target.value)} />
+            </Field>
+          </div>
+          <Field label="설명 (줄바꿈 가능)">
+            <textarea
+              className={`${inputCls} resize-none min-h-[80px]`}
+              value={item.desc}
+              onChange={e => setItem(i, "desc", e.target.value)}
+            />
+          </Field>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ─── MAIN ADMIN PAGE ────────────────────────────────────── */
 export default function Admin() {
   const [loggedIn, setLoggedIn] = useState(isAdminLoggedIn());
   const [issues, setIssues] = useState<MagazineIssue[]>([]);
   const [eventData, setEventData] = useState<EventData>(DEFAULT_EVENT);
+  const [aboutData, setAboutData] = useState<AboutData>(DEFAULT_ABOUT);
+  const [mindProfileData, setMindProfileData] = useState<MindProfileData>(DEFAULT_MIND_PROFILE);
+  const [joinData, setJoinData] = useState<JoinData>(DEFAULT_JOIN);
   const [saved, setSaved] = useState(false);
-  const [activeTab, setActiveTab] = useState<"popup" | "event" | "magazine">("popup");
+  const [activeTab, setActiveTab] = useState<"popup" | "about" | "mind-profile" | "event" | "join" | "magazine">("popup");
   const [, navigate] = useLocation();
 
   useEffect(() => {
     if (loggedIn) {
       getEventDataFromDB().then(setEventData);
       getMagazineIssuesFromDB().then(setIssues);
+      getAboutDataFromDB().then(setAboutData);
+      getMindProfileDataFromDB().then(setMindProfileData);
+      getJoinDataFromDB().then(setJoinData);
     }
   }, [loggedIn]);
 
@@ -465,6 +589,9 @@ export default function Admin() {
     await Promise.all([
       saveMagazineIssuesToDB(issues),
       saveEventDataToDB(eventData),
+      saveAboutDataToDB(aboutData),
+      saveMindProfileDataToDB(mindProfileData),
+      saveJoinDataToDB(joinData),
     ]);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -532,20 +659,26 @@ export default function Admin() {
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 md:px-8 py-8 pb-28">
 
         {/* Tabs */}
-        <div className="flex gap-6 border-b border-foreground/10 mb-8">
-          {(["popup", "event", "magazine"] as const).map(tab => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`font-sans text-[9px] tracking-[0.4em] uppercase pb-3 border-b-2 transition-colors ${
-                activeTab === tab
-                  ? "border-foreground text-foreground"
-                  : "border-transparent text-foreground/35 hover:text-foreground/60"
-              }`}
-            >
-              {tab === "popup" ? "팝업창" : tab === "event" ? "EVENT" : "MAGAZINE"}
-            </button>
-          ))}
+        <div className="flex gap-5 border-b border-foreground/10 mb-8 overflow-x-auto scrollbar-none">
+          {(["popup", "about", "mind-profile", "event", "join", "magazine"] as const).map(tab => {
+            const labels: Record<string, string> = {
+              popup: "팝업창", about: "ABOUT", "mind-profile": "MIND PROFILE",
+              event: "EVENT", join: "JOIN", magazine: "MAGAZINE",
+            };
+            return (
+              <button
+                key={tab}
+                onClick={() => setActiveTab(tab)}
+                className={`font-sans text-[9px] tracking-[0.35em] uppercase pb-3 border-b-2 whitespace-nowrap transition-colors ${
+                  activeTab === tab
+                    ? "border-foreground text-foreground"
+                    : "border-transparent text-foreground/35 hover:text-foreground/60"
+                }`}
+              >
+                {labels[tab]}
+              </button>
+            );
+          })}
         </div>
 
         {/* Popup tab */}
@@ -570,6 +703,50 @@ export default function Admin() {
           </div>
         )}
 
+        {/* About tab */}
+        {activeTab === "about" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">About Editor</p>
+                <h2 className="font-serif text-[22px] text-foreground/80">ABOUT 관리</h2>
+              </div>
+              <button
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setAboutData(DEFAULT_ABOUT); }}
+                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              >
+                초기화
+              </button>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-6" />
+            <div className="bg-white border border-foreground/8 p-6">
+              <AboutEditor about={aboutData} onChange={setAboutData} />
+            </div>
+          </div>
+        )}
+
+        {/* Mind Profile tab */}
+        {activeTab === "mind-profile" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Mind Profile Editor</p>
+                <h2 className="font-serif text-[22px] text-foreground/80">MIND PROFILE 관리</h2>
+              </div>
+              <button
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setMindProfileData(DEFAULT_MIND_PROFILE); }}
+                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              >
+                초기화
+              </button>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-6" />
+            <div className="bg-white border border-foreground/8 p-6">
+              <MindProfileEditor data={mindProfileData} onChange={setMindProfileData} />
+            </div>
+          </div>
+        )}
+
         {/* Event tab */}
         {activeTab === "event" && (
           <div>
@@ -588,6 +765,28 @@ export default function Admin() {
             <div className="w-full h-px bg-foreground/8 mb-6" />
             <div className="bg-white border border-foreground/8 p-6">
               <EventEditor event={eventData} onChange={setEventData} />
+            </div>
+          </div>
+        )}
+
+        {/* Join tab */}
+        {activeTab === "join" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Join Editor</p>
+                <h2 className="font-serif text-[22px] text-foreground/80">JOIN 관리</h2>
+              </div>
+              <button
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setJoinData(DEFAULT_JOIN); }}
+                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              >
+                초기화
+              </button>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-6" />
+            <div className="bg-white border border-foreground/8 p-6">
+              <JoinEditor data={joinData} onChange={setJoinData} />
             </div>
           </div>
         )}

@@ -200,3 +200,120 @@ export async function saveMagazineIssuesToDB(issues: MagazineIssue[]): Promise<v
   await setDoc(doc(db, "config", "magazine"), { issues });
   saveMagazineIssues(issues);
 }
+
+/* ─── About ─── */
+export interface AboutWhatWeDoItem {
+  num: string;
+  title: string;
+  en: string;
+  desc: string;
+}
+
+export interface AboutData {
+  story: string;
+  whatWeDo: AboutWhatWeDoItem[];
+}
+
+export const DEFAULT_ABOUT: AboutData = {
+  story: "우리는 20대를 기록합니다. 가장 젊은 날의 고민, 관계, 라이프스타일 그리고 내면의 목소리까지. 불안과 설렘, 성장의 모든 결을 담아, 먼 훗날 당신이 꺼내볼 수 있는 기억의 서랍이 되겠습니다.",
+  whatWeDo: [
+    { num: "01", title: "매거진", en: "Magazine", desc: "현대를 살아가는 20대의 라이프스타일과 내면을 활자로 기록합니다. 계절마다 새로운 이야기를 엮어 종이 위에 청춘을 새깁니다." },
+    { num: "02", title: "마인드 프로필", en: "Mind Profile", desc: "외면이 아닌 내면을 담는 사진. 지금 이 순간 당신이 느끼는 감정과 가장 솔직한 모습을 기록으로 남깁니다." },
+    { num: "03", title: "아카이브", en: "Archive", desc: "우리가 함께 쌓아가는 청춘의 기록 저장소. 훗날 꺼내볼 수 있도록, 오늘의 우리를 차곡차곡 보존합니다." },
+  ],
+};
+
+export async function getAboutDataFromDB(): Promise<AboutData> {
+  try {
+    const snap = await getDoc(doc(db, "config", "about"));
+    if (!snap.exists()) return DEFAULT_ABOUT;
+    const stored = snap.data() as AboutData;
+    return { ...DEFAULT_ABOUT, ...stored };
+  } catch {
+    return DEFAULT_ABOUT;
+  }
+}
+
+export async function saveAboutDataToDB(data: AboutData): Promise<void> {
+  await setDoc(doc(db, "config", "about"), data);
+}
+
+/* ─── Mind Profile ─── */
+export interface MindProfileData {
+  subtitle: string;
+}
+
+export const DEFAULT_MIND_PROFILE: MindProfileData = {
+  subtitle: "가장 나다운 순간, 꾸미지 않은 감정의 편린들을 필름 위에 붙잡아둡니다.\n누구에게나 자신만의 고유한 빛이 있음을 기록합니다.",
+};
+
+export async function getMindProfileDataFromDB(): Promise<MindProfileData> {
+  try {
+    const snap = await getDoc(doc(db, "config", "mind-profile"));
+    if (!snap.exists()) return DEFAULT_MIND_PROFILE;
+    return { ...DEFAULT_MIND_PROFILE, ...(snap.data() as MindProfileData) };
+  } catch {
+    return DEFAULT_MIND_PROFILE;
+  }
+}
+
+export async function saveMindProfileDataToDB(data: MindProfileData): Promise<void> {
+  await setDoc(doc(db, "config", "mind-profile"), data);
+}
+
+/* ─── Join ─── */
+export interface JoinItem {
+  index: string;
+  title: string;
+  en: string;
+  desc: string;
+  note: string;
+  cta: string;
+}
+
+export interface JoinData {
+  items: JoinItem[];
+}
+
+export const DEFAULT_JOIN: JoinData = {
+  items: [
+    {
+      index: "01",
+      title: "매거진 인터뷰",
+      en: "Magazine Interview",
+      desc: "당신의 일상, 고민, 그리고 20대라는 시간.\nFLOG는 평범한 하루 안에서 특별한 이야기를 발견합니다.\n우리가 당신의 이야기를 기록하겠습니다.",
+      note: "별도의 조건 없이 누구나 신청 가능합니다.",
+      cta: "인터뷰 신청",
+    },
+    {
+      index: "02",
+      title: "마인드 프로필",
+      en: "Mind Profile",
+      desc: "나는 어떤 사람인가.\n외면이 아닌 내면을 기록하는 FLOG만의 프로필 촬영.\n심리 기반 질문지와 함께 나를 사진으로 담아냅니다.",
+      note: "진행 일정은 별도 안내드립니다.",
+      cta: "프로필 신청",
+    },
+    {
+      index: "03",
+      title: "협업 및 문의",
+      en: "Collaboration",
+      desc: "브랜드, 공간, 창작자 누구와도 열려 있습니다.\n20대의 감각으로 함께 만들어갈 수 있다면,\nFLOG는 언제든 대화할 준비가 되어 있습니다.",
+      note: "문의는 이메일로 받고 있습니다.",
+      cta: "문의하기",
+    },
+  ],
+};
+
+export async function getJoinDataFromDB(): Promise<JoinData> {
+  try {
+    const snap = await getDoc(doc(db, "config", "join"));
+    if (!snap.exists()) return DEFAULT_JOIN;
+    return { ...DEFAULT_JOIN, ...(snap.data() as JoinData) };
+  } catch {
+    return DEFAULT_JOIN;
+  }
+}
+
+export async function saveJoinDataToDB(data: JoinData): Promise<void> {
+  await setDoc(doc(db, "config", "join"), data);
+}
