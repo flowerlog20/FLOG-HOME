@@ -74,7 +74,6 @@ export function Navbar() {
           </button>
         </div>
       </motion.header>
-
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -123,7 +122,7 @@ export function Navbar() {
               <div className="mt-auto pt-16 border-t border-white/20 flex justify-between items-end">
                 <div>
                   <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/60">FLower lOG</p>
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/40 mt-1">Seoul · Est. 2024</p>
+                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/40 mt-1">Seoul · Est. 2026</p>
                 </div>
                 <p className="font-sans text-[10px] tracking-[0.3em] text-background/40 uppercase">FLOWER LOG</p>
               </div>
