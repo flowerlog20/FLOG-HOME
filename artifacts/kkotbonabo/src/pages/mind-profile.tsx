@@ -5,6 +5,14 @@ import prof2 from "@/assets/images/profile_2.jpg";
 import prof3 from "@/assets/images/profile_3.jpg";
 import { getMindProfileDataFromDB, DEFAULT_MIND_PROFILE, type MindProfileData } from "@/lib/magazine-store";
 
+const FALLBACKS = [prof1, prof2, prof3];
+
+const LAYOUTS = [
+  { span: "col-span-1 md:col-span-2", aspect: "aspect-[16/9]" },
+  { span: "col-span-1", aspect: "aspect-[3/4]" },
+  { span: "col-span-1 md:col-span-3", aspect: "aspect-[21/9]" },
+];
+
 export default function MindProfile() {
   const [data, setData] = useState<MindProfileData>(DEFAULT_MIND_PROFILE);
 
@@ -12,11 +20,10 @@ export default function MindProfile() {
     getMindProfileDataFromDB().then(setData);
   }, []);
 
-  const images = [
-    { src: prof1, span: "col-span-1 md:col-span-2", aspect: "aspect-[16/9]" },
-    { src: prof2, span: "col-span-1", aspect: "aspect-[3/4]" },
-    { src: prof3, span: "col-span-1 md:col-span-3", aspect: "aspect-[21/9]" },
-  ];
+  const images = LAYOUTS.map((layout, i) => ({
+    ...layout,
+    src: data.images?.[i] || FALLBACKS[i],
+  }));
 
   return (
     <div className="bg-[#1a1a1a] text-[#fbfaf6] min-h-screen pt-32 pb-24">

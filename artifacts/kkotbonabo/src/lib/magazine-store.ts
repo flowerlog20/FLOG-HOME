@@ -360,10 +360,12 @@ export async function saveAboutDataToDB(data: AboutData): Promise<void> {
 /* ─── Mind Profile ─── */
 export interface MindProfileData {
   subtitle: string;
+  images: string[];
 }
 
 export const DEFAULT_MIND_PROFILE: MindProfileData = {
   subtitle: "가장 나다운 순간, 꾸미지 않은 감정의 편린들을 필름 위에 붙잡아둡니다.\n누구에게나 자신만의 고유한 빛이 있음을 기록합니다.",
+  images: ["", "", ""],
 };
 
 export async function getMindProfileDataFromDB(): Promise<MindProfileData> {

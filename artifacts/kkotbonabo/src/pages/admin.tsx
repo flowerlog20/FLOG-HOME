@@ -632,7 +632,21 @@ function AboutEditor({ about, onChange }: { about: AboutData; onChange: (a: Abou
 }
 
 /* ─── MIND PROFILE EDITOR ─────────────────────────────────── */
+const MIND_PROFILE_LAYOUT_LABELS = [
+  "이미지 1 — 와이드 (16:9, 상단 2칸)",
+  "이미지 2 — 세로형 (3:4, 중간 1칸)",
+  "이미지 3 — 파노라마 (21:9, 하단 3칸)",
+];
+
 function MindProfileEditor({ data, onChange }: { data: MindProfileData; onChange: (d: MindProfileData) => void }) {
+  const images = data.images ?? ["", "", ""];
+
+  const setImage = (i: number, val: string) => {
+    const next = [...images];
+    next[i] = val;
+    onChange({ ...data, images: next });
+  };
+
   return (
     <div className="space-y-8">
       <Field label="소개 문구 (줄바꿈 가능)">
@@ -643,6 +657,37 @@ function MindProfileEditor({ data, onChange }: { data: MindProfileData; onChange
           placeholder="가장 나다운 순간..."
         />
       </Field>
+
+      <div>
+        <div className="flex items-center gap-3 mb-5">
+          <span className="font-sans text-[8.5px] tracking-[0.42em] uppercase text-foreground/40">갤러리 이미지</span>
+          <div className="flex-1 h-px bg-foreground/8" />
+        </div>
+        <p className="font-sans text-[9px] text-foreground/30 mb-5">URL을 비워두면 기본 이미지(로컬 파일)가 사용됩니다.</p>
+        <div className="space-y-5">
+          {MIND_PROFILE_LAYOUT_LABELS.map((label, i) => (
+            <Field key={i} label={label}>
+              <div className="flex gap-3 items-start">
+                <input
+                  className={`${inputCls} flex-1`}
+                  value={images[i] ?? ""}
+                  onChange={e => setImage(i, e.target.value)}
+                  placeholder="https://... (비우면 기본 이미지 사용)"
+                />
+                {images[i] && (
+                  <img
+                    src={images[i]}
+                    alt={`preview ${i + 1}`}
+                    className="w-14 h-14 shrink-0 object-cover border border-foreground/8"
+                    onError={e => (e.currentTarget.style.display = "none")}
+                    onLoad={e => (e.currentTarget.style.display = "block")}
+                  />
+                )}
+              </div>
+            </Field>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
