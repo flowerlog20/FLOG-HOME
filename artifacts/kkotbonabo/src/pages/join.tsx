@@ -305,9 +305,7 @@ export default function Join() {
           transition={{ duration: 1, delay: 0.3 }}
           className="pt-12 text-center space-y-2"
         >
-          <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/25">
-            FLOWER LOG · Seoul · Est. 2024
-          </p>
+          <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/25">FLOWER LOG · Seoul · Est. 2026</p>
           <p className="font-sans font-light text-foreground/35 text-xs">20대 시절을 기록으로 남기다</p>
         </motion.div>
 
