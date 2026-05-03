@@ -56,12 +56,6 @@ type = "image"
 title = "③ 카메라 + 꽃 C"
 
 [[outputs]]
-id = "08TE-VunEy-ylQq3hoDBB"
-uri = "file://attached_assets/image_search/cf_4_camera-flowers-4.jpg"
-type = "image"
-title = "④ 카메라 + 꽃 D"
-
-[[outputs]]
 id = "zW1ZV2dWz4gyLl_U00iPu"
 uri = "file://attached_assets/image_search/light_3_벚꽃-빛번짐.jpg"
 type = "image"
