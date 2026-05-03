@@ -12,14 +12,14 @@ version = "1.0.0"
 [[services]]
 name = "web"
 paths = [ "/" ]
-localPort = 18543
+localPort = 18544
 
 [services.development]
-run = "pnpm --filter @workspace/kkotbonabo run dev"
+run = "pnpm --filter @workspace/FLOG run dev"
 
 [services.production]
-build = [ "pnpm", "--filter", "@workspace/kkotbonabo", "run", "build" ]
-publicDir = "artifacts/kkotbonabo/dist/public"
+build = [ "pnpm", "--filter", "@workspace/FLOG", "run", "build" ]
+publicDir = "artifacts/FLOG/dist/public"
 serve = "static"
 
 [[services.production.rewrites]]
@@ -27,5 +27,5 @@ from = "/*"
 to = "/index.html"
 
 [services.env]
-PORT = "18543"
+PORT = "18544"
 BASE_PATH = "/"
