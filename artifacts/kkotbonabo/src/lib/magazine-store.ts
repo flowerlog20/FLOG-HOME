@@ -103,7 +103,7 @@ export const DEFAULT_EVENT: EventData = {
   subtitle: "STRESS LOG",
   posterUrl: "/slog-poster.jpg",
   date: "2025년 5월 31일 (토)",
-  location: "서울 (장소 미정)",
+  location: "성수 더브루클린로프트",
   description: "일상의 스트레스를 해소하고 나만의 것을 손으로 직접 만들어보는 오프라인 체험 행사입니다.",
   activities: [
     { name: "비즈 팔찌 만들기", desc: "나만의 컬러와 패턴으로 세상에 하나뿐인 비즈 팔찌를 만들어보세요." },
