@@ -14,6 +14,8 @@ import {
   saveJoinDataToDB,
   getHomeDataFromDB,
   saveHomeDataToDB,
+  getPopupDataFromDB,
+  savePopupDataToDB,
   checkAdminPassword,
   isAdminLoggedIn,
   setAdminLoggedIn,
@@ -23,6 +25,7 @@ import {
   DEFAULT_MIND_PROFILE,
   DEFAULT_JOIN,
   DEFAULT_HOME,
+  DEFAULT_POPUP,
   type MagazineIssue,
   type EventData,
   type AboutData,
@@ -31,6 +34,7 @@ import {
   type JoinData,
   type JoinItem,
   type HomeData,
+  type PopupData,
 } from "@/lib/magazine-store";
 import {
   FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -314,8 +318,8 @@ function IssueEditor({
 }
 
 /* ─── POPUP EDITOR ───────────────────────────────────────── */
-function PopupEditor({ event, onChange }: { event: EventData; onChange: (e: EventData) => void }) {
-  const set = (field: keyof EventData, val: unknown) => onChange({ ...event, [field]: val });
+function PopupEditor({ popup, onChange }: { popup: PopupData; onChange: (p: PopupData) => void }) {
+  const set = (field: keyof PopupData, val: unknown) => onChange({ ...popup, [field]: val });
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between py-3 border-b border-foreground/8">
@@ -324,19 +328,19 @@ function PopupEditor({ event, onChange }: { event: EventData; onChange: (e: Even
           <p className="font-sans text-[9px] text-foreground/30 mt-0.5">홈 화면 진입 시 팝업 노출 여부</p>
         </div>
         <button
-          onClick={() => set("active", !event.active)}
-          className={`relative w-11 h-6 rounded-full transition-colors ${event.active ? "bg-foreground" : "bg-foreground/20"}`}
+          onClick={() => set("active", !popup.active)}
+          className={`relative w-11 h-6 rounded-full transition-colors ${popup.active ? "bg-foreground" : "bg-foreground/20"}`}
         >
-          <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${event.active ? "left-6" : "left-1"}`} />
+          <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${popup.active ? "left-6" : "left-1"}`} />
         </button>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label="이벤트 제목">
-          <input className={inputCls} value={event.title} onChange={e => set("title", e.target.value)} placeholder="S-LOG" />
+        <Field label="팝업 제목">
+          <input className={inputCls} value={popup.title} onChange={e => set("title", e.target.value)} placeholder="S-LOG" />
         </Field>
         <Field label="부제 (Subtitle)">
-          <input className={inputCls} value={event.subtitle} onChange={e => set("subtitle", e.target.value)} placeholder="STRESS LOG" />
+          <input className={inputCls} value={popup.subtitle} onChange={e => set("subtitle", e.target.value)} placeholder="STRESS LOG" />
         </Field>
       </div>
 
@@ -344,13 +348,13 @@ function PopupEditor({ event, onChange }: { event: EventData; onChange: (e: Even
         <div className="flex gap-4 items-start">
           <input
             className={`${inputCls} flex-1`}
-            value={event.posterUrl}
+            value={popup.posterUrl}
             onChange={e => set("posterUrl", e.target.value)}
             placeholder="https://..."
           />
-          {event.posterUrl && (
+          {popup.posterUrl && (
             <img
-              src={event.posterUrl}
+              src={popup.posterUrl}
               alt="poster"
               className="w-12 shrink-0 object-cover border border-foreground/8"
               style={{ aspectRatio: "905/1280" }}
@@ -692,6 +696,7 @@ export default function Admin() {
   const [mindProfileData, setMindProfileData] = useState<MindProfileData>(DEFAULT_MIND_PROFILE);
   const [joinData, setJoinData] = useState<JoinData>(DEFAULT_JOIN);
   const [homeData, setHomeData] = useState<HomeData>(DEFAULT_HOME);
+  const [popupData, setPopupData] = useState<PopupData>(DEFAULT_POPUP);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState<"main" | "popup" | "about" | "mind-profile" | "event" | "join" | "magazine">("main");
   const [, navigate] = useLocation();
@@ -704,6 +709,7 @@ export default function Admin() {
       getMindProfileDataFromDB().then(setMindProfileData);
       getJoinDataFromDB().then(setJoinData);
       getHomeDataFromDB().then(setHomeData);
+      getPopupDataFromDB().then(setPopupData);
     }
   }, [loggedIn]);
 
@@ -717,6 +723,7 @@ export default function Admin() {
       saveMindProfileDataToDB(mindProfileData),
       saveJoinDataToDB(joinData),
       saveHomeDataToDB(homeData),
+      savePopupDataToDB(popupData),
     ]);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -837,7 +844,7 @@ export default function Admin() {
                 <h2 className="font-serif text-[22px] text-foreground/80">팝업창 관리</h2>
               </div>
               <button
-                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setEventData(DEFAULT_EVENT); }}
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setPopupData(DEFAULT_POPUP); }}
                 className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
               >
                 초기화
@@ -845,7 +852,7 @@ export default function Admin() {
             </div>
             <div className="w-full h-px bg-foreground/8 mb-6" />
             <div className="bg-white border border-foreground/8 p-6">
-              <PopupEditor event={eventData} onChange={setEventData} />
+              <PopupEditor popup={popupData} onChange={setPopupData} />
             </div>
           </div>
         )}

@@ -2,29 +2,27 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import { FaTimes } from "react-icons/fa";
-import { getEventDataFromDB, DEFAULT_EVENT, type EventData } from "@/lib/magazine-store";
+import { getPopupDataFromDB, DEFAULT_POPUP, type PopupData } from "@/lib/magazine-store";
 
 export function EventPopup() {
   const [visible, setVisible] = useState(false);
-  const [event, setEvent] = useState<EventData>(DEFAULT_EVENT);
+  const [popup, setPopup] = useState<PopupData>(DEFAULT_POPUP);
   const [location] = useLocation();
 
   useEffect(() => {
-    getEventDataFromDB().then(setEvent);
+    getPopupDataFromDB().then(setPopup);
   }, []);
 
   useEffect(() => {
-    if (!event.active) return;
+    if (!popup.active) return;
     if (location !== "/") return;
     const t = setTimeout(() => setVisible(true), 600);
     return () => clearTimeout(t);
-  }, [event.active, location]);
+  }, [popup.active, location]);
 
-  const close = () => {
-    setVisible(false);
-  };
+  const close = () => setVisible(false);
 
-  if (!event.active) return null;
+  if (!popup.active) return null;
 
   return (
     <AnimatePresence>
@@ -59,26 +57,18 @@ export function EventPopup() {
 
             {/* Poster image */}
             <div className="w-full aspect-[905/1280] bg-muted relative overflow-hidden">
-              {event.posterUrl ? (
-                <img
-                  src={event.posterUrl}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                />
-              ) : (
-                <img
-                  src="/slog-poster.jpg"
-                  alt="S-LOG 포스터"
-                  className="w-full h-full object-cover"
-                />
-              )}
+              <img
+                src={popup.posterUrl || "/slog-poster.jpg"}
+                alt={popup.title}
+                className="w-full h-full object-cover"
+              />
             </div>
 
             {/* Bottom bar */}
             <div className="px-6 py-5 flex items-center justify-between border-t border-border">
               <div>
                 <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40">FLOG presents</p>
-                <p className="font-sans font-light text-sm text-foreground mt-0.5">{event.title} — {event.subtitle}</p>
+                <p className="font-sans font-light text-sm text-foreground mt-0.5">{popup.title} — {popup.subtitle}</p>
               </div>
               <Link
                 href="/event"

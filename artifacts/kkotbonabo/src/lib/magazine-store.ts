@@ -78,6 +78,51 @@ const STORAGE_KEY = "flog_magazine_issues";
 const AUTH_KEY = "flog_admin_auth";
 const ADMIN_PASSWORD = "flog2024";
 const EVENT_KEY = "flog_event_data";
+const POPUP_KEY = "flog_popup_data";
+
+/* ─── Popup ─── */
+export interface PopupData {
+  active: boolean;
+  title: string;
+  subtitle: string;
+  posterUrl: string;
+}
+
+export const DEFAULT_POPUP: PopupData = {
+  active: true,
+  title: "S-LOG",
+  subtitle: "STRESS LOG",
+  posterUrl: "/slog-poster.jpg",
+};
+
+export function getPopupData(): PopupData {
+  try {
+    const raw = localStorage.getItem(POPUP_KEY);
+    if (!raw) return DEFAULT_POPUP;
+    return { ...DEFAULT_POPUP, ...JSON.parse(raw) };
+  } catch {
+    return DEFAULT_POPUP;
+  }
+}
+
+export function savePopupData(data: PopupData): void {
+  localStorage.setItem(POPUP_KEY, JSON.stringify(data));
+}
+
+export async function getPopupDataFromDB(): Promise<PopupData> {
+  try {
+    const snap = await getDoc(doc(db, "config", "popup"));
+    if (!snap.exists()) return DEFAULT_POPUP;
+    return { ...DEFAULT_POPUP, ...(snap.data() as PopupData) };
+  } catch {
+    return getPopupData();
+  }
+}
+
+export async function savePopupDataToDB(data: PopupData): Promise<void> {
+  await setDoc(doc(db, "config", "popup"), data);
+  savePopupData(data);
+}
 
 export interface EventActivity {
   name: string;
