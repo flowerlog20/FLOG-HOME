@@ -172,7 +172,7 @@ export default function Home() {
               className="aspect-[3/4] bg-muted relative overflow-hidden"
             >
               <div
-                className="absolute inset-0 bg-cover bg-center grayscale contrast-125 opacity-80 mix-blend-multiply hover:scale-105 transition-transform duration-1000"
+                className="absolute inset-0 bg-cover bg-center"
                 style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
               />
             </motion.div>
