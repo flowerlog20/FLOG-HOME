@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getMagazineIssues, type MagazineIssue } from "@/lib/magazine-store";
+import { getMagazineIssuesFromDB, type MagazineIssue } from "@/lib/magazine-store";
 
 function MagazineModal({
   issue,
@@ -144,7 +144,7 @@ export default function Magazine() {
   const [issues, setIssues] = useState<MagazineIssue[]>([]);
 
   useEffect(() => {
-    setIssues(getMagazineIssues());
+    getMagazineIssuesFromDB().then(setIssues);
   }, []);
 
   return (

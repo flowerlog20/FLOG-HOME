@@ -1,14 +1,15 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 import {
-  getMagazineIssues,
+  getMagazineIssuesFromDB,
+  saveMagazineIssuesToDB,
+  getEventDataFromDB,
+  saveEventDataToDB,
   saveMagazineIssues,
   checkAdminPassword,
   isAdminLoggedIn,
   setAdminLoggedIn,
   DEFAULT_ISSUES,
-  getEventData,
-  saveEventData,
   DEFAULT_EVENT,
   type MagazineIssue,
   type EventData,
@@ -423,16 +424,18 @@ export default function Admin() {
 
   useEffect(() => {
     if (loggedIn) {
-      setIssues(getMagazineIssues());
-      setEventData(getEventData());
+      getEventDataFromDB().then(setEventData);
+      getMagazineIssuesFromDB().then(setIssues);
     }
   }, [loggedIn]);
 
   const handleLogout = () => { setAdminLoggedIn(false); setLoggedIn(false); };
 
-  const handleSave = () => {
-    saveMagazineIssues(issues);
-    saveEventData(eventData);
+  const handleSave = async () => {
+    await Promise.all([
+      saveMagazineIssuesToDB(issues),
+      saveEventDataToDB(eventData),
+    ]);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
   };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
-import { getEventData, type EventData } from "@/lib/magazine-store";
+import { getEventDataFromDB, DEFAULT_EVENT, type EventData } from "@/lib/magazine-store";
 
 /* ─── 입력 필드 스타일 ─── */
 const fieldCls = "w-full bg-transparent border-b border-foreground/20 focus:border-foreground/60 outline-none py-3 font-sans font-light text-sm text-foreground placeholder:text-foreground/30 transition-colors";
@@ -217,7 +217,7 @@ export default function Event() {
   const formSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setEvent(getEventData());
+    getEventDataFromDB().then(setEvent);
   }, []);
 
   const handleOpenForm = () => {

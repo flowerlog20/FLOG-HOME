@@ -1,6 +1,8 @@
 import mag1 from "@/assets/images/magazine_1.jpg";
 import mag2 from "@/assets/images/magazine_2.jpg";
 import mag3 from "@/assets/images/magazine_3.jpg";
+import { db } from "./firebase";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 
 export interface MagazineIssue {
   id: string;
@@ -160,4 +162,41 @@ export function setAdminLoggedIn(v: boolean): void {
   } else {
     sessionStorage.removeItem(AUTH_KEY);
   }
+}
+
+/* ─── Firestore async functions ─── */
+
+export async function getEventDataFromDB(): Promise<EventData> {
+  try {
+    const snap = await getDoc(doc(db, "config", "event"));
+    if (!snap.exists()) return DEFAULT_EVENT;
+    const stored = snap.data() as EventData;
+    return {
+      ...DEFAULT_EVENT,
+      ...stored,
+      posterUrl: stored.posterUrl || DEFAULT_EVENT.posterUrl,
+    };
+  } catch {
+    return getEventData();
+  }
+}
+
+export async function saveEventDataToDB(data: EventData): Promise<void> {
+  await setDoc(doc(db, "config", "event"), data);
+  saveEventData(data);
+}
+
+export async function getMagazineIssuesFromDB(): Promise<MagazineIssue[]> {
+  try {
+    const snap = await getDoc(doc(db, "config", "magazine"));
+    if (!snap.exists()) return DEFAULT_ISSUES;
+    return (snap.data().issues as MagazineIssue[]) ?? DEFAULT_ISSUES;
+  } catch {
+    return getMagazineIssues();
+  }
+}
+
+export async function saveMagazineIssuesToDB(issues: MagazineIssue[]): Promise<void> {
+  await setDoc(doc(db, "config", "magazine"), { issues });
+  saveMagazineIssues(issues);
 }

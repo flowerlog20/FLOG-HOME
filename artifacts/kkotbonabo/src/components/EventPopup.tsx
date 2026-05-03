@@ -2,12 +2,16 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import { FaTimes } from "react-icons/fa";
-import { getEventData } from "@/lib/magazine-store";
+import { getEventDataFromDB, DEFAULT_EVENT, type EventData } from "@/lib/magazine-store";
 
 export function EventPopup() {
   const [visible, setVisible] = useState(false);
+  const [event, setEvent] = useState<EventData>(DEFAULT_EVENT);
   const [location] = useLocation();
-  const event = getEventData();
+
+  useEffect(() => {
+    getEventDataFromDB().then(setEvent);
+  }, []);
 
   useEffect(() => {
     if (!event.active) return;
