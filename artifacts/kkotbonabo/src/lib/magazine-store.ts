@@ -201,6 +201,80 @@ export async function saveMagazineIssuesToDB(issues: MagazineIssue[]): Promise<v
   saveMagazineIssues(issues);
 }
 
+/* ─── Home ─── */
+export interface HomeData {
+  hero: {
+    imageUrl: string;
+    metaRight: string;
+    metaLeft: string;
+  };
+  philosophy: {
+    quote1: string;
+    quote2: string;
+  };
+  magazinePreview: {
+    imageUrl: string;
+    title: string;
+    desc: string;
+  };
+  mindProfilePreview: {
+    imageUrl: string;
+    title: string;
+    desc: string;
+  };
+  cta: {
+    title: string;
+    desc: string;
+  };
+}
+
+export const DEFAULT_HOME: HomeData = {
+  hero: {
+    imageUrl: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop",
+    metaRight: "Seoul · Est. 2026",
+    metaLeft: "20대 기록 저장소",
+  },
+  philosophy: {
+    quote1: "우리는 20대를 기록합니다. 가장 젊은 날의 고민, 관계, 라이프스타일 그리고 내면의 목소리까지.",
+    quote2: "불안과 설렘, 성장의 모든 결을 담아, 먼 훗날 당신이 꺼내볼 수 있는 기억의 서랍이 되겠습니다.",
+  },
+  magazinePreview: {
+    imageUrl: "https://images.unsplash.com/photo-1497250681554-1823791a8bc4?q=80&w=2670&auto=format&fit=crop",
+    title: "20대 라이프 매거진",
+    desc: "20대의 고민과 관계, 라이프스타일을 진솔하게 담은 독립 매거진. 우리의 계절을 기록합니다.",
+  },
+  mindProfilePreview: {
+    imageUrl: "https://images.unsplash.com/photo-1617611519550-4375695b85fe?w=900&auto=format&fit=crop&q=60",
+    title: "마인드 프로필",
+    desc: "단순히 외면을 담는 것이 아닌, 당신의 내면과 지금의 감정을 사진으로 남깁니다. 가장 자연스러운 모습 속에서 피어나는 각자의 꽃을 포착합니다.",
+  },
+  cta: {
+    title: "우리와 함께 피어나요",
+    desc: "FLOG의 에디터, 포토그래퍼, 그리고 모델이 되어주세요.",
+  },
+};
+
+export async function getHomeDataFromDB(): Promise<HomeData> {
+  try {
+    const snap = await getDoc(doc(db, "config", "home"));
+    if (!snap.exists()) return DEFAULT_HOME;
+    const stored = snap.data() as HomeData;
+    return {
+      hero: { ...DEFAULT_HOME.hero, ...stored.hero },
+      philosophy: { ...DEFAULT_HOME.philosophy, ...stored.philosophy },
+      magazinePreview: { ...DEFAULT_HOME.magazinePreview, ...stored.magazinePreview },
+      mindProfilePreview: { ...DEFAULT_HOME.mindProfilePreview, ...stored.mindProfilePreview },
+      cta: { ...DEFAULT_HOME.cta, ...stored.cta },
+    };
+  } catch {
+    return DEFAULT_HOME;
+  }
+}
+
+export async function saveHomeDataToDB(data: HomeData): Promise<void> {
+  await setDoc(doc(db, "config", "home"), data);
+}
+
 /* ─── About ─── */
 export interface AboutWhatWeDoItem {
   num: string;

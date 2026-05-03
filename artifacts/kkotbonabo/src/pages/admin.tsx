@@ -12,6 +12,8 @@ import {
   saveMindProfileDataToDB,
   getJoinDataFromDB,
   saveJoinDataToDB,
+  getHomeDataFromDB,
+  saveHomeDataToDB,
   checkAdminPassword,
   isAdminLoggedIn,
   setAdminLoggedIn,
@@ -20,6 +22,7 @@ import {
   DEFAULT_ABOUT,
   DEFAULT_MIND_PROFILE,
   DEFAULT_JOIN,
+  DEFAULT_HOME,
   type MagazineIssue,
   type EventData,
   type AboutData,
@@ -27,6 +30,7 @@ import {
   type MindProfileData,
   type JoinData,
   type JoinItem,
+  type HomeData,
 } from "@/lib/magazine-store";
 import {
   FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -457,6 +461,124 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
   );
 }
 
+/* ─── HOME EDITOR ─────────────────────────────────────────── */
+function SectionLabel({ label }: { label: string }) {
+  return (
+    <div className="flex items-center gap-3 mb-4">
+      <span className="font-sans text-[8.5px] tracking-[0.42em] uppercase text-foreground/40">{label}</span>
+      <div className="flex-1 h-px bg-foreground/8" />
+    </div>
+  );
+}
+
+function ImageField({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+  return (
+    <Field label={label}>
+      <div className="flex gap-3 items-start">
+        <input className={`${inputCls} flex-1`} value={value} onChange={e => onChange(e.target.value)} placeholder="https://..." />
+        {value && (
+          <img
+            src={value}
+            alt="preview"
+            className="w-14 h-14 shrink-0 object-cover border border-foreground/8"
+            onError={e => (e.currentTarget.style.display = "none")}
+            onLoad={e => (e.currentTarget.style.display = "block")}
+          />
+        )}
+      </div>
+    </Field>
+  );
+}
+
+function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData) => void }) {
+  const setHero = (field: keyof HomeData["hero"], val: string) =>
+    onChange({ ...home, hero: { ...home.hero, [field]: val } });
+  const setPhil = (field: keyof HomeData["philosophy"], val: string) =>
+    onChange({ ...home, philosophy: { ...home.philosophy, [field]: val } });
+  const setMag = (field: keyof HomeData["magazinePreview"], val: string) =>
+    onChange({ ...home, magazinePreview: { ...home.magazinePreview, [field]: val } });
+  const setMind = (field: keyof HomeData["mindProfilePreview"], val: string) =>
+    onChange({ ...home, mindProfilePreview: { ...home.mindProfilePreview, [field]: val } });
+  const setCta = (field: keyof HomeData["cta"], val: string) =>
+    onChange({ ...home, cta: { ...home.cta, [field]: val } });
+
+  return (
+    <div className="space-y-10">
+
+      {/* HERO */}
+      <div>
+        <SectionLabel label="01 · Hero" />
+        <div className="space-y-4">
+          <ImageField label="배경 이미지 URL" value={home.hero.imageUrl} onChange={v => setHero("imageUrl", v)} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field label="우측 메타 텍스트">
+              <input className={inputCls} value={home.hero.metaRight} onChange={e => setHero("metaRight", e.target.value)} placeholder="Seoul · Est. 2026" />
+            </Field>
+            <Field label="좌측 메타 텍스트">
+              <input className={inputCls} value={home.hero.metaLeft} onChange={e => setHero("metaLeft", e.target.value)} placeholder="20대 기록 저장소" />
+            </Field>
+          </div>
+        </div>
+      </div>
+
+      {/* PHILOSOPHY */}
+      <div>
+        <SectionLabel label="02 · Philosophy" />
+        <div className="space-y-4">
+          <Field label="인용문 1">
+            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.philosophy.quote1} onChange={e => setPhil("quote1", e.target.value)} />
+          </Field>
+          <Field label="인용문 2 (들여쓰기됨)">
+            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.philosophy.quote2} onChange={e => setPhil("quote2", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+
+      {/* MAGAZINE PREVIEW */}
+      <div>
+        <SectionLabel label="03 · Magazine Preview" />
+        <div className="space-y-4">
+          <ImageField label="이미지 URL" value={home.magazinePreview.imageUrl} onChange={v => setMag("imageUrl", v)} />
+          <Field label="제목">
+            <input className={inputCls} value={home.magazinePreview.title} onChange={e => setMag("title", e.target.value)} />
+          </Field>
+          <Field label="설명">
+            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.magazinePreview.desc} onChange={e => setMag("desc", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+
+      {/* MIND PROFILE PREVIEW */}
+      <div>
+        <SectionLabel label="04 · Mind Profile Preview" />
+        <div className="space-y-4">
+          <ImageField label="이미지 URL" value={home.mindProfilePreview.imageUrl} onChange={v => setMind("imageUrl", v)} />
+          <Field label="제목">
+            <input className={inputCls} value={home.mindProfilePreview.title} onChange={e => setMind("title", e.target.value)} />
+          </Field>
+          <Field label="설명">
+            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.mindProfilePreview.desc} onChange={e => setMind("desc", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+
+      {/* CTA */}
+      <div>
+        <SectionLabel label="05 · CTA" />
+        <div className="space-y-4">
+          <Field label="제목">
+            <input className={inputCls} value={home.cta.title} onChange={e => setCta("title", e.target.value)} />
+          </Field>
+          <Field label="설명">
+            <input className={inputCls} value={home.cta.desc} onChange={e => setCta("desc", e.target.value)} />
+          </Field>
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
 /* ─── ABOUT EDITOR ────────────────────────────────────────── */
 function AboutEditor({ about, onChange }: { about: AboutData; onChange: (a: AboutData) => void }) {
   const setItem = (i: number, field: keyof AboutWhatWeDoItem, val: string) => {
@@ -569,8 +691,9 @@ export default function Admin() {
   const [aboutData, setAboutData] = useState<AboutData>(DEFAULT_ABOUT);
   const [mindProfileData, setMindProfileData] = useState<MindProfileData>(DEFAULT_MIND_PROFILE);
   const [joinData, setJoinData] = useState<JoinData>(DEFAULT_JOIN);
+  const [homeData, setHomeData] = useState<HomeData>(DEFAULT_HOME);
   const [saved, setSaved] = useState(false);
-  const [activeTab, setActiveTab] = useState<"popup" | "about" | "mind-profile" | "event" | "join" | "magazine">("popup");
+  const [activeTab, setActiveTab] = useState<"main" | "popup" | "about" | "mind-profile" | "event" | "join" | "magazine">("main");
   const [, navigate] = useLocation();
 
   useEffect(() => {
@@ -580,6 +703,7 @@ export default function Admin() {
       getAboutDataFromDB().then(setAboutData);
       getMindProfileDataFromDB().then(setMindProfileData);
       getJoinDataFromDB().then(setJoinData);
+      getHomeDataFromDB().then(setHomeData);
     }
   }, [loggedIn]);
 
@@ -592,6 +716,7 @@ export default function Admin() {
       saveAboutDataToDB(aboutData),
       saveMindProfileDataToDB(mindProfileData),
       saveJoinDataToDB(joinData),
+      saveHomeDataToDB(homeData),
     ]);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -660,9 +785,9 @@ export default function Admin() {
 
         {/* Tabs */}
         <div className="flex gap-5 border-b border-foreground/10 mb-8 overflow-x-auto scrollbar-none">
-          {(["popup", "about", "mind-profile", "event", "join", "magazine"] as const).map(tab => {
+          {(["main", "popup", "about", "mind-profile", "event", "join", "magazine"] as const).map(tab => {
             const labels: Record<string, string> = {
-              popup: "팝업창", about: "ABOUT", "mind-profile": "MIND PROFILE",
+              main: "MAIN", popup: "팝업창", about: "ABOUT", "mind-profile": "MIND PROFILE",
               event: "EVENT", join: "JOIN", magazine: "MAGAZINE",
             };
             return (
@@ -680,6 +805,28 @@ export default function Admin() {
             );
           })}
         </div>
+
+        {/* Main tab */}
+        {activeTab === "main" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Main Page Editor</p>
+                <h2 className="font-serif text-[22px] text-foreground/80">MAIN 페이지 관리</h2>
+              </div>
+              <button
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setHomeData(DEFAULT_HOME); }}
+                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              >
+                초기화
+              </button>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-6" />
+            <div className="bg-white border border-foreground/8 p-6">
+              <HomeEditor home={homeData} onChange={setHomeData} />
+            </div>
+          </div>
+        )}
 
         {/* Popup tab */}
         {activeTab === "popup" && (
