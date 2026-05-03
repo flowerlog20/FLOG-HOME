@@ -785,9 +785,9 @@ export default function Admin() {
 
         {/* Tabs */}
         <div className="flex gap-5 border-b border-foreground/10 mb-8 overflow-x-auto scrollbar-none">
-          {(["main", "popup", "about", "mind-profile", "event", "join", "magazine"] as const).map(tab => {
+          {(["main", "popup", "about", "magazine", "mind-profile", "event", "join"] as const).map(tab => {
             const labels: Record<string, string> = {
-              main: "MAIN", popup: "팝업창", about: "ABOUT", "mind-profile": "MIND PROFILE",
+              main: "HOME", popup: "POP", about: "ABOUT", "mind-profile": "MIND PROFILE",
               event: "EVENT", join: "JOIN", magazine: "MAGAZINE",
             };
             return (
