@@ -303,7 +303,7 @@ export default function Join() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.3 }}
-          className="mt-20 pt-12 border-t border-border text-center space-y-2"
+          className="pt-12 text-center space-y-2"
         >
           <p className="font-sans text-[9px] tracking-[0.5em] uppercase text-foreground/25">
             FLOWER LOG · Seoul · Est. 2024
