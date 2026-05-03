@@ -35,7 +35,7 @@ export default function Home() {
         >
           <div className="flex justify-between items-center py-3 border-t border-white/10">
             <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">FLower lOG</span>
-            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">Seoul · Est. 2024</span>
+            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">Seoul · Est. 2026</span>
             <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35 hidden md:block">20대 기록 저장소</span>
           </div>
         </motion.div>
