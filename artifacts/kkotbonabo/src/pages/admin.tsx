@@ -295,6 +295,56 @@ function IssueEditor({
   );
 }
 
+/* ─── POPUP EDITOR ───────────────────────────────────────── */
+function PopupEditor({ event, onChange }: { event: EventData; onChange: (e: EventData) => void }) {
+  const set = (field: keyof EventData, val: unknown) => onChange({ ...event, [field]: val });
+  return (
+    <div className="space-y-8">
+      <div className="flex items-center justify-between py-3 border-b border-foreground/8">
+        <div>
+          <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/50">팝업 활성화</span>
+          <p className="font-sans text-[9px] text-foreground/30 mt-0.5">홈 화면 진입 시 팝업 노출 여부</p>
+        </div>
+        <button
+          onClick={() => set("active", !event.active)}
+          className={`relative w-11 h-6 rounded-full transition-colors ${event.active ? "bg-foreground" : "bg-foreground/20"}`}
+        >
+          <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${event.active ? "left-6" : "left-1"}`} />
+        </button>
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <Field label="이벤트 제목">
+          <input className={inputCls} value={event.title} onChange={e => set("title", e.target.value)} placeholder="S-LOG" />
+        </Field>
+        <Field label="부제 (Subtitle)">
+          <input className={inputCls} value={event.subtitle} onChange={e => set("subtitle", e.target.value)} placeholder="STRESS LOG" />
+        </Field>
+      </div>
+
+      <Field label="포스터 이미지 URL">
+        <div className="flex gap-4 items-start">
+          <input
+            className={`${inputCls} flex-1`}
+            value={event.posterUrl}
+            onChange={e => set("posterUrl", e.target.value)}
+            placeholder="https://..."
+          />
+          {event.posterUrl && (
+            <img
+              src={event.posterUrl}
+              alt="poster"
+              className="w-12 shrink-0 object-cover border border-foreground/8"
+              style={{ aspectRatio: "905/1280" }}
+              onError={e => (e.currentTarget.style.display = "none")}
+            />
+          )}
+        </div>
+      </Field>
+    </div>
+  );
+}
+
 /* ─── EVENT EDITOR ───────────────────────────────────────── */
 function EventEditor({ event, onChange }: { event: EventData; onChange: (e: EventData) => void }) {
   const set = (field: keyof EventData, val: unknown) => onChange({ ...event, [field]: val });
@@ -323,30 +373,7 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
 
   return (
     <div className="space-y-8">
-      {/* Active toggle */}
-      <div className="flex items-center justify-between py-3 border-b border-foreground/8">
-        <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/50">팝업 활성화</span>
-        <button
-          onClick={() => set("active", !event.active)}
-          className={`relative w-11 h-6 rounded-full transition-colors ${event.active ? "bg-foreground" : "bg-foreground/20"}`}
-        >
-          <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${event.active ? "left-6" : "left-1"}`} />
-        </button>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label="이벤트 제목">
-          <input className={inputCls} value={event.title} onChange={e => set("title", e.target.value)} placeholder="S-LOG" />
-        </Field>
-        <Field label="부제 (Subtitle)">
-          <input className={inputCls} value={event.subtitle} onChange={e => set("subtitle", e.target.value)} placeholder="STRESS LOG" />
-        </Field>
-        <Field label="포스터 이미지 URL">
-          <input className={inputCls} value={event.posterUrl} onChange={e => set("posterUrl", e.target.value)} placeholder="https://..." />
-        </Field>
-        <Field label="Formsfree URL">
-          <input className={inputCls} value={event.formsUrl} onChange={e => set("formsUrl", e.target.value)} placeholder="https://formfree.io/..." />
-        </Field>
         <Field label="일시">
           <input className={inputCls} value={event.date} onChange={e => set("date", e.target.value)} placeholder="2025년 5월 31일 (토)" />
         </Field>
@@ -384,6 +411,9 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
               </button>
             </div>
           ))}
+          {event.activities.length === 0 && (
+            <p className="font-sans text-[9px] text-foreground/25 tracking-wide">프로그램을 추가해주세요</p>
+          )}
         </div>
       </div>
 
@@ -419,7 +449,7 @@ export default function Admin() {
   const [issues, setIssues] = useState<MagazineIssue[]>([]);
   const [eventData, setEventData] = useState<EventData>(DEFAULT_EVENT);
   const [saved, setSaved] = useState(false);
-  const [activeTab, setActiveTab] = useState<"magazine" | "event">("event");
+  const [activeTab, setActiveTab] = useState<"popup" | "event" | "magazine">("popup");
   const [, navigate] = useLocation();
 
   useEffect(() => {
@@ -503,7 +533,7 @@ export default function Admin() {
 
         {/* Tabs */}
         <div className="flex gap-6 border-b border-foreground/10 mb-8">
-          {(["event", "magazine"] as const).map(tab => (
+          {(["popup", "event", "magazine"] as const).map(tab => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
@@ -513,10 +543,32 @@ export default function Admin() {
                   : "border-transparent text-foreground/35 hover:text-foreground/60"
               }`}
             >
-              {tab === "event" ? "이벤트 관리" : "매거진 관리"}
+              {tab === "popup" ? "팝업창" : tab === "event" ? "EVENT" : "MAGAZINE"}
             </button>
           ))}
         </div>
+
+        {/* Popup tab */}
+        {activeTab === "popup" && (
+          <div>
+            <div className="flex items-end justify-between mb-6">
+              <div>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Popup Editor</p>
+                <h2 className="font-serif text-[22px] text-foreground/80">팝업창 관리</h2>
+              </div>
+              <button
+                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setEventData(DEFAULT_EVENT); }}
+                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
+              >
+                초기화
+              </button>
+            </div>
+            <div className="w-full h-px bg-foreground/8 mb-6" />
+            <div className="bg-white border border-foreground/8 p-6">
+              <PopupEditor event={eventData} onChange={setEventData} />
+            </div>
+          </div>
+        )}
 
         {/* Event tab */}
         {activeTab === "event" && (
@@ -524,7 +576,7 @@ export default function Admin() {
             <div className="flex items-end justify-between mb-6">
               <div>
                 <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Event Editor</p>
-                <h2 className="font-serif text-[22px] text-foreground/80">이벤트 관리</h2>
+                <h2 className="font-serif text-[22px] text-foreground/80">EVENT 관리</h2>
               </div>
               <button
                 onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setEventData(DEFAULT_EVENT); }}
