@@ -134,6 +134,7 @@ export interface EventData {
   title: string;
   subtitle: string;
   posterUrl: string;
+  posterLink: string;
   date: string;
   location: string;
   description: string;
@@ -147,6 +148,7 @@ export const DEFAULT_EVENT: EventData = {
   title: "S-LOG",
   subtitle: "STRESS LOG",
   posterUrl: "/slog-poster.jpg",
+  posterLink: "",
   date: "2026년 5월 5일 (화) 14:00 - 15:30",
   location: "성수 더브루클린로프트",
   description: "일상의 스트레스를 해소하고 나만의 것을 손으로 직접 만들어보는 오프라인 체험 행사입니다.",

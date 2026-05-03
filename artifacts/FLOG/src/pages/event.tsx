@@ -33,7 +33,13 @@ export default function Event() {
           className="w-full max-w-sm mx-auto aspect-[905/1280] mb-20 overflow-hidden"
         >
           {event.posterUrl ? (
-            <img src={event.posterUrl} alt={event.title} className="w-full h-full object-cover" />
+            event.posterLink ? (
+              <a href={event.posterLink} target="_blank" rel="noopener noreferrer" className="block w-full h-full">
+                <img src={event.posterUrl} alt={event.title} className="w-full h-full object-cover hover:opacity-90 transition-opacity duration-300" />
+              </a>
+            ) : (
+              <img src={event.posterUrl} alt={event.title} className="w-full h-full object-cover" />
+            )
           ) : (
             <div className="w-full h-full border border-dashed border-foreground/15 flex flex-col items-center justify-center gap-3">
               <span className="font-sans text-[8px] tracking-[0.45em] uppercase text-foreground/20">Poster</span>
