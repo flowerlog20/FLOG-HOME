@@ -76,7 +76,7 @@ export const DEFAULT_ISSUES: MagazineIssue[] = [
 
 const STORAGE_KEY = "flog_magazine_issues";
 const AUTH_KEY = "flog_admin_auth";
-const ADMIN_PASSWORD = "flog2024";
+const ADMIN_PASSWORD = "flog2026!";
 const EVENT_KEY = "flog_event_data";
 const POPUP_KEY = "flog_popup_data";
 
