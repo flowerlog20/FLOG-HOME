@@ -1,4 +1,5 @@
 User-agent: *
 Allow: /
+Disallow: /admin
 
-Sitemap: https://flog.kr/sitemap.xml
+Sitemap: https://flowerlog20.com/sitemap.xml
