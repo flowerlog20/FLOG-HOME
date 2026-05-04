@@ -36,7 +36,7 @@ import {
   type PopupData,
 } from "@/lib/magazine-store";
 import {
-  FaSignOutAlt, FaPlus, FaTrash,
+  FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
   FaChevronDown, FaChevronUp, FaTimes, FaCheck, FaArrowLeft,
 } from "react-icons/fa";
 
