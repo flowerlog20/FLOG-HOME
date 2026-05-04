@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
+import { signInWithEmailAndPassword, signOut, onAuthStateChanged, type User } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import {
   getMagazineIssuesFromDB,
   saveMagazineIssuesToDB,
@@ -16,9 +18,6 @@ import {
   saveHomeDataToDB,
   getPopupDataFromDB,
   savePopupDataToDB,
-  checkAdminPassword,
-  isAdminLoggedIn,
-  setAdminLoggedIn,
   DEFAULT_ISSUES,
   DEFAULT_EVENT,
   DEFAULT_ABOUT,
@@ -37,23 +36,28 @@ import {
   type PopupData,
 } from "@/lib/magazine-store";
 import {
-  FaLock, FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
+  FaSignOutAlt, FaPlus, FaTrash,
   FaChevronDown, FaChevronUp, FaTimes, FaCheck, FaArrowLeft,
 } from "react-icons/fa";
 
 /* ─── LOGIN ─────────────────────────────────────────────── */
-function LoginForm({ onLogin }: { onLogin: () => void }) {
+function LoginForm() {
+  const [email, setEmail] = useState("");
   const [pw, setPw] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (checkAdminPassword(pw)) {
-      setAdminLoggedIn(true);
-      onLogin();
-    } else {
-      setError("비밀번호가 올바르지 않습니다.");
+    setError("");
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, pw);
+    } catch {
+      setError("이메일 또는 비밀번호가 올바르지 않습니다.");
       setPw("");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -62,13 +66,28 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
       <div className="w-full max-w-xs">
         <div className="mb-12 text-center">
           <div className="inline-flex items-center justify-center w-11 h-11 border border-foreground/15 mb-7">
-            <FaLock className="text-foreground/35 text-xs" />
+            <svg className="w-3.5 h-3.5 text-foreground/35" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
           </div>
           <h1 className="font-sans font-light text-xl tracking-[0.25em] uppercase text-foreground">FLOG</h1>
           <p className="font-sans text-[9px] tracking-[0.45em] uppercase text-foreground/35 mt-1.5">Admin Access</p>
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40 block mb-3">
+              이메일
+            </label>
+            <input
+              type="email"
+              value={email}
+              autoComplete="email"
+              onChange={(e) => { setEmail(e.target.value); setError(""); }}
+              placeholder="admin@example.com"
+              className="w-full border-b border-foreground/15 bg-transparent py-2.5 font-sans text-sm text-foreground focus:outline-none focus:border-foreground/50 transition-colors placeholder:text-foreground/15"
+            />
+          </div>
           <div>
             <label className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40 block mb-3">
               비밀번호
@@ -87,9 +106,10 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
           </div>
           <button
             type="submit"
-            className="w-full py-3.5 bg-foreground text-background font-sans text-[9px] tracking-[0.5em] uppercase hover:bg-foreground/85 transition-colors mt-2"
+            disabled={loading}
+            className="w-full py-3.5 bg-foreground text-background font-sans text-[9px] tracking-[0.5em] uppercase hover:bg-foreground/85 transition-colors mt-2 disabled:opacity-40"
           >
-            로그인
+            {loading ? "로그인 중…" : "로그인"}
           </button>
         </form>
 
@@ -738,7 +758,7 @@ function JoinEditor({ data, onChange }: { data: JoinData; onChange: (d: JoinData
 
 /* ─── MAIN ADMIN PAGE ────────────────────────────────────── */
 export default function Admin() {
-  const [loggedIn, setLoggedIn] = useState(isAdminLoggedIn());
+  const [user, setUser] = useState<User | null | "loading">("loading");
   const [issues, setIssues] = useState<MagazineIssue[]>([]);
   const [eventData, setEventData] = useState<EventData>(DEFAULT_EVENT);
   const [aboutData, setAboutData] = useState<AboutData>(DEFAULT_ABOUT);
@@ -751,7 +771,12 @@ export default function Admin() {
   const [, navigate] = useLocation();
 
   useEffect(() => {
-    if (loggedIn) {
+    const unsub = onAuthStateChanged(auth, (u) => setUser(u));
+    return unsub;
+  }, []);
+
+  useEffect(() => {
+    if (user && user !== "loading") {
       getEventDataFromDB().then(setEventData);
       getMagazineIssuesFromDB().then(setIssues);
       getAboutDataFromDB().then(setAboutData);
@@ -760,9 +785,9 @@ export default function Admin() {
       getHomeDataFromDB().then(setHomeData);
       getPopupDataFromDB().then(setPopupData);
     }
-  }, [loggedIn]);
+  }, [user]);
 
-  const handleLogout = () => { setAdminLoggedIn(false); setLoggedIn(false); };
+  const handleLogout = () => signOut(auth);
 
   const handleSave = async () => {
     await Promise.all([
@@ -804,7 +829,12 @@ export default function Admin() {
     }
   };
 
-  if (!loggedIn) return <LoginForm onLogin={() => setLoggedIn(true)} />;
+  if (user === "loading") return (
+    <div className="min-h-screen bg-[#fbfaf6] flex items-center justify-center">
+      <p className="font-sans text-[9px] tracking-[0.45em] uppercase text-foreground/30">Loading…</p>
+    </div>
+  );
+  if (!user) return <LoginForm />;
 
   return (
     <div className="min-h-screen bg-[#f4f3ef] flex flex-col">
