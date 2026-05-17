@@ -106,7 +106,7 @@ export default function EventDetail() {
             {event.description && (
               <div className="md:col-span-2 space-y-1 mt-4">
                 <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35">소개</p>
-                <p className="font-sans font-light text-foreground/75 leading-loose">{event.description}</p>
+                <p className="font-sans font-light text-foreground/75 leading-loose whitespace-pre-wrap">{event.description}</p>
               </div>
             )}
           </div>
