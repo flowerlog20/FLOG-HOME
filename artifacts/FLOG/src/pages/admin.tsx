@@ -425,10 +425,6 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
         </Field>
       </div>
 
-      <Field label="포스터 링크 URL">
-        <input className={inputCls} value={event.posterLink ?? ""} onChange={e => set("posterLink", e.target.value)} placeholder="https://..." />
-      </Field>
-
       <Field label="행사 소개">
         <textarea
           className={`${inputCls} resize-none min-h-[72px]`}
