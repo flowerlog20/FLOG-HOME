@@ -1,17 +1,49 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { getEventDataFromDB, DEFAULT_EVENT, type EventData } from "@/lib/magazine-store";
+import { useParams, useLocation } from "wouter";
+import { getEventByIdFromDB, type EventData } from "@/lib/magazine-store";
 
-export default function Event() {
-  const [event, setEvent] = useState<EventData>(DEFAULT_EVENT);
+export default function EventDetail() {
+  const { id } = useParams<{ id: string }>();
+  const [event, setEvent] = useState<EventData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [, navigate] = useLocation();
 
   useEffect(() => {
-    getEventDataFromDB().then(setEvent);
-  }, []);
+    if (!id) { navigate("/event"); return; }
+    getEventByIdFromDB(id).then(data => {
+      if (!data) navigate("/event");
+      else setEvent(data);
+      setLoading(false);
+    });
+  }, [id]);
+
+  if (loading) return (
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/25">불러오는 중…</p>
+    </div>
+  );
+
+  if (!event) return null;
 
   return (
     <div className="bg-background min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6 md:px-12 max-w-4xl">
+
+        {/* Back */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+          className="mb-14"
+        >
+          <button
+            onClick={() => navigate("/event")}
+            className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35 hover:text-foreground/70 transition-colors"
+          >
+            ← EVENT 목록
+          </button>
+        </motion.div>
 
         {/* Header */}
         <motion.div
@@ -23,6 +55,11 @@ export default function Event() {
           <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">FLOG presents</span>
           <h1 className="font-serif text-5xl md:text-7xl">{event.title}</h1>
           <p className="font-sans text-[10px] tracking-[0.45em] uppercase text-foreground/40">{event.subtitle}</p>
+          {!event.active && (
+            <span className="inline-block font-sans text-[8px] tracking-[0.35em] uppercase border border-foreground/20 text-foreground/40 px-3 py-1">
+              종료된 이벤트
+            </span>
+          )}
         </motion.div>
 
         {/* Poster */}
@@ -125,27 +162,29 @@ export default function Event() {
         )}
 
         {/* Apply CTA */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="border-t border-border pt-16 text-center space-y-6"
-        >
-          <span className="block font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
-          <h2 className="font-serif text-3xl md:text-4xl">참가 신청</h2>
-          <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
-            신청 양식은 아래 버튼을 눌러 확인할 수 있습니다.
-          </p>
-          <a
-            href="https://smore.im/form/1TcKvo07zR"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-block font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 transition-colors"
+        {event.active && event.formsUrl && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="border-t border-border pt-16 text-center space-y-6"
           >
-            신청하기
-          </a>
-        </motion.div>
+            <span className="block font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
+            <h2 className="font-serif text-3xl md:text-4xl">참가 신청</h2>
+            <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
+              신청 양식은 아래 버튼을 눌러 확인할 수 있습니다.
+            </p>
+            <a
+              href={event.formsUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground text-background hover:bg-foreground/80 transition-colors"
+            >
+              신청하기
+            </a>
+          </motion.div>
+        )}
 
       </div>
     </div>

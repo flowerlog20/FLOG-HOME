@@ -12,7 +12,8 @@ import Magazine from "@/pages/magazine";
 import MindProfile from "@/pages/mind-profile";
 import Join from "@/pages/join";
 import Admin from "@/pages/admin";
-import Event from "@/pages/event";
+import EventList from "@/pages/event-list";
+import EventDetail from "@/pages/event";
 import NotFound from "@/pages/not-found";
 import { EventPopup } from "@/components/EventPopup";
 
@@ -35,7 +36,8 @@ function Router() {
               <Route path="/magazine" component={Magazine} />
               <Route path="/mind-profile" component={MindProfile} />
               <Route path="/join" component={Join} />
-              <Route path="/event" component={Event} />
+              <Route path="/event" component={EventList} />
+              <Route path="/event/:id" component={EventDetail} />
               <Route component={NotFound} />
             </Switch>
           </main>

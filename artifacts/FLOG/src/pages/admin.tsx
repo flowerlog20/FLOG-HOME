@@ -5,8 +5,9 @@ import { auth } from "@/lib/firebase";
 import {
   getMagazineIssuesFromDB,
   saveMagazineIssuesToDB,
-  getEventDataFromDB,
-  saveEventDataToDB,
+  getEventsFromDB,
+  saveEventToDB,
+  deleteEventFromDB,
   saveMagazineIssues,
   getAboutDataFromDB,
   saveAboutDataToDB,
@@ -756,11 +757,169 @@ function JoinEditor({ data, onChange }: { data: JoinData; onChange: (d: JoinData
   );
 }
 
+/* ─── ADMIN EVENT MANAGER ────────────────────────────────── */
+function AdminEventManager() {
+  const [events, setEvents] = useState<EventData[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [draft, setDraft] = useState<EventData | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [toggling, setToggling] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    getEventsFromDB().then(data => { setEvents(data); setLoaded(true); });
+  }, []);
+
+  const addEvent = () => {
+    const id = Date.now().toString();
+    const newEv: EventData = { ...DEFAULT_EVENT, id, createdAt: Date.now(), title: "새 이벤트", active: true };
+    setEvents(prev => [newEv, ...prev]);
+    setEditingId(id);
+    setDraft(newEv);
+  };
+
+  const startEdit = (ev: EventData) => { setEditingId(ev.id); setDraft({ ...ev }); };
+  const cancelEdit = () => { setEditingId(null); setDraft(null); };
+
+  const saveEvent = async () => {
+    if (!draft) return;
+    setSaving(true);
+    await saveEventToDB(draft);
+    setEvents(prev => prev.map(e => e.id === draft.id ? draft : e));
+    setEditingId(null);
+    setDraft(null);
+    setSaving(false);
+  };
+
+  const deleteEvent = async (id: string) => {
+    if (!confirm("이 이벤트를 삭제하시겠습니까?")) return;
+    await deleteEventFromDB(id);
+    setEvents(prev => prev.filter(e => e.id !== id));
+    if (editingId === id) { setEditingId(null); setDraft(null); }
+  };
+
+  const toggleStatus = async (ev: EventData) => {
+    setToggling(ev.id);
+    const updated = { ...ev, active: !ev.active };
+    await saveEventToDB(updated);
+    setEvents(prev => prev.map(e => e.id === ev.id ? updated : e));
+    setToggling(null);
+  };
+
+  return (
+    <div className="space-y-3">
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={addEvent}
+          className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.3em] uppercase bg-foreground text-background px-4 py-2 hover:bg-foreground/80 transition-colors"
+        >
+          <FaPlus className="text-[7px]" /> 새 이벤트
+        </button>
+      </div>
+
+      {!loaded ? (
+        <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/25 text-center py-10">불러오는 중…</p>
+      ) : events.length === 0 ? (
+        <div className="text-center py-16 border border-dashed border-foreground/10">
+          <p className="font-sans text-[10px] tracking-widest uppercase text-foreground/25">이벤트가 없습니다</p>
+        </div>
+      ) : events.map(ev => (
+        <div key={ev.id} className="bg-white border border-foreground/8">
+          {editingId === ev.id && draft ? (
+            <div className="p-6 space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <Field label="제목 (Title)">
+                  <input className={inputCls} value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} placeholder="이벤트 제목" />
+                </Field>
+                <Field label="부제목 (Subtitle)">
+                  <input className={inputCls} value={draft.subtitle} onChange={e => setDraft({ ...draft, subtitle: e.target.value })} placeholder="부제목" />
+                </Field>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <span className="font-sans text-[8.5px] tracking-[0.38em] uppercase text-foreground/35">상태</span>
+                <button
+                  onClick={() => setDraft({ ...draft, active: !draft.active })}
+                  className={`font-sans text-[8px] tracking-[0.3em] uppercase px-3 py-1 border transition-colors ${
+                    draft.active ? "bg-foreground text-background border-foreground" : "border-foreground/20 text-foreground/40"
+                  }`}
+                >
+                  {draft.active ? "모집중" : "종료된 이벤트"}
+                </button>
+              </div>
+
+              <Field label="포스터 이미지 URL">
+                <div className="flex gap-3">
+                  <input className={`${inputCls} flex-1`} value={draft.posterUrl} onChange={e => setDraft({ ...draft, posterUrl: e.target.value })} placeholder="https://..." />
+                  {draft.posterUrl && (
+                    <img src={draft.posterUrl} alt="poster" className="w-12 shrink-0 object-cover border border-foreground/8" style={{ aspectRatio: "905/1280" }} onError={e => (e.currentTarget.style.display = "none")} />
+                  )}
+                </div>
+              </Field>
+
+              <EventEditor event={draft} onChange={setDraft} />
+
+              <div className="flex items-center gap-4 pt-2 border-t border-foreground/8">
+                <button
+                  onClick={saveEvent}
+                  disabled={saving}
+                  className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.35em] uppercase bg-foreground text-background px-6 py-2.5 hover:bg-foreground/80 transition-colors disabled:opacity-40"
+                >
+                  {saving ? "저장 중…" : "저장"}
+                </button>
+                <button onClick={cancelEdit} className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/35 hover:text-foreground/60 transition-colors">
+                  취소
+                </button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex items-center gap-4 px-5 py-4">
+              {ev.posterUrl && (
+                <div className="w-8 shrink-0 overflow-hidden" style={{ aspectRatio: "905/1280" }}>
+                  <img src={ev.posterUrl} alt="" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = "none")} />
+                </div>
+              )}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center gap-2 mb-0.5">
+                  <span className={`font-sans text-[7.5px] tracking-[0.3em] uppercase px-1.5 py-0.5 ${
+                    ev.active ? "bg-foreground text-background" : "border border-foreground/20 text-foreground/35"
+                  }`}>
+                    {ev.active ? "모집중" : "종료"}
+                  </span>
+                </div>
+                <p className="font-serif text-base truncate">{ev.title}</p>
+                <p className="font-sans text-[9px] text-foreground/35 truncate mt-0.5">{ev.date}</p>
+              </div>
+              <div className="flex items-center gap-4 shrink-0">
+                <button
+                  onClick={() => toggleStatus(ev)}
+                  disabled={toggling === ev.id}
+                  className="font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/35 hover:text-foreground/65 transition-colors disabled:opacity-30"
+                >
+                  {toggling === ev.id ? "…" : ev.active ? "종료로 변경" : "모집중으로 변경"}
+                </button>
+                <button
+                  onClick={() => startEdit(ev)}
+                  className="font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/35 hover:text-foreground/65 transition-colors"
+                >
+                  수정
+                </button>
+                <button onClick={() => deleteEvent(ev.id)} className="text-red-400 hover:text-red-500 transition-colors">
+                  <FaTrash className="text-[10px]" />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 /* ─── MAIN ADMIN PAGE ────────────────────────────────────── */
 export default function Admin() {
   const [user, setUser] = useState<User | null | "loading">("loading");
   const [issues, setIssues] = useState<MagazineIssue[]>([]);
-  const [eventData, setEventData] = useState<EventData>(DEFAULT_EVENT);
   const [aboutData, setAboutData] = useState<AboutData>(DEFAULT_ABOUT);
   const [mindProfileData, setMindProfileData] = useState<MindProfileData>(DEFAULT_MIND_PROFILE);
   const [joinData, setJoinData] = useState<JoinData>(DEFAULT_JOIN);
@@ -777,7 +936,6 @@ export default function Admin() {
 
   useEffect(() => {
     if (user && user !== "loading") {
-      getEventDataFromDB().then(setEventData);
       getMagazineIssuesFromDB().then(setIssues);
       getAboutDataFromDB().then(setAboutData);
       getMindProfileDataFromDB().then(setMindProfileData);
@@ -792,7 +950,6 @@ export default function Admin() {
   const handleSave = async () => {
     await Promise.all([
       saveMagazineIssuesToDB(issues),
-      saveEventDataToDB(eventData),
       saveAboutDataToDB(aboutData),
       saveMindProfileDataToDB(mindProfileData),
       saveJoinDataToDB(joinData),
@@ -985,20 +1142,12 @@ export default function Admin() {
           <div>
             <div className="flex items-end justify-between mb-6">
               <div>
-                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Event Editor</p>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Event Manager</p>
                 <h2 className="font-serif text-[22px] text-foreground/80">EVENT 관리</h2>
               </div>
-              <button
-                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setEventData(DEFAULT_EVENT); }}
-                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
-              >
-                초기화
-              </button>
             </div>
             <div className="w-full h-px bg-foreground/8 mb-6" />
-            <div className="bg-white border border-foreground/8 p-6">
-              <EventEditor event={eventData} onChange={setEventData} />
-            </div>
+            <AdminEventManager />
           </div>
         )}
 

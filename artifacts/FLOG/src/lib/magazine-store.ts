@@ -2,7 +2,7 @@ import mag1 from "@/assets/images/magazine_1.jpg";
 import mag2 from "@/assets/images/magazine_2.jpg";
 import mag3 from "@/assets/images/magazine_3.jpg";
 import { db } from "./firebase";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, collection, getDocs, deleteDoc } from "firebase/firestore";
 
 export interface MagazineIssue {
   id: string;
@@ -130,6 +130,8 @@ export interface EventActivity {
 }
 
 export interface EventData {
+  id: string;
+  createdAt: number;
   active: boolean;
   title: string;
   subtitle: string;
@@ -144,6 +146,8 @@ export interface EventData {
 }
 
 export const DEFAULT_EVENT: EventData = {
+  id: "default",
+  createdAt: 0,
   active: true,
   title: "S-LOG",
   subtitle: "STRESS LOG",
@@ -231,6 +235,35 @@ export async function getEventDataFromDB(): Promise<EventData> {
 export async function saveEventDataToDB(data: EventData): Promise<void> {
   await setDoc(doc(db, "config", "event"), data);
   saveEventData(data);
+}
+
+/* ─── Events collection (multi-event) ─── */
+export async function getEventsFromDB(): Promise<EventData[]> {
+  try {
+    const snap = await getDocs(collection(db, "events"));
+    const events = snap.docs.map(d => ({ ...DEFAULT_EVENT, ...(d.data() as EventData), id: d.id }));
+    return events.sort((a, b) => b.createdAt - a.createdAt);
+  } catch {
+    return [];
+  }
+}
+
+export async function getEventByIdFromDB(id: string): Promise<EventData | null> {
+  try {
+    const snap = await getDoc(doc(db, "events", id));
+    if (!snap.exists()) return null;
+    return { ...DEFAULT_EVENT, ...(snap.data() as EventData), id: snap.id };
+  } catch {
+    return null;
+  }
+}
+
+export async function saveEventToDB(event: EventData): Promise<void> {
+  await setDoc(doc(db, "events", event.id), event);
+}
+
+export async function deleteEventFromDB(id: string): Promise<void> {
+  await deleteDoc(doc(db, "events", id));
 }
 
 export async function getMagazineIssuesFromDB(): Promise<MagazineIssue[]> {
