@@ -806,9 +806,105 @@ function AdminEventManager() {
     setToggling(null);
   };
 
+  const activeEvents = events.filter(e => e.active);
+  const endedEvents = events.filter(e => !e.active);
+
+  const renderEventCard = (ev: EventData) => (
+    <div key={ev.id} className="bg-white border border-foreground/8">
+      {editingId === ev.id && draft ? (
+        <div className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field label="제목 (Title)">
+              <input className={inputCls} value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} placeholder="이벤트 제목" />
+            </Field>
+            <Field label="부제목 (Subtitle)">
+              <input className={inputCls} value={draft.subtitle} onChange={e => setDraft({ ...draft, subtitle: e.target.value })} placeholder="부제목" />
+            </Field>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <label className="flex items-center gap-2.5 cursor-pointer select-none">
+              <input
+                type="checkbox"
+                checked={draft.active}
+                onChange={e => setDraft({ ...draft, active: e.target.checked })}
+                className="w-4 h-4 accent-foreground cursor-pointer"
+              />
+              <span className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/70">
+                모집중
+              </span>
+            </label>
+            <span className="font-sans text-[8px] text-foreground/30">
+              {draft.active ? "— 사용자에게 모집중으로 표시됩니다" : "— 종료된 이벤트로 표시됩니다"}
+            </span>
+          </div>
+
+          <Field label="포스터 이미지 URL">
+            <div className="flex gap-3">
+              <input className={`${inputCls} flex-1`} value={draft.posterUrl} onChange={e => setDraft({ ...draft, posterUrl: e.target.value })} placeholder="https://..." />
+              {draft.posterUrl && (
+                <img src={draft.posterUrl} alt="poster" className="w-12 shrink-0 object-cover border border-foreground/8" style={{ aspectRatio: "905/1280" }} onError={e => (e.currentTarget.style.display = "none")} />
+              )}
+            </div>
+          </Field>
+
+          <EventEditor event={draft} onChange={setDraft} />
+
+          <div className="flex items-center gap-4 pt-2 border-t border-foreground/8">
+            <button
+              onClick={saveEvent}
+              disabled={saving}
+              className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.35em] uppercase bg-foreground text-background px-6 py-2.5 hover:bg-foreground/80 transition-colors disabled:opacity-40"
+            >
+              {saving ? "저장 중…" : "저장"}
+            </button>
+            <button onClick={cancelEdit} className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/35 hover:text-foreground/60 transition-colors">
+              취소
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="flex items-center gap-4 px-5 py-4">
+          {ev.posterUrl && (
+            <div className="w-8 shrink-0 overflow-hidden" style={{ aspectRatio: "905/1280" }}>
+              <img src={ev.posterUrl} alt="" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = "none")} />
+            </div>
+          )}
+          <div className="flex-1 min-w-0">
+            <p className="font-serif text-base truncate">{ev.title}</p>
+            <p className="font-sans text-[9px] text-foreground/35 truncate mt-0.5">{ev.date}</p>
+          </div>
+          <div className="flex items-center gap-4 shrink-0">
+            <label className="flex items-center gap-2 cursor-pointer select-none" title={ev.active ? "체크 해제 시 종료로 변경" : "체크 시 모집중으로 변경"}>
+              <input
+                type="checkbox"
+                checked={ev.active}
+                disabled={toggling === ev.id}
+                onChange={() => toggleStatus(ev)}
+                className="w-3.5 h-3.5 accent-foreground cursor-pointer disabled:opacity-30"
+              />
+              <span className="font-sans text-[8px] tracking-[0.28em] uppercase text-foreground/40">
+                {toggling === ev.id ? "…" : "모집중"}
+              </span>
+            </label>
+            <button
+              onClick={() => startEdit(ev)}
+              className="font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/35 hover:text-foreground/65 transition-colors"
+            >
+              수정
+            </button>
+            <button onClick={() => deleteEvent(ev.id)} className="text-red-400 hover:text-red-500 transition-colors">
+              <FaTrash className="text-[10px]" />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+
   return (
-    <div className="space-y-3">
-      <div className="flex justify-end mb-4">
+    <div className="space-y-10">
+      <div className="flex justify-end">
         <button
           onClick={addEvent}
           className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.3em] uppercase bg-foreground text-background px-4 py-2 hover:bg-foreground/80 transition-colors"
@@ -819,99 +915,39 @@ function AdminEventManager() {
 
       {!loaded ? (
         <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/25 text-center py-10">불러오는 중…</p>
-      ) : events.length === 0 ? (
-        <div className="text-center py-16 border border-dashed border-foreground/10">
-          <p className="font-sans text-[10px] tracking-widest uppercase text-foreground/25">이벤트가 없습니다</p>
-        </div>
-      ) : events.map(ev => (
-        <div key={ev.id} className="bg-white border border-foreground/8">
-          {editingId === ev.id && draft ? (
-            <div className="p-6 space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <Field label="제목 (Title)">
-                  <input className={inputCls} value={draft.title} onChange={e => setDraft({ ...draft, title: e.target.value })} placeholder="이벤트 제목" />
-                </Field>
-                <Field label="부제목 (Subtitle)">
-                  <input className={inputCls} value={draft.subtitle} onChange={e => setDraft({ ...draft, subtitle: e.target.value })} placeholder="부제목" />
-                </Field>
-              </div>
-
-              <div className="flex items-center gap-3">
-                <span className="font-sans text-[8.5px] tracking-[0.38em] uppercase text-foreground/35">상태</span>
-                <button
-                  onClick={() => setDraft({ ...draft, active: !draft.active })}
-                  className={`font-sans text-[8px] tracking-[0.3em] uppercase px-3 py-1 border transition-colors ${
-                    draft.active ? "bg-foreground text-background border-foreground" : "border-foreground/20 text-foreground/40"
-                  }`}
-                >
-                  {draft.active ? "모집중" : "종료된 이벤트"}
-                </button>
-              </div>
-
-              <Field label="포스터 이미지 URL">
-                <div className="flex gap-3">
-                  <input className={`${inputCls} flex-1`} value={draft.posterUrl} onChange={e => setDraft({ ...draft, posterUrl: e.target.value })} placeholder="https://..." />
-                  {draft.posterUrl && (
-                    <img src={draft.posterUrl} alt="poster" className="w-12 shrink-0 object-cover border border-foreground/8" style={{ aspectRatio: "905/1280" }} onError={e => (e.currentTarget.style.display = "none")} />
-                  )}
-                </div>
-              </Field>
-
-              <EventEditor event={draft} onChange={setDraft} />
-
-              <div className="flex items-center gap-4 pt-2 border-t border-foreground/8">
-                <button
-                  onClick={saveEvent}
-                  disabled={saving}
-                  className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.35em] uppercase bg-foreground text-background px-6 py-2.5 hover:bg-foreground/80 transition-colors disabled:opacity-40"
-                >
-                  {saving ? "저장 중…" : "저장"}
-                </button>
-                <button onClick={cancelEdit} className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/35 hover:text-foreground/60 transition-colors">
-                  취소
-                </button>
-              </div>
+      ) : (
+        <>
+          {/* 모집중 섹션 */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/40">모집중</span>
+              <span className="font-sans text-[8px] text-foreground/25 bg-foreground/8 px-2 py-0.5">{activeEvents.length}</span>
             </div>
-          ) : (
-            <div className="flex items-center gap-4 px-5 py-4">
-              {ev.posterUrl && (
-                <div className="w-8 shrink-0 overflow-hidden" style={{ aspectRatio: "905/1280" }}>
-                  <img src={ev.posterUrl} alt="" className="w-full h-full object-cover" onError={e => (e.currentTarget.style.display = "none")} />
+            <div className="space-y-2">
+              {activeEvents.length === 0 ? (
+                <div className="text-center py-8 border border-dashed border-foreground/10">
+                  <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/20">모집중인 이벤트가 없습니다</p>
                 </div>
-              )}
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 mb-0.5">
-                  <span className={`font-sans text-[7.5px] tracking-[0.3em] uppercase px-1.5 py-0.5 ${
-                    ev.active ? "bg-foreground text-background" : "border border-foreground/20 text-foreground/35"
-                  }`}>
-                    {ev.active ? "모집중" : "종료"}
-                  </span>
-                </div>
-                <p className="font-serif text-base truncate">{ev.title}</p>
-                <p className="font-sans text-[9px] text-foreground/35 truncate mt-0.5">{ev.date}</p>
-              </div>
-              <div className="flex items-center gap-4 shrink-0">
-                <button
-                  onClick={() => toggleStatus(ev)}
-                  disabled={toggling === ev.id}
-                  className="font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/35 hover:text-foreground/65 transition-colors disabled:opacity-30"
-                >
-                  {toggling === ev.id ? "…" : ev.active ? "종료로 변경" : "모집중으로 변경"}
-                </button>
-                <button
-                  onClick={() => startEdit(ev)}
-                  className="font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/35 hover:text-foreground/65 transition-colors"
-                >
-                  수정
-                </button>
-                <button onClick={() => deleteEvent(ev.id)} className="text-red-400 hover:text-red-500 transition-colors">
-                  <FaTrash className="text-[10px]" />
-                </button>
-              </div>
+              ) : activeEvents.map(renderEventCard)}
             </div>
-          )}
-        </div>
-      ))}
+          </div>
+
+          {/* 종료된 이벤트 섹션 */}
+          <div>
+            <div className="flex items-center gap-3 mb-3">
+              <span className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/40">종료된 이벤트</span>
+              <span className="font-sans text-[8px] text-foreground/25 bg-foreground/8 px-2 py-0.5">{endedEvents.length}</span>
+            </div>
+            <div className="space-y-2">
+              {endedEvents.length === 0 ? (
+                <div className="text-center py-8 border border-dashed border-foreground/10">
+                  <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/20">종료된 이벤트가 없습니다</p>
+                </div>
+              ) : endedEvents.map(renderEventCard)}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }
