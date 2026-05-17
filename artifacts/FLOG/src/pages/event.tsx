@@ -162,19 +162,25 @@ export default function EventDetail() {
         )}
 
         {/* Apply CTA */}
-        {event.active && event.formsUrl && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1 }}
-            className="border-t border-border pt-16 text-center space-y-6"
-          >
-            <span className="block font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
-            <h2 className="font-serif text-3xl md:text-4xl">참가 신청</h2>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 1 }}
+          className="border-t border-border pt-16 text-center space-y-6"
+        >
+          <span className="block font-sans text-xs tracking-widest uppercase text-muted-foreground">Apply</span>
+          <h2 className="font-serif text-3xl md:text-4xl">참가 신청</h2>
+          {event.active ? (
             <p className="font-sans font-light text-foreground/55 text-sm leading-relaxed">
               신청 양식은 아래 버튼을 눌러 확인할 수 있습니다.
             </p>
+          ) : (
+            <p className="font-sans font-light text-foreground/40 text-sm leading-relaxed">
+              이 이벤트는 종료되어 신청이 마감되었습니다.
+            </p>
+          )}
+          {event.active && event.formsUrl ? (
             <a
               href={event.formsUrl}
               target="_blank"
@@ -183,8 +189,12 @@ export default function EventDetail() {
             >
               신청하기
             </a>
-          </motion.div>
-        )}
+          ) : (
+            <span className="inline-block font-sans text-[9px] tracking-[0.45em] uppercase px-16 py-4 bg-foreground/10 text-foreground/30 cursor-not-allowed select-none">
+              {event.active ? "신청하기" : "마감됨"}
+            </span>
+          )}
+        </motion.div>
 
       </div>
     </div>

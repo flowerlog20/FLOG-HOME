@@ -460,6 +460,10 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
         </div>
       </div>
 
+      <Field label="신청 링크 URL">
+        <input className={inputCls} value={event.formsUrl ?? ""} onChange={e => set("formsUrl", e.target.value)} placeholder="https://forms.gle/..." />
+      </Field>
+
       {/* Gallery Images */}
       <div>
         <div className="flex items-center justify-between mb-3">
