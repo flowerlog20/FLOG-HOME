@@ -84,6 +84,7 @@ const POPUP_KEY = "flog_popup_data";
 export interface PopupData {
   id: string;
   createdAt: number;
+  order: number;
   active: boolean;
   title: string;
   subtitle: string;
@@ -93,6 +94,7 @@ export interface PopupData {
 export const DEFAULT_POPUP: PopupData = {
   id: "",
   createdAt: 0,
+  order: 0,
   active: true,
   title: "S-LOG",
   subtitle: "STRESS LOG",
@@ -103,7 +105,7 @@ export async function getPopupsFromDB(): Promise<PopupData[]> {
   try {
     const snap = await getDocs(collection(db, "popups"));
     const items = snap.docs.map(d => ({ id: d.id, ...d.data() } as PopupData));
-    return items.sort((a, b) => b.createdAt - a.createdAt);
+    return items.sort((a, b) => (a.order ?? 999) - (b.order ?? 999) || b.createdAt - a.createdAt);
   } catch {
     return [];
   }

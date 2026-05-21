@@ -388,10 +388,24 @@ function AdminPopupManager() {
     setToggling(null);
   };
 
+  const movePopup = async (section: PopupData[], idx: number, dir: -1 | 1) => {
+    const newIdx = idx + dir;
+    if (newIdx < 0 || newIdx >= section.length) return;
+    const next = [...section];
+    [next[idx], next[newIdx]] = [next[newIdx], next[idx]];
+    const base = section[0]?.active ? 0 : 1000;
+    const reordered = next.map((p, i) => ({ ...p, order: base + i }));
+    setPopups(prev => {
+      const map = new Map(reordered.map(p => [p.id, p]));
+      return prev.map(p => map.get(p.id) ?? p).sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+    });
+    await Promise.all(reordered.map(savePopupToDB));
+  };
+
   const activePopups = popups.filter(p => p.active);
   const inactivePopups = popups.filter(p => !p.active);
 
-  const renderCard = (p: PopupData) => (
+  const renderCard = (p: PopupData, idx: number, section: PopupData[]) => (
     <div key={p.id} className="bg-white border border-foreground/8">
       {editingId === p.id && draft ? (
         <div className="p-6 space-y-6">
@@ -439,7 +453,25 @@ function AdminPopupManager() {
           </div>
         </div>
       ) : (
-        <div className="flex items-center gap-4 p-4">
+        <div className="flex items-center gap-3 p-4">
+          {/* Up/Down buttons */}
+          <div className="flex flex-col gap-0.5 shrink-0">
+            <button
+              onClick={() => movePopup(section, idx, -1)}
+              disabled={idx === 0}
+              className="w-6 h-5 flex items-center justify-center text-foreground/25 hover:text-foreground/60 disabled:opacity-20 transition-colors"
+            >
+              <FaChevronUp className="text-[8px]" />
+            </button>
+            <button
+              onClick={() => movePopup(section, idx, 1)}
+              disabled={idx === section.length - 1}
+              className="w-6 h-5 flex items-center justify-center text-foreground/25 hover:text-foreground/60 disabled:opacity-20 transition-colors"
+            >
+              <FaChevronDown className="text-[8px]" />
+            </button>
+          </div>
+
           {p.posterUrl && (
             <img
               src={p.posterUrl}
@@ -485,13 +517,13 @@ function AdminPopupManager() {
       {activePopups.length > 0 && (
         <div className="space-y-2">
           <p className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/40 mb-3">활성 팝업 ({activePopups.length})</p>
-          {activePopups.map(renderCard)}
+          {activePopups.map((p, i) => renderCard(p, i, activePopups))}
         </div>
       )}
       {inactivePopups.length > 0 && (
         <div className="space-y-2">
           <p className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/30 mb-3">비활성 팝업 ({inactivePopups.length})</p>
-          {inactivePopups.map(renderCard)}
+          {inactivePopups.map((p, i) => renderCard(p, i, inactivePopups))}
         </div>
       )}
       {popups.length === 0 && (
