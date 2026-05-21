@@ -423,6 +423,9 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
         <Field label="장소">
           <input className={inputCls} value={event.location} onChange={e => set("location", e.target.value)} placeholder="서울 홍대" />
         </Field>
+        <Field label="입장료">
+          <input className={inputCls} value={event.fee ?? ""} onChange={e => set("fee", e.target.value)} placeholder="무료 / 10,000원 등" />
+        </Field>
       </div>
 
       <Field label="행사 소개">

@@ -103,6 +103,12 @@ export default function EventDetail() {
               <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35">장소</p>
               <p className="font-sans font-light text-foreground text-base">{event.location}</p>
             </div>
+            {event.fee && (
+              <div className="space-y-1">
+                <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35">입장료</p>
+                <p className="font-sans font-light text-foreground text-base">{event.fee}</p>
+              </div>
+            )}
             {event.description && (
               <div className="md:col-span-2 space-y-1 mt-4">
                 <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35">소개</p>
