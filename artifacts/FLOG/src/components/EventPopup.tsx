@@ -7,22 +7,27 @@ import { getPopupDataFromDB, DEFAULT_POPUP, type PopupData } from "@/lib/magazin
 export function EventPopup() {
   const [visible, setVisible] = useState(false);
   const [popup, setPopup] = useState<PopupData>(DEFAULT_POPUP);
+  const [loaded, setLoaded] = useState(false);
   const [location] = useLocation();
 
   useEffect(() => {
-    getPopupDataFromDB().then(setPopup);
+    getPopupDataFromDB().then(data => {
+      setPopup(data);
+      setLoaded(true);
+    });
   }, []);
 
   useEffect(() => {
+    if (!loaded) return;
     if (!popup.active) return;
     if (location !== "/") return;
     const t = setTimeout(() => setVisible(true), 600);
     return () => clearTimeout(t);
-  }, [popup.active, location]);
+  }, [loaded, popup.active, location]);
 
   const close = () => setVisible(false);
 
-  if (!popup.active) return null;
+  if (!loaded || !popup.active) return null;
 
   return (
     <AnimatePresence>
