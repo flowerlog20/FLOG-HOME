@@ -8,6 +8,9 @@ import {
   getEventsFromDB,
   saveEventToDB,
   deleteEventFromDB,
+  getPopupsFromDB,
+  savePopupToDB,
+  deletePopupFromDB,
   saveMagazineIssues,
   getAboutDataFromDB,
   saveAboutDataToDB,
@@ -17,24 +20,22 @@ import {
   saveJoinDataToDB,
   getHomeDataFromDB,
   saveHomeDataToDB,
-  getPopupDataFromDB,
-  savePopupDataToDB,
   DEFAULT_ISSUES,
   DEFAULT_EVENT,
+  DEFAULT_POPUP,
   DEFAULT_ABOUT,
   DEFAULT_MIND_PROFILE,
   DEFAULT_JOIN,
   DEFAULT_HOME,
-  DEFAULT_POPUP,
   type MagazineIssue,
   type EventData,
+  type PopupData,
   type AboutData,
   type AboutWhatWeDoItem,
   type MindProfileData,
   type JoinData,
   type JoinItem,
   type HomeData,
-  type PopupData,
 } from "@/lib/magazine-store";
 import {
   FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -338,52 +339,164 @@ function IssueEditor({
   );
 }
 
-/* ─── POPUP EDITOR ───────────────────────────────────────── */
-function PopupEditor({ popup, onChange }: { popup: PopupData; onChange: (p: PopupData) => void }) {
-  const set = (field: keyof PopupData, val: unknown) => onChange({ ...popup, [field]: val });
-  return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between py-3 border-b border-foreground/8">
-        <div>
-          <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/50">팝업 활성화</span>
-          <p className="font-sans text-[9px] text-foreground/30 mt-0.5">홈 화면 진입 시 팝업 노출 여부</p>
+/* ─── ADMIN POPUP MANAGER ────────────────────────────────── */
+function AdminPopupManager() {
+  const [popups, setPopups] = useState<PopupData[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [draft, setDraft] = useState<PopupData | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [toggling, setToggling] = useState<string | null>(null);
+  const [loaded, setLoaded] = useState(false);
+
+  useEffect(() => {
+    getPopupsFromDB().then(data => { setPopups(data); setLoaded(true); });
+  }, []);
+
+  const addPopup = () => {
+    const id = Date.now().toString();
+    const newP: PopupData = { ...DEFAULT_POPUP, id, createdAt: Date.now(), title: "새 팝업", active: true };
+    setPopups(prev => [newP, ...prev]);
+    setEditingId(id);
+    setDraft(newP);
+  };
+
+  const startEdit = (p: PopupData) => { setEditingId(p.id); setDraft({ ...p }); };
+  const cancelEdit = () => { setEditingId(null); setDraft(null); };
+
+  const savePopup = async () => {
+    if (!draft) return;
+    setSaving(true);
+    await savePopupToDB(draft);
+    setPopups(prev => prev.map(p => p.id === draft.id ? draft : p));
+    setEditingId(null);
+    setDraft(null);
+    setSaving(false);
+  };
+
+  const deletePopup = async (id: string) => {
+    if (!confirm("이 팝업을 삭제하시겠습니까?")) return;
+    await deletePopupFromDB(id);
+    setPopups(prev => prev.filter(p => p.id !== id));
+    if (editingId === id) { setEditingId(null); setDraft(null); }
+  };
+
+  const toggleStatus = async (p: PopupData) => {
+    setToggling(p.id);
+    const updated = { ...p, active: !p.active };
+    await savePopupToDB(updated);
+    setPopups(prev => prev.map(x => x.id === p.id ? updated : x));
+    setToggling(null);
+  };
+
+  const activePopups = popups.filter(p => p.active);
+  const inactivePopups = popups.filter(p => !p.active);
+
+  const renderCard = (p: PopupData) => (
+    <div key={p.id} className="bg-white border border-foreground/8">
+      {editingId === p.id && draft ? (
+        <div className="p-6 space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Field label="팝업 제목">
+              <input className={inputCls} value={draft.title} onChange={e => setDraft(d => d ? { ...d, title: e.target.value } : d)} placeholder="S-LOG" />
+            </Field>
+            <Field label="부제 (Subtitle)">
+              <input className={inputCls} value={draft.subtitle} onChange={e => setDraft(d => d ? { ...d, subtitle: e.target.value } : d)} placeholder="STRESS LOG" />
+            </Field>
+          </div>
+          <Field label="포스터 이미지 URL">
+            <div className="flex gap-4 items-start">
+              <input
+                className={`${inputCls} flex-1`}
+                value={draft.posterUrl}
+                onChange={e => setDraft(d => d ? { ...d, posterUrl: e.target.value } : d)}
+                placeholder="https://..."
+              />
+              {draft.posterUrl && (
+                <img
+                  src={draft.posterUrl}
+                  alt="poster"
+                  className="w-12 shrink-0 object-cover border border-foreground/8"
+                  style={{ aspectRatio: "905/1280" }}
+                  onError={e => (e.currentTarget.style.display = "none")}
+                />
+              )}
+            </div>
+          </Field>
+          <div className="flex gap-3 pt-2">
+            <button
+              onClick={savePopup}
+              disabled={saving}
+              className="font-sans text-[8.5px] tracking-[0.4em] uppercase bg-foreground text-background px-5 py-2.5 hover:bg-foreground/80 transition-colors disabled:opacity-40"
+            >
+              {saving ? "저장 중..." : "저장"}
+            </button>
+            <button
+              onClick={cancelEdit}
+              className="font-sans text-[8.5px] tracking-[0.4em] uppercase border border-foreground/20 text-foreground/50 px-5 py-2.5 hover:border-foreground/40 transition-colors"
+            >
+              취소
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => set("active", !popup.active)}
-          className={`relative w-11 h-6 rounded-full transition-colors ${popup.active ? "bg-foreground" : "bg-foreground/20"}`}
-        >
-          <span className={`absolute top-1 w-4 h-4 bg-white rounded-full transition-all ${popup.active ? "left-6" : "left-1"}`} />
-        </button>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <Field label="팝업 제목">
-          <input className={inputCls} value={popup.title} onChange={e => set("title", e.target.value)} placeholder="S-LOG" />
-        </Field>
-        <Field label="부제 (Subtitle)">
-          <input className={inputCls} value={popup.subtitle} onChange={e => set("subtitle", e.target.value)} placeholder="STRESS LOG" />
-        </Field>
-      </div>
-
-      <Field label="포스터 이미지 URL">
-        <div className="flex gap-4 items-start">
-          <input
-            className={`${inputCls} flex-1`}
-            value={popup.posterUrl}
-            onChange={e => set("posterUrl", e.target.value)}
-            placeholder="https://..."
-          />
-          {popup.posterUrl && (
+      ) : (
+        <div className="flex items-center gap-4 p-4">
+          {p.posterUrl && (
             <img
-              src={popup.posterUrl}
-              alt="poster"
-              className="w-12 shrink-0 object-cover border border-foreground/8"
+              src={p.posterUrl}
+              alt={p.title}
+              className="w-10 shrink-0 object-cover border border-foreground/8"
               style={{ aspectRatio: "905/1280" }}
               onError={e => (e.currentTarget.style.display = "none")}
             />
           )}
+          <div className="flex-1 min-w-0">
+            <p className="font-sans font-light text-sm text-foreground truncate">{p.title}</p>
+            <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/35 mt-0.5">{p.subtitle}</p>
+          </div>
+          <div className="flex items-center gap-3 shrink-0">
+            <button
+              onClick={() => toggleStatus(p)}
+              disabled={toggling === p.id}
+              title={p.active ? "비활성화" : "활성화"}
+              className={`relative w-10 h-5 rounded-full transition-colors ${p.active ? "bg-foreground" : "bg-foreground/20"} disabled:opacity-40`}
+            >
+              <span className={`absolute top-0.5 w-4 h-4 bg-white rounded-full transition-all ${p.active ? "left-5" : "left-0.5"}`} />
+            </button>
+            <button onClick={() => startEdit(p)} className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/40 hover:text-foreground/70 transition-colors">편집</button>
+            <button onClick={() => deletePopup(p.id)} className="text-foreground/25 hover:text-red-400 transition-colors"><FaTrash className="text-[10px]" /></button>
+          </div>
         </div>
-      </Field>
+      )}
+    </div>
+  );
+
+  if (!loaded) return <div className="font-sans text-[9px] tracking-widest uppercase text-foreground/30 py-8 text-center">불러오는 중...</div>;
+
+  return (
+    <div className="space-y-8">
+      <div className="flex justify-end">
+        <button
+          onClick={addPopup}
+          className="flex items-center gap-2 font-sans text-[8.5px] tracking-[0.35em] uppercase bg-foreground text-background px-4 py-2 hover:bg-foreground/80 transition-colors"
+        >
+          <FaPlus className="text-[9px]" /> 팝업 추가
+        </button>
+      </div>
+      {activePopups.length > 0 && (
+        <div className="space-y-2">
+          <p className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/40 mb-3">활성 팝업 ({activePopups.length})</p>
+          {activePopups.map(renderCard)}
+        </div>
+      )}
+      {inactivePopups.length > 0 && (
+        <div className="space-y-2">
+          <p className="font-sans text-[8.5px] tracking-[0.4em] uppercase text-foreground/30 mb-3">비활성 팝업 ({inactivePopups.length})</p>
+          {inactivePopups.map(renderCard)}
+        </div>
+      )}
+      {popups.length === 0 && (
+        <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/25 py-8 text-center">등록된 팝업이 없습니다</p>
+      )}
     </div>
   );
 }
@@ -963,7 +1076,6 @@ export default function Admin() {
   const [mindProfileData, setMindProfileData] = useState<MindProfileData>(DEFAULT_MIND_PROFILE);
   const [joinData, setJoinData] = useState<JoinData>(DEFAULT_JOIN);
   const [homeData, setHomeData] = useState<HomeData>(DEFAULT_HOME);
-  const [popupData, setPopupData] = useState<PopupData>(DEFAULT_POPUP);
   const [saved, setSaved] = useState(false);
   const [activeTab, setActiveTab] = useState<"main" | "popup" | "about" | "mind-profile" | "event" | "join" | "magazine">("main");
   const [, navigate] = useLocation();
@@ -980,7 +1092,6 @@ export default function Admin() {
       getMindProfileDataFromDB().then(setMindProfileData);
       getJoinDataFromDB().then(setJoinData);
       getHomeDataFromDB().then(setHomeData);
-      getPopupDataFromDB().then(setPopupData);
     }
   }, [user]);
 
@@ -993,7 +1104,6 @@ export default function Admin() {
       saveMindProfileDataToDB(mindProfileData),
       saveJoinDataToDB(joinData),
       saveHomeDataToDB(homeData),
-      savePopupDataToDB(popupData),
     ]);
     setSaved(true);
     setTimeout(() => setSaved(false), 2500);
@@ -1115,20 +1225,12 @@ export default function Admin() {
           <div>
             <div className="flex items-end justify-between mb-6">
               <div>
-                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Popup Editor</p>
+                <p className="font-sans text-[8.5px] tracking-[0.45em] uppercase text-foreground/30 mb-1.5">Popup Manager</p>
                 <h2 className="font-serif text-[22px] text-foreground/80">팝업창 관리</h2>
               </div>
-              <button
-                onClick={() => { if (confirm("기본 데이터로 초기화하시겠습니까?")) setPopupData(DEFAULT_POPUP); }}
-                className="font-sans text-[8.5px] tracking-[0.35em] uppercase text-foreground/30 hover:text-foreground/55 transition-colors"
-              >
-                초기화
-              </button>
             </div>
             <div className="w-full h-px bg-foreground/8 mb-6" />
-            <div className="bg-white border border-foreground/8 p-6">
-              <PopupEditor popup={popupData} onChange={setPopupData} />
-            </div>
+            <AdminPopupManager />
           </div>
         )}
 

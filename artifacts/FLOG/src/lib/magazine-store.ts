@@ -82,6 +82,8 @@ const POPUP_KEY = "flog_popup_data";
 
 /* ─── Popup ─── */
 export interface PopupData {
+  id: string;
+  createdAt: number;
   active: boolean;
   title: string;
   subtitle: string;
@@ -89,39 +91,31 @@ export interface PopupData {
 }
 
 export const DEFAULT_POPUP: PopupData = {
+  id: "",
+  createdAt: 0,
   active: true,
   title: "S-LOG",
   subtitle: "STRESS LOG",
   posterUrl: "/slog-poster.jpg",
 };
 
-export function getPopupData(): PopupData {
+export async function getPopupsFromDB(): Promise<PopupData[]> {
   try {
-    const raw = localStorage.getItem(POPUP_KEY);
-    if (!raw) return DEFAULT_POPUP;
-    return { ...DEFAULT_POPUP, ...JSON.parse(raw) };
+    const snap = await getDocs(collection(db, "popups"));
+    const items = snap.docs.map(d => ({ id: d.id, ...d.data() } as PopupData));
+    return items.sort((a, b) => b.createdAt - a.createdAt);
   } catch {
-    return DEFAULT_POPUP;
+    return [];
   }
 }
 
-export function savePopupData(data: PopupData): void {
-  localStorage.setItem(POPUP_KEY, JSON.stringify(data));
+export async function savePopupToDB(popup: PopupData): Promise<void> {
+  const { id, ...data } = popup;
+  await setDoc(doc(db, "popups", id), data);
 }
 
-export async function getPopupDataFromDB(): Promise<PopupData> {
-  try {
-    const snap = await getDoc(doc(db, "config", "popup"));
-    if (!snap.exists()) return DEFAULT_POPUP;
-    return { ...DEFAULT_POPUP, ...(snap.data() as PopupData) };
-  } catch {
-    return getPopupData();
-  }
-}
-
-export async function savePopupDataToDB(data: PopupData): Promise<void> {
-  await setDoc(doc(db, "config", "popup"), data);
-  savePopupData(data);
+export async function deletePopupFromDB(id: string): Promise<void> {
+  await deleteDoc(doc(db, "popups", id));
 }
 
 export interface EventActivity {
