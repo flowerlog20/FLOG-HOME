@@ -62,12 +62,12 @@ function MagazineModal({
           </button>
         </div>
 
-        {/* A4 image frame — ratio 2159:2794 */}
+        {/* A4 image frame — ratio 210:297 */}
         <div className="relative flex-1 flex items-center justify-center w-full max-w-3xl mx-auto">
           <div
             className="relative overflow-hidden bg-[#1a1a1a] shadow-2xl"
             style={{
-              aspectRatio: "2159 / 2794",
+              aspectRatio: "210 / 297",
               maxHeight: "calc(100vh - 160px)",
               width: "auto",
             }}
