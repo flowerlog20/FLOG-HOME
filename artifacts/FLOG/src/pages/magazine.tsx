@@ -63,12 +63,22 @@ function MagazineModal({
         </div>
 
         {/* A4 image frame — ratio 210:297 */}
-        <div className="relative flex-1 flex items-center justify-center w-full max-w-3xl mx-auto">
+        <div className="relative flex-1 flex items-center justify-center w-full max-w-3xl mx-auto gap-3 md:gap-6">
+          {/* Left arrow */}
+          <button
+            onClick={prev}
+            disabled={page === 0}
+            className="shrink-0 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border border-background/20 text-background/60 hover:text-background hover:border-background/60 disabled:opacity-15 disabled:cursor-default transition-all"
+            aria-label="이전 페이지"
+          >
+            <span className="text-lg leading-none">←</span>
+          </button>
+
           <div
             className="relative overflow-hidden bg-[#1a1a1a] shadow-2xl"
             style={{
               aspectRatio: "210 / 297",
-              maxHeight: "calc(100vh - 160px)",
+              maxHeight: "calc(100vh - 180px)",
               width: "auto",
             }}
           >
@@ -82,27 +92,19 @@ function MagazineModal({
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
                 className="w-full h-full object-cover"
-                style={{ aspectRatio: "210 / 297" }}
               />
             </AnimatePresence>
-
-            <button
-              onClick={prev}
-              disabled={page === 0}
-              className="absolute left-0 top-0 h-full w-1/3 opacity-0 hover:opacity-100 transition-opacity disabled:cursor-default flex items-center justify-start pl-3"
-              aria-label="이전 페이지"
-            >
-              <span className="font-sans text-xs tracking-widest text-background/70">‹</span>
-            </button>
-            <button
-              onClick={next}
-              disabled={page === total - 1}
-              className="absolute right-0 top-0 h-full w-1/3 opacity-0 hover:opacity-100 transition-opacity disabled:cursor-default flex items-center justify-end pr-3"
-              aria-label="다음 페이지"
-            >
-              <span className="font-sans text-xs tracking-widest text-background/70">›</span>
-            </button>
           </div>
+
+          {/* Right arrow */}
+          <button
+            onClick={next}
+            disabled={page === total - 1}
+            className="shrink-0 w-10 h-10 md:w-12 md:h-12 flex items-center justify-center border border-background/20 text-background/60 hover:text-background hover:border-background/60 disabled:opacity-15 disabled:cursor-default transition-all"
+            aria-label="다음 페이지"
+          >
+            <span className="text-lg leading-none">→</span>
+          </button>
         </div>
 
         {/* Bottom bar */}
@@ -113,26 +115,9 @@ function MagazineModal({
           >
             {issue.captions[page]}
           </p>
-
-          <div className="flex items-center gap-4">
-            <button
-              onClick={prev}
-              disabled={page === 0}
-              className="font-sans text-[10px] tracking-[0.35em] uppercase text-background/40 hover:text-background/80 transition-colors disabled:opacity-20"
-            >
-              ← Prev
-            </button>
-            <span className="font-sans text-[10px] tracking-widest text-background/25">
-              {String(page + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-            </span>
-            <button
-              onClick={next}
-              disabled={page === total - 1}
-              className="font-sans text-[10px] tracking-[0.35em] uppercase text-background/40 hover:text-background/80 transition-colors disabled:opacity-20"
-            >
-              Next →
-            </button>
-          </div>
+          <span className="font-sans text-[10px] tracking-widest text-background/25">
+            {String(page + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
         </div>
       </div>
     </motion.div>
