@@ -82,7 +82,7 @@ export default function EventList() {
                 className="flex gap-6 md:gap-10 py-10 cursor-pointer group"
               >
                 {/* Poster thumbnail */}
-                <div className="w-20 md:w-28 shrink-0 self-start overflow-hidden bg-muted" style={{ aspectRatio: "210/297" }}>
+                <div className="w-20 md:w-28 shrink-0 self-center overflow-hidden bg-muted" style={{ aspectRatio: "210/297" }}>
                   {event.posterUrl ? (
                     <img
                       src={event.posterUrl}
