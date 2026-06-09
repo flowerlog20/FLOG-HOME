@@ -181,7 +181,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.2 }}
               className="space-y-8"
             >
-              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Publication</span>
+              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">MAGAZINE</span>
               <h3 className="font-serif text-4xl md:text-5xl">{home.magazinePreview.title}</h3>
               <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">{home.magazinePreview.desc}</p>
               <div className="pt-8">
