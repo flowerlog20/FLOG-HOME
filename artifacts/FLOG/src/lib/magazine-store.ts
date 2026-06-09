@@ -436,7 +436,7 @@ export const DEFAULT_JOIN: JoinData = {
       title: "매거진 인터뷰",
       en: "Magazine Interview",
       desc: "당신의 일상, 고민, 그리고 20대라는 시간.\nFLOG는 평범한 하루 안에서 특별한 이야기를 발견합니다.\n우리가 당신의 이야기를 기록하겠습니다.",
-      note: "별도의 조건 없이 누구나 신청 가능합니다.",
+      note: "현재는 서울 거주하는 20대 청년을 대상으로만 진행하고 있습니다.",
       cta: "인터뷰 신청",
     },
     {
