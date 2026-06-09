@@ -193,12 +193,13 @@ const FORM_META = [
 
 type MergedItem = JoinData["items"][number] & { formUrl: string; FormComponent: React.ComponentType<{ formUrl: string }> };
 
-function ItemSection({ item, index }: { item: MergedItem; index: number }) {
+function ItemSection({ item, index, id }: { item: MergedItem; index: number; id?: string }) {
   const [open, setOpen] = useState(false);
   const { FormComponent } = item;
 
   return (
     <motion.div
+      id={id}
       initial={{ opacity: 0, y: 24 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
@@ -280,7 +281,12 @@ export default function Join() {
         {/* Items */}
         <div className="border-t border-border">
           {mergedItems.map((item, i) => (
-            <ItemSection key={item.index} item={item} index={i} />
+            <ItemSection
+              key={item.index}
+              item={item}
+              index={i}
+              id={item.index === "02" ? "mind-profile" : undefined}
+            />
           ))}
         </div>
 

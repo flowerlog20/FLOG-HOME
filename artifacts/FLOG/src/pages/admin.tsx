@@ -813,11 +813,27 @@ const MIND_PROFILE_LAYOUT_LABELS = [
 
 function MindProfileEditor({ data, onChange }: { data: MindProfileData; onChange: (d: MindProfileData) => void }) {
   const images = data.images ?? ["", "", ""];
+  const previewImages = data.previewImages ?? [];
 
   const setImage = (i: number, val: string) => {
     const next = [...images];
     next[i] = val;
     onChange({ ...data, images: next });
+  };
+
+  const setPreviewImage = (i: number, val: string) => {
+    const next = [...previewImages];
+    next[i] = val;
+    onChange({ ...data, previewImages: next });
+  };
+
+  const addPreviewImage = () => {
+    onChange({ ...data, previewImages: [...previewImages, ""] });
+  };
+
+  const removePreviewImage = (i: number) => {
+    const next = previewImages.filter((_, idx) => idx !== i);
+    onChange({ ...data, previewImages: next });
   };
 
   return (
@@ -859,6 +875,48 @@ function MindProfileEditor({ data, onChange }: { data: MindProfileData; onChange
               </div>
             </Field>
           ))}
+        </div>
+      </div>
+
+      <div>
+        <div className="flex items-center gap-3 mb-5">
+          <span className="font-sans text-[8.5px] tracking-[0.42em] uppercase text-foreground/40">예시 이미지 (뷰어용)</span>
+          <div className="flex-1 h-px bg-foreground/8" />
+        </div>
+        <p className="font-sans text-[9px] text-foreground/30 mb-5">마인드 프로필 페이지 하단 "예시 보기" 버튼에서 슬라이드로 표시됩니다.</p>
+        <div className="space-y-4">
+          {previewImages.map((url, i) => (
+            <div key={i} className="flex gap-3 items-start">
+              <span className="font-sans text-[9px] text-foreground/30 mt-2.5 w-5 shrink-0 text-right">{i + 1}</span>
+              <input
+                className={`${inputCls} flex-1`}
+                value={url}
+                onChange={e => setPreviewImage(i, e.target.value)}
+                placeholder="https://..."
+              />
+              {url && (
+                <img
+                  src={url}
+                  alt={`example ${i + 1}`}
+                  className="w-10 h-14 shrink-0 object-cover border border-foreground/8"
+                  onError={e => (e.currentTarget.style.display = "none")}
+                  onLoad={e => (e.currentTarget.style.display = "block")}
+                />
+              )}
+              <button
+                onClick={() => removePreviewImage(i)}
+                className="font-sans text-[9px] tracking-widest text-foreground/30 hover:text-red-400 transition-colors mt-2 shrink-0"
+              >
+                ✕
+              </button>
+            </div>
+          ))}
+          <button
+            onClick={addPreviewImage}
+            className="font-sans text-[9px] tracking-[0.35em] uppercase border border-foreground/15 px-4 py-2 hover:border-foreground/40 transition-colors"
+          >
+            + 이미지 추가
+          </button>
         </div>
       </div>
     </div>
