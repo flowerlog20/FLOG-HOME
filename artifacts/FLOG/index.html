@@ -64,8 +64,7 @@
     </script>
   </head>
   <body>
-    <div id="root">
-      <!-- 구글 크롤러용 정적 콘텐츠 — React 마운트 시 자동 대체됨 -->
+    <noscript>
       <header>
         <nav>
           <a href="/">플로그 FLOG</a>
@@ -100,7 +99,8 @@
           <a href="/join">신청하기</a>
         </section>
       </main>
-    </div>
+    </noscript>
+    <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
