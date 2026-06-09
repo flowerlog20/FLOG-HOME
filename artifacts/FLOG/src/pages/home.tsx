@@ -118,7 +118,6 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-
       {/* PHILOSOPHY SECTION */}
       <section className="py-24 md:py-36 bg-background relative z-10 overflow-hidden">
         <div className="container mx-auto px-6 md:px-12">
@@ -159,7 +158,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* MAGAZINE PREVIEW */}
       <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-6 md:px-12">
@@ -195,7 +193,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* MIND PROFILE PREVIEW */}
       <section className="py-24 md:py-48 bg-background">
         <div className="container mx-auto px-6 md:px-12">
@@ -207,7 +204,7 @@ export default function Home() {
               transition={{ duration: 1, delay: 0.2 }}
               className="space-y-8 md:pr-12 md:col-start-1"
             >
-              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">Photography</span>
+              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">MIND PROFILE</span>
               <h3 className="font-serif text-4xl md:text-5xl">{home.mindProfilePreview.title}</h3>
               <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">{home.mindProfilePreview.desc}</p>
               <div className="pt-8">
@@ -231,7 +228,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* CTA SECTION */}
       <section className="py-32 bg-foreground text-background text-center px-6">
         <motion.div
