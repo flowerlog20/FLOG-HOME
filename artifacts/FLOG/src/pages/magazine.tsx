@@ -82,7 +82,7 @@ function MagazineModal({
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.4, ease: [0.25, 0.1, 0.25, 1] }}
                 className="w-full h-full object-cover"
-                style={{ aspectRatio: "2159 / 2794" }}
+                style={{ aspectRatio: "210 / 297" }}
               />
             </AnimatePresence>
 
@@ -175,7 +175,7 @@ export default function Magazine() {
             >
               <div
                 className="w-full md:w-5/12 bg-muted relative overflow-hidden group cursor-pointer"
-                style={{ aspectRatio: "2159 / 2794" }}
+                style={{ aspectRatio: "210 / 297" }}
                 onClick={() => setOpenIssue(issue)}
               >
                 <img
