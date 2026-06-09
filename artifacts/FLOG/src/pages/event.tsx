@@ -53,7 +53,7 @@ export default function EventDetail() {
           className="text-center space-y-4 mb-20"
         >
           <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">FLOG presents</span>
-          <h1 className="font-serif text-5xl md:text-7xl">{event.title}</h1>
+          <h1 className="font-serif md:text-7xl text-[30px]">{event.title}</h1>
           <p className="font-sans text-[10px] tracking-[0.45em] uppercase text-foreground/40">{event.subtitle}</p>
           {!event.active && (
             <span className="inline-block font-sans text-[8px] tracking-[0.35em] uppercase border border-foreground/20 text-foreground/40 px-3 py-1">
