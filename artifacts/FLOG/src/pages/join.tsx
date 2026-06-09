@@ -67,8 +67,8 @@ function InterviewForm({ formUrl }: { formUrl: string }) {
         </Field>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <Field label="나이">
-          <input className={fieldCls} name="나이" type="number" min={1} max={99} required placeholder="" />
+        <Field label="생년월일">
+          <input className={fieldCls} name="생년월일" type="date" required placeholder="" />
         </Field>
         <Field label="전화번호">
           <input
@@ -162,6 +162,7 @@ function PrivacyBlock({ agreed, onToggle }: { agreed: boolean; onToggle: () => v
     <div className="border border-foreground/10 p-5 space-y-4">
       <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/40">개인정보 수집·이용 동의</p>
       <div className="font-sans text-[11px] text-foreground/50 leading-relaxed space-y-1">
+        <p><span className="text-foreground/70">수집 항목</span> — 이름, 성별, 생년월일, 전화번호, 거주지</p>
         <p><span className="text-foreground/70">수집 목적</span> — 신청 및 문의 접수, 안내 회신</p>
         <p><span className="text-foreground/70">보유 기간</span> — 목적 달성 후 30일 이내 파기</p>
         <p className="pt-1 text-foreground/35">동의하지 않을 권리가 있으나, 미동의 시 신청이 제한될 수 있습니다.</p>
