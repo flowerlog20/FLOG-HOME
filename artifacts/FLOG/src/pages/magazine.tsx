@@ -108,16 +108,16 @@ function MagazineModal({
         </div>
 
         {/* Bottom bar */}
-        <div className="w-full max-w-3xl mx-auto mt-4 md:mt-5 flex justify-between items-end">
+        <div className="w-full max-w-3xl mx-auto mt-4 md:mt-5 flex flex-col items-center gap-2">
+          <span className="font-sans text-[11px] tracking-widest text-white">
+            {String(page + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
+          </span>
           <p
-            className="font-sans text-[10px] tracking-[0.2em] text-background/35 max-w-xs"
+            className="font-sans text-[10px] tracking-[0.2em] text-background/35 text-center max-w-xs"
             style={{ fontFamily: "'Hahmlet', serif" }}
           >
             {issue.captions[page]}
           </p>
-          <span className="font-sans text-[10px] tracking-widest text-background/25">
-            {String(page + 1).padStart(2, "0")} / {String(total).padStart(2, "0")}
-          </span>
         </div>
       </div>
     </motion.div>
