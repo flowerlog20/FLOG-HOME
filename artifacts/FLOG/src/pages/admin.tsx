@@ -575,7 +575,7 @@ function EventEditor({ event, onChange }: { event: EventData; onChange: (e: Even
 
       <Field label="행사 소개">
         <textarea
-          className={`${inputCls} resize-none min-h-[72px]`}
+          className={`${inputCls} resize-none min-h-[288px]`}
           value={event.description}
           onChange={e => set("description", e.target.value)}
           placeholder="행사 소개 문구"
