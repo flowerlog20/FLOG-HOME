@@ -105,7 +105,7 @@ export default function EventDetail() {
             </div>
             {event.fee && (
               <div className="space-y-1">
-                <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35">입장료</p>
+                <p className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/35">참가비</p>
                 <p className="font-sans font-light text-foreground text-base">{event.fee}</p>
               </div>
             )}
