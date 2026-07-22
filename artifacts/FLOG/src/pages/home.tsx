@@ -1,14 +1,32 @@
-import { useState, useEffect } from "react";
-import { motion } from "framer-motion";
+import { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { getHomeDataFromDB, DEFAULT_HOME, type HomeData } from "@/lib/magazine-store";
 
 export default function Home() {
   const [home, setHome] = useState<HomeData>(DEFAULT_HOME);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
     getHomeDataFromDB().then(setHome);
   }, []);
+
+  const images = home.heroImages.length > 0 ? home.heroImages : [home.hero.imageUrl];
+
+  useEffect(() => {
+    if (intervalRef.current) clearInterval(intervalRef.current);
+    if (isPlaying && images.length > 1) {
+      intervalRef.current = setInterval(() => {
+        setSlideIndex(i => (i + 1) % images.length);
+      }, 5000);
+    }
+    return () => { if (intervalRef.current) clearInterval(intervalRef.current); };
+  }, [isPlaying, images.length]);
+
+  const goPrev = () => setSlideIndex(i => (i - 1 + images.length) % images.length);
+  const goNext = () => setSlideIndex(i => (i + 1) % images.length);
 
   const container = {
     hidden: { opacity: 0 },
@@ -27,11 +45,73 @@ export default function Home() {
     <>
       {/* HERO SECTION */}
       <section className="relative h-screen w-full bg-foreground text-background overflow-hidden">
-        <div
-          className="absolute inset-0 bg-cover bg-[center_20%] opacity-100"
-          style={{ backgroundImage: `url('${home.hero.imageUrl}')` }}
-        />
+        <AnimatePresence>
+          <motion.div
+            key={slideIndex}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+            className="absolute inset-0 bg-cover bg-[center_20%]"
+            style={{ backgroundImage: `url('${images[slideIndex]}')` }}
+          />
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-foreground/15 via-foreground/0 to-foreground/25"></div>
+
+        {/* Slideshow controls — only shown if more than 1 image */}
+        {images.length > 1 && (
+          <>
+            {/* Prev button */}
+            <button
+              onClick={goPrev}
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
+              aria-label="이전 이미지"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M11 3L5 9L11 15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {/* Next button */}
+            <button
+              onClick={goNext}
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
+              aria-label="다음 이미지"
+            >
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                <path d="M7 3L13 9L7 15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </button>
+            {/* Pause/Play + dots — bottom center */}
+            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
+              <button
+                onClick={() => setIsPlaying(p => !p)}
+                className="w-7 h-7 flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
+                aria-label={isPlaying ? "슬라이드 정지" : "슬라이드 재생"}
+              >
+                {isPlaying ? (
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                    <rect x="2" y="1" width="3.5" height="12" rx="1"/>
+                    <rect x="8.5" y="1" width="3.5" height="12" rx="1"/>
+                  </svg>
+                ) : (
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
+                    <path d="M3 1.5L12 7L3 12.5V1.5Z"/>
+                  </svg>
+                )}
+              </button>
+              <div className="flex items-center gap-1.5">
+                {images.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setSlideIndex(i)}
+                    className={`rounded-full transition-all duration-300 ${i === slideIndex ? "w-4 h-1 bg-white/70" : "w-1 h-1 bg-white/30 hover:bg-white/50"}`}
+                    aria-label={`${i + 1}번 이미지`}
+                  />
+                ))}
+              </div>
+            </div>
+          </>
+        )}
 
         {/* Top strip */}
         <motion.div

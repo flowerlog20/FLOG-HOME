@@ -667,6 +667,59 @@ function ImageField({ label, value, onChange }: { label: string; value: string; 
   );
 }
 
+function HeroImagesEditor({ images, onChange }: { images: string[]; onChange: (imgs: string[]) => void }) {
+  const [newUrl, setNewUrl] = useState("");
+  const addImage = () => {
+    const trimmed = newUrl.trim();
+    if (!trimmed) return;
+    onChange([...images, trimmed]);
+    setNewUrl("");
+  };
+  const removeImage = (idx: number) => onChange(images.filter((_, i) => i !== idx));
+
+  return (
+    <div className="space-y-3">
+      <div className="space-y-2">
+        {images.map((url, idx) => (
+          <div key={idx} className="flex gap-3 items-center">
+            <img
+              src={url}
+              alt=""
+              className="w-12 h-8 shrink-0 object-cover border border-foreground/8"
+              onError={e => (e.currentTarget.style.display = "none")}
+            />
+            <span className="flex-1 font-sans text-xs text-foreground/60 truncate">{url}</span>
+            <button
+              onClick={() => removeImage(idx)}
+              className="shrink-0 font-sans text-[9px] tracking-widest uppercase text-foreground/40 hover:text-red-500 transition-colors px-2 py-1"
+            >
+              삭제
+            </button>
+          </div>
+        ))}
+        {images.length === 0 && (
+          <p className="font-sans text-[11px] text-foreground/30">등록된 이미지가 없습니다. 아래에서 추가하세요.</p>
+        )}
+      </div>
+      <div className="flex gap-2">
+        <input
+          className={`${inputCls} flex-1`}
+          value={newUrl}
+          onChange={e => setNewUrl(e.target.value)}
+          placeholder="이미지 URL 입력 (https://...)"
+          onKeyDown={e => e.key === "Enter" && addImage()}
+        />
+        <button
+          onClick={addImage}
+          className="shrink-0 px-4 py-2 border border-foreground/20 font-sans text-[10px] tracking-widest uppercase hover:bg-foreground hover:text-background transition-colors"
+        >
+          추가
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData) => void }) {
   const setHero = (field: keyof HomeData["hero"], val: string) =>
     onChange({ ...home, hero: { ...home.hero, [field]: val } });
@@ -686,7 +739,13 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
       <div>
         <SectionLabel label="01 · Hero" />
         <div className="space-y-4">
-          <ImageField label="배경 이미지 URL" value={home.hero.imageUrl} onChange={v => setHero("imageUrl", v)} />
+          <Field label="슬라이드 배경 이미지 (5초마다 자동 전환)">
+            <HeroImagesEditor
+              images={home.heroImages ?? []}
+              onChange={imgs => onChange({ ...home, heroImages: imgs })}
+            />
+          </Field>
+          <ImageField label="기본 배경 이미지 URL (슬라이드 없을 때 사용)" value={home.hero.imageUrl} onChange={v => setHero("imageUrl", v)} />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Field label="우측 메타 텍스트">
               <input className={inputCls} value={home.hero.metaRight} onChange={e => setHero("metaRight", e.target.value)} placeholder="Seoul · Est. 2026" />

@@ -281,6 +281,7 @@ export async function saveMagazineIssuesToDB(issues: MagazineIssue[]): Promise<v
 
 /* ─── Home ─── */
 export interface HomeData {
+  heroImages: string[];
   hero: {
     imageUrl: string;
     metaRight: string;
@@ -307,6 +308,7 @@ export interface HomeData {
 }
 
 export const DEFAULT_HOME: HomeData = {
+  heroImages: [],
   hero: {
     imageUrl: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop",
     metaRight: "Seoul · Est. 2026",
@@ -338,6 +340,7 @@ export async function getHomeDataFromDB(): Promise<HomeData> {
     if (!snap.exists()) return DEFAULT_HOME;
     const stored = snap.data() as HomeData;
     return {
+      heroImages: stored.heroImages ?? DEFAULT_HOME.heroImages,
       hero: { ...DEFAULT_HOME.hero, ...stored.hero },
       philosophy: { ...DEFAULT_HOME.philosophy, ...stored.philosophy },
       magazinePreview: { ...DEFAULT_HOME.magazinePreview, ...stored.magazinePreview },
