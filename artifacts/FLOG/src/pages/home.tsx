@@ -118,46 +118,6 @@ export default function Home() {
           </div>
         </motion.div>
       </section>
-      {/* PHILOSOPHY SECTION */}
-      <section className="py-24 md:py-36 bg-background relative z-10 overflow-hidden">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="flex gap-10 md:gap-20 items-start">
-            <motion.div
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 1, delay: 0.4 }}
-              className="hidden md:flex flex-col items-center gap-4 pt-1 shrink-0"
-            >
-              <div className="w-[1px] h-10 bg-foreground/20"></div>
-              <span
-                className="font-sans text-[8px] tracking-[0.45em] uppercase text-foreground/30"
-                style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-              >
-                Philosophy
-              </span>
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-80px" }}
-              transition={{ duration: 1.2, ease: [0.25, 0.1, 0.25, 1] }}
-              className="max-w-lg"
-            >
-              <p className="text-xl md:text-2xl leading-[1.9] text-foreground/75 font-light" style={{ fontFamily: "'Hahmlet', serif" }}>
-                {home.philosophy.quote1}
-              </p>
-              <p className="text-xl md:text-2xl leading-[1.9] text-foreground/50 font-light mt-1 ml-6 md:ml-10" style={{ fontFamily: "'Hahmlet', serif" }}>
-                {home.philosophy.quote2}
-              </p>
-              <div className="mt-8 ml-1 flex items-center gap-3">
-                <div className="w-4 h-[1px] bg-foreground/20"></div>
-                <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-foreground/30">FLOG</span>
-              </div>
-            </motion.div>
-          </div>
-        </div>
-      </section>
       {/* MAGAZINE PREVIEW */}
       <section className="py-24 md:py-32 bg-secondary/30">
         <div className="container mx-auto px-6 md:px-12">
