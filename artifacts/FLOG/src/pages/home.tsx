@@ -141,14 +141,6 @@ export default function Home() {
         {/* MAIN TITLE BLOCK */}
         <div className="absolute inset-0 flex flex-col justify-center z-10">
           <motion.div initial="hidden" animate="show" variants={container}>
-            <div className="overflow-hidden pr-6 md:pr-12">
-              <motion.h1
-                variants={item}
-                className="font-serif font-light leading-[0.85] tracking-[-0.01em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white text-right"
-              >
-                FLOWER
-              </motion.h1>
-            </div>
             <motion.div
               variants={item}
               className="relative flex items-center my-3 md:my-4"
