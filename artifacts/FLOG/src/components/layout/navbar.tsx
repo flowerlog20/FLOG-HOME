@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
+import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function Navbar() {
@@ -23,23 +24,42 @@ export function Navbar() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="fixed top-0 left-0 right-0 z-50 mix-blend-difference"
       >
-        <div className="container mx-auto px-6 py-6 md:px-12 md:py-8 flex justify-between items-center text-[#fbfaf6]">
-          <Link
-            href="/"
-            className="font-sans font-light text-xl tracking-[0.2em] uppercase hover:opacity-70 transition-opacity"
-            onClick={() => setIsOpen(false)}
-          >
-            FLOG
-          </Link>
+        <div className="mx-auto px-6 py-5 md:px-10 flex items-center justify-between text-[#fbfaf6]">
 
-          <nav className="hidden md:flex space-x-8 text-sm tracking-widest font-sans font-light">
+          {/* Mobile hamburger */}
+          <button
+            className="md:hidden p-1 text-[#fbfaf6]"
+            onClick={() => setIsOpen(true)}
+            aria-label="메뉴 열기"
+          >
+            <Menu size={22} strokeWidth={1.5} />
+          </button>
+
+          {/* Logo + sub-brand */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/"
+              className="font-serif font-light text-3xl md:text-4xl tracking-[0.06em] leading-none hover:opacity-70 transition-opacity"
+              onClick={() => setIsOpen(false)}
+            >
+              FLOG
+            </Link>
+            <span className="hidden lg:inline-block font-sans text-[9px] tracking-[0.22em] font-bold text-[#fbfaf6]/60 uppercase border-l border-[#fbfaf6]/30 pl-4">
+              FLOWER LOG MAGAZINE
+            </span>
+          </div>
+
+          {/* Desktop nav */}
+          <nav className="hidden md:flex items-center gap-6 lg:gap-8">
             {links.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 className={cn(
-                  "hover:opacity-70 transition-opacity",
-                  location === link.href && "opacity-50"
+                  "font-sans text-[10px] lg:text-[11px] tracking-[0.2em] uppercase transition-opacity",
+                  location === link.href
+                    ? "font-bold opacity-100"
+                    : "font-semibold opacity-60 hover:opacity-90"
                 )}
               >
                 {link.label}
@@ -47,85 +67,66 @@ export function Navbar() {
             ))}
           </nav>
 
-          <button
-            data-testid="button-hamburger"
-            className="md:hidden flex flex-col justify-center items-end gap-[5px] w-8 h-8"
-            onClick={() => setIsOpen((v) => !v)}
-            aria-label={isOpen ? "메뉴 닫기" : "메뉴 열기"}
-          >
-            <motion.span
-              animate={isOpen ? { rotate: 45, y: 7, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="block h-[1px] bg-[#fbfaf6] origin-center"
-              style={{ width: "24px" }}
-            />
-            <motion.span
-              animate={isOpen ? { opacity: 0, x: 6 } : { opacity: 1, x: 0 }}
-              transition={{ duration: 0.2 }}
-              className="block h-[1px] bg-[#fbfaf6]"
-              style={{ width: "16px" }}
-            />
-            <motion.span
-              animate={isOpen ? { rotate: -45, y: -7, width: "100%" } : { rotate: 0, y: 0, width: "100%" }}
-              transition={{ duration: 0.3, ease: "easeInOut" }}
-              className="block h-[1px] bg-[#fbfaf6] origin-center"
-              style={{ width: "24px" }}
-            />
-          </button>
+          {/* Right info (desktop) */}
+          <div className="hidden md:block font-sans text-[9px] font-bold tracking-[0.2em] uppercase opacity-50">
+            Seoul · Est. 2026
+          </div>
+
+          {/* Mobile placeholder to keep logo centered */}
+          <div className="md:hidden w-[22px]" />
         </div>
       </motion.header>
+
+      {/* Mobile overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            animate={{ opacity: 1, clipPath: "inset(0 0 0% 0)" }}
-            exit={{ opacity: 0, clipPath: "inset(0 0 100% 0)" }}
-            transition={{ duration: 0.5, ease: [0.76, 0, 0.24, 1] }}
-            className="fixed inset-0 z-[60] bg-foreground flex flex-col"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.35 }}
+            className="fixed inset-0 z-[60] bg-foreground flex flex-col pt-20 px-8"
           >
-            {/* 닫기 버튼 */}
+            {/* Close button */}
             <button
+              className="absolute top-6 right-6 p-2 text-background/60 hover:text-background transition-colors"
               onClick={() => setIsOpen(false)}
               aria-label="메뉴 닫기"
-              className="absolute top-6 right-6 w-10 h-10 flex items-center justify-center text-background/60 hover:text-background transition-colors"
             >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
-              </svg>
+              <X size={24} strokeWidth={1.5} />
             </button>
 
-            <div className="flex flex-col justify-end h-full px-8 pb-16 pt-28">
-              <nav className="flex flex-col gap-2">
-                {links.map((link, i) => (
-                  <motion.div
-                    key={link.href}
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 20 }}
-                    transition={{ delay: 0.15 + i * 0.07, duration: 0.5, ease: [0.25, 0.1, 0.25, 1] }}
+            {/* Nav links */}
+            <nav className="flex flex-col gap-0 mt-10">
+              {links.map((link, i) => (
+                <motion.div
+                  key={link.href}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ delay: 0.05 + i * 0.06, duration: 0.4 }}
+                >
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsOpen(false)}
+                    className={cn(
+                      "block font-serif text-4xl text-background/80 hover:text-background transition-colors leading-tight py-3 border-b border-white/10",
+                      location === link.href && "text-background/35"
+                    )}
                   >
-                    <Link
-                      href={link.href}
-                      onClick={() => setIsOpen(false)}
-                      className={cn(
-                        "block font-serif text-5xl text-background/80 hover:text-background transition-colors leading-tight py-2",
-                        location === link.href && "text-background/40"
-                      )}
-                      data-testid={`link-mobile-${link.href.replace("/", "")}`}
-                    >
-                      {link.label}
-                    </Link>
-                  </motion.div>
-                ))}
-              </nav>
+                    {link.label}
+                  </Link>
+                </motion.div>
+              ))}
+            </nav>
 
-              <div className="mt-auto pt-16 border-t border-white/20 flex justify-between items-end">
-                <div>
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/60">FLower lOG</p>
-                  <p className="font-sans text-[10px] tracking-[0.4em] uppercase text-background/40 mt-1">Seoul · Est. 2026</p>
-                </div>
-                <p className="font-sans text-[10px] tracking-[0.3em] text-background/40 uppercase">FLOWER LOG</p>
+            {/* Footer strip */}
+            <div className="mt-auto pb-12 flex justify-between items-end">
+              <div className="flex flex-col gap-1">
+                <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-background/50 font-bold">FLOWER LOG MAGAZINE</span>
+                <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-background/30 font-bold">Seoul · Est. 2026</span>
               </div>
+              <span className="font-sans text-[10px] tracking-[0.3em] text-background/30 uppercase font-bold">FLOG</span>
             </div>
           </motion.div>
         )}
