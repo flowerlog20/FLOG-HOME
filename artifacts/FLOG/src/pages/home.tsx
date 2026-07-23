@@ -44,7 +44,8 @@ export default function Home() {
   return (
     <>
       {/* HERO SECTION */}
-      <section className="relative h-screen w-full bg-foreground text-background overflow-hidden">
+      <section className="relative w-full bg-black overflow-hidden" style={{ height: "80vh" }}>
+        {/* Background slideshow */}
         <AnimatePresence>
           <motion.div
             key={slideIndex}
@@ -52,135 +53,93 @@ export default function Home() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 1.5 }}
-            className="absolute inset-0 bg-cover bg-[center_20%]"
+            className="absolute inset-0 bg-cover bg-center"
             style={{ backgroundImage: `url('${images[slideIndex]}')` }}
           />
         </AnimatePresence>
-        <div className="absolute inset-0 bg-gradient-to-b from-foreground/15 via-foreground/0 to-foreground/25"></div>
 
-        {/* Slideshow controls — only shown if more than 1 image */}
+        {/* Light overlay */}
+        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.25)" }} />
+
+        {/* Prev / Next arrows */}
         {images.length > 1 && (
           <>
-            {/* Prev button */}
             <button
               onClick={goPrev}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
+              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white transition-colors"
               aria-label="이전 이미지"
             >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M11 3L5 9L11 15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M13 3L7 10L13 17" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            {/* Next button */}
             <button
               onClick={goNext}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
+              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white transition-colors"
               aria-label="다음 이미지"
             >
-              <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                <path d="M7 3L13 9L7 15" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                <path d="M7 3L13 10L7 17" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            {/* Pause/Play + dots — bottom center */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-20 flex items-center gap-3">
-              <button
-                onClick={() => setIsPlaying(p => !p)}
-                className="w-7 h-7 flex items-center justify-center text-white/40 hover:text-white/80 transition-colors"
-                aria-label={isPlaying ? "슬라이드 정지" : "슬라이드 재생"}
-              >
-                {isPlaying ? (
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-                    <rect x="2" y="1" width="3.5" height="12" rx="1"/>
-                    <rect x="8.5" y="1" width="3.5" height="12" rx="1"/>
-                  </svg>
-                ) : (
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor">
-                    <path d="M3 1.5L12 7L3 12.5V1.5Z"/>
-                  </svg>
-                )}
-              </button>
-              <div className="flex items-center gap-1.5">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setSlideIndex(i)}
-                    className={`rounded-full transition-all duration-300 ${i === slideIndex ? "w-4 h-1 bg-white/70" : "w-1 h-1 bg-white/30 hover:bg-white/50"}`}
-                    aria-label={`${i + 1}번 이미지`}
-                  />
-                ))}
-              </div>
-            </div>
           </>
         )}
 
-        {/* Top strip */}
-        <motion.div
-          initial={{ opacity: 0, y: -6 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.3, duration: 1 }}
-          className="absolute top-0 left-0 right-0 z-10 mt-[72px] md:mt-[80px] px-6 md:px-12"
-        >
-          <div className="flex justify-between items-center py-3 border-t border-white/10">
-            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">FLower lOG</span>
-            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35">{home.hero.metaRight}</span>
-            <span className="font-sans text-[9px] tracking-[0.45em] uppercase text-white/35 hidden md:block">{home.hero.metaLeft}</span>
-          </div>
-        </motion.div>
-
-        {/* Left edge label */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 1.4 }}
-          className="absolute left-5 md:left-8 top-1/2 -translate-y-1/2 z-10 hidden md:block"
-          style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-        >
-          <span className="font-sans text-[8px] tracking-[0.4em] uppercase text-white/25">Bloom Archive No.01</span>
-        </motion.div>
-
-        {/* MAIN TITLE BLOCK */}
-        <div className="absolute inset-0 flex flex-col justify-center z-10">
-          <motion.div initial="hidden" animate="show" variants={container}>
-            <motion.div
-              variants={item}
-              className="relative flex items-center my-3 md:my-4"
-            >
-              <div className="flex-1 h-[1px] bg-white/20"></div>
-              <span className="font-sans text-[8px] tracking-[0.4em] text-white/25 px-4 uppercase shrink-0">FLower lOG</span>
-              <div className="flex-1 h-[1px] bg-white/20"></div>
-            </motion.div>
-          </motion.div>
+        {/* Centered FLOG logotype */}
+        <div className="absolute inset-0 flex items-center justify-center z-10">
+          <motion.h1
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 1.2, delay: 0.2 }}
+            className="font-serif italic text-white select-none pointer-events-none"
+            style={{
+              fontSize: "clamp(5rem, 22vw, 28rem)",
+              letterSpacing: "0.06em",
+              mixBlendMode: "overlay",
+              opacity: 0.9,
+            }}
+          >
+            FLOG
+          </motion.h1>
         </div>
 
-        {/* BLOOM ARCHIVE — bottom left */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2, duration: 1.2 }}
-          className="absolute bottom-10 left-6 md:left-12 z-10"
-        >
-          <div className="flex items-center gap-4">
-            <span className="font-sans text-[9px] tracking-[0.5em] uppercase text-white/35">Bloom Archive</span>
-            <div className="h-[1px] w-6 bg-white/20"></div>
-            <span className="font-sans text-[9px] tracking-[0.5em] uppercase text-white/25">No.01</span>
-          </div>
-        </motion.div>
-
-        {/* Scroll indicator */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 2.2, duration: 1 }}
-          className="absolute bottom-8 right-6 md:right-12 flex flex-col items-center gap-3 z-10"
-        >
-          <div className="w-[1px] h-12 bg-white/20 overflow-hidden relative">
-            <motion.div
-              animate={{ y: ["0%", "100%", "0%"] }}
-              transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
-              className="absolute inset-x-0 top-0 h-1/2 bg-white/60"
+        {/* Bottom: pause/play + dash indicators */}
+        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+          {images.length > 1 && (
+            <button
+              onClick={() => setIsPlaying(p => !p)}
+              className="mr-1 flex items-center justify-center text-white/50 hover:text-white transition-colors"
+              aria-label={isPlaying ? "슬라이드 정지" : "슬라이드 재생"}
+            >
+              {isPlaying ? (
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor">
+                  <rect x="1" y="0" width="3" height="11" rx="0.5"/>
+                  <rect x="7" y="0" width="3" height="11" rx="0.5"/>
+                </svg>
+              ) : (
+                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor">
+                  <path d="M1 0.5L10.5 5.5L1 10.5V0.5Z"/>
+                </svg>
+              )}
+            </button>
+          )}
+          {images.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setSlideIndex(i)}
+              className="transition-all duration-300"
+              style={{
+                width: i === slideIndex ? "28px" : "18px",
+                height: "2px",
+                background: i === slideIndex ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.35)",
+                border: "none",
+                padding: 0,
+                cursor: "pointer",
+              }}
+              aria-label={`${i + 1}번 이미지`}
             />
-          </div>
-        </motion.div>
+          ))}
+        </div>
       </section>
       {/* MAGAZINE PREVIEW */}
       <section className="py-24 md:py-32 bg-secondary/30">
