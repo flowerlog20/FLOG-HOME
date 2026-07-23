@@ -28,24 +28,11 @@ export default function Home() {
   const goPrev = () => setSlideIndex(i => (i - 1 + images.length) % images.length);
   const goNext = () => setSlideIndex(i => (i + 1) % images.length);
 
-  const container = {
-    hidden: { opacity: 0 },
-    show: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.3 }
-    }
-  };
-
-  const item = {
-    hidden: { opacity: 0, y: 20 },
-    show: { opacity: 1, y: 0, transition: { duration: 1, ease: [0.25, 0.1, 0.25, 1] } }
-  };
-
   return (
     <>
-      {/* HERO SECTION */}
-      <section className="relative w-full bg-black overflow-hidden" style={{ height: "80vh" }}>
-        {/* Background slideshow */}
+      {/* ─── HERO ─── */}
+      <section className="relative w-full bg-black overflow-hidden" style={{ height: "85vh" }}>
+        {/* Slideshow */}
         <AnimatePresence>
           <motion.div
             key={slideIndex}
@@ -58,171 +45,273 @@ export default function Home() {
           />
         </AnimatePresence>
 
-        {/* Light overlay */}
-        <div className="absolute inset-0" style={{ background: "rgba(0,0,0,0.25)" }} />
+        {/* Bottom gradient for text */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: "linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.18) 45%, transparent 70%)" }}
+        />
 
-        {/* Prev / Next arrows */}
-        {images.length > 1 && (
-          <>
-            <button
-              onClick={goPrev}
-              className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white transition-colors"
-              aria-label="이전 이미지"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M13 3L7 10L13 17" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-            <button
-              onClick={goNext}
-              className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/50 hover:text-white transition-colors"
-              aria-label="다음 이미지"
-            >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M7 3L13 10L7 17" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-            </button>
-          </>
-        )}
+        {/* Prev arrow */}
+        <button
+          onClick={goPrev}
+          className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          aria-label="이전"
+        >
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M14 4L8 11L14 18" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
 
-        {/* Centered FLOG logotype */}
-        <div className="absolute inset-0 flex items-center justify-center z-10">
-          <motion.h1
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 1.2, delay: 0.2 }}
-            className="font-serif italic text-white select-none pointer-events-none"
-            style={{
-              fontSize: "clamp(5rem, 22vw, 28rem)",
-              letterSpacing: "0.06em",
-              mixBlendMode: "overlay",
-              opacity: 0.9,
-            }}
-          >
-            FLOG
-          </motion.h1>
-        </div>
+        {/* Next arrow */}
+        <button
+          onClick={goNext}
+          className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-20 w-10 h-10 flex items-center justify-center text-white/60 hover:text-white transition-colors"
+          aria-label="다음"
+        >
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+            <path d="M8 4L14 11L8 18" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+        </button>
 
-        {/* Bottom: pause/play + dash indicators */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
-          {images.length > 1 && (
-            <button
-              onClick={() => setIsPlaying(p => !p)}
-              className="mr-1 flex items-center justify-center text-white/50 hover:text-white transition-colors"
-              aria-label={isPlaying ? "슬라이드 정지" : "슬라이드 재생"}
+        {/* Bottom: title + subtitle + indicators */}
+        <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-16 pb-10">
+          <div className="max-w-2xl mx-auto text-center">
+            <motion.h2
+              key={`title-${slideIndex}`}
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="font-serif text-white text-3xl md:text-5xl leading-tight mb-3"
             >
-              {isPlaying ? (
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor">
-                  <rect x="1" y="0" width="3" height="11" rx="0.5"/>
-                  <rect x="7" y="0" width="3" height="11" rx="0.5"/>
-                </svg>
-              ) : (
-                <svg width="11" height="11" viewBox="0 0 11 11" fill="currentColor">
-                  <path d="M1 0.5L10.5 5.5L1 10.5V0.5Z"/>
-                </svg>
+              {home.hero.title}
+            </motion.h2>
+            {home.hero.desc && (
+              <motion.p
+                key={`desc-${slideIndex}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.15 }}
+                className="font-sans text-white/75 text-sm md:text-base tracking-wide"
+              >
+                {home.hero.desc}
+              </motion.p>
+            )}
+
+            {/* Dash indicators */}
+            <div className="flex items-center justify-center gap-2 mt-6">
+              {images.length > 1 && (
+                <button
+                  onClick={() => setIsPlaying(p => !p)}
+                  className="mr-1 flex items-center justify-center text-white/50 hover:text-white transition-colors"
+                  aria-label={isPlaying ? "정지" : "재생"}
+                >
+                  {isPlaying ? (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                      <rect x="1" y="0" width="2.5" height="10" rx="0.5"/>
+                      <rect x="6.5" y="0" width="2.5" height="10" rx="0.5"/>
+                    </svg>
+                  ) : (
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="currentColor">
+                      <path d="M1 0.5L9.5 5L1 9.5V0.5Z"/>
+                    </svg>
+                  )}
+                </button>
               )}
-            </button>
-          )}
-          {images.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setSlideIndex(i)}
-              className="transition-all duration-300"
-              style={{
-                width: i === slideIndex ? "28px" : "18px",
-                height: "2px",
-                background: i === slideIndex ? "rgba(255,255,255,0.9)" : "rgba(255,255,255,0.35)",
-                border: "none",
-                padding: 0,
-                cursor: "pointer",
-              }}
-              aria-label={`${i + 1}번 이미지`}
-            />
-          ))}
-        </div>
-      </section>
-      {/* MAGAZINE PREVIEW */}
-      <section className="py-24 md:py-32 bg-secondary/30">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1 }}
-              className="aspect-[3/4] bg-muted relative overflow-hidden"
-            >
-              <div
-                className="absolute inset-0 bg-cover bg-center"
-                style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
-              />
-            </motion.div>
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="space-y-8"
-            >
-              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">MAGAZINE</span>
-              <h3 className="font-serif text-4xl md:text-5xl">{home.magazinePreview.title}</h3>
-              <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">{home.magazinePreview.desc}</p>
-              <div className="pt-8">
-                <Link href="/magazine" className="inline-block border-b border-foreground pb-1 font-sans text-sm tracking-widest uppercase hover:text-primary hover:border-primary transition-colors">
-                  Explore Archive
-                </Link>
-              </div>
-            </motion.div>
+              {images.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => setSlideIndex(i)}
+                  className="transition-all duration-300"
+                  style={{
+                    width: i === slideIndex ? "32px" : "20px",
+                    height: "2px",
+                    background: i === slideIndex ? "rgba(255,255,255,0.95)" : "rgba(255,255,255,0.35)",
+                    border: "none",
+                    padding: 0,
+                    cursor: "pointer",
+                  }}
+                  aria-label={`${i + 1}번`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
-      {/* MIND PROFILE PREVIEW */}
-      <section className="py-24 md:py-48 bg-background">
-        <div className="container mx-auto px-6 md:px-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-24 items-center flex-col-reverse md:flex-row-reverse">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1, delay: 0.2 }}
-              className="space-y-8 md:pr-12 md:col-start-1"
-            >
-              <span className="font-sans text-xs tracking-widest uppercase text-muted-foreground">MIND PROFILE</span>
-              <h3 className="font-serif text-4xl md:text-5xl">{home.mindProfilePreview.title}</h3>
-              <p className="font-sans font-light leading-loose text-foreground/80 max-w-md">{home.mindProfilePreview.desc}</p>
-              <div className="pt-8">
-                <Link href="/mind-profile" className="inline-block border-b border-foreground pb-1 font-sans text-sm tracking-widest uppercase hover:text-primary hover:border-primary transition-colors">
-                  View Portraits
-                </Link>
+
+      {/* ─── EDITORIAL GRID ─── */}
+      <section className="bg-[#FBFAF6] py-12 md:py-16 px-5 md:px-12">
+        {/* Section header */}
+        <div className="flex items-center gap-4 mb-8 md:mb-10">
+          <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">FEATURES</span>
+          <div className="flex-1 h-[1px] bg-foreground/10" />
+        </div>
+
+        {/* Grid: large left + 2 stacked right */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+
+          {/* Featured large card — Magazine */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8 }}
+            className="md:col-span-2 group cursor-pointer"
+          >
+            <Link href="/magazine">
+              <div className="relative overflow-hidden" style={{ aspectRatio: "16/10" }}>
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
+                  style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
+                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7">
+                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-2">MAGAZINE</span>
+                  <h3 className="font-serif text-white text-xl md:text-3xl leading-snug">{home.magazinePreview.title}</h3>
+                  {home.magazinePreview.desc && (
+                    <p className="font-sans text-white/70 text-xs md:text-sm mt-2 line-clamp-2">{home.magazinePreview.desc}</p>
+                  )}
+                </div>
               </div>
-            </motion.div>
+            </Link>
+          </motion.div>
+
+          {/* Right column: 2 stacked cards */}
+          <div className="flex flex-col gap-5 md:gap-6">
+
+            {/* Mind Profile card */}
             <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-100px" }}
-              transition={{ duration: 1 }}
-              className="aspect-[4/5] bg-muted relative overflow-hidden md:col-start-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.8, delay: 0.1 }}
+              className="group cursor-pointer flex-1"
             >
-              <div
-                className="absolute inset-0 bg-cover bg-center opacity-90 hover:scale-105 transition-transform duration-1000"
-                style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')` }}
-              />
+              <Link href="/mind-profile">
+                <div className="relative overflow-hidden h-full" style={{ minHeight: "180px" }}>
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
+                    style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')` }}
+                  />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.60) 0%, transparent 55%)" }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                    <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">MIND PROFILE</span>
+                    <h3 className="font-serif text-white text-base md:text-lg leading-snug">{home.mindProfilePreview.title}</h3>
+                  </div>
+                </div>
+              </Link>
+            </motion.div>
+
+            {/* Join / CTA card */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="group cursor-pointer flex-1"
+            >
+              <Link href="/join">
+                <div
+                  className="relative overflow-hidden h-full flex flex-col justify-end p-4 md:p-5"
+                  style={{ minHeight: "180px", background: "#1a1a1a" }}
+                >
+                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/40 block mb-2">JOIN US</span>
+                  <h3 className="font-serif text-white text-base md:text-lg leading-snug">{home.cta.title}</h3>
+                  <p className="font-sans text-white/50 text-xs mt-2 line-clamp-2">{home.cta.desc}</p>
+                  <span className="inline-block mt-3 font-sans text-[9px] tracking-[0.35em] uppercase text-white/60 border-b border-white/30 pb-0.5 w-fit group-hover:text-white group-hover:border-white transition-colors">
+                    Apply Now
+                  </span>
+                </div>
+              </Link>
             </motion.div>
           </div>
         </div>
+
+        {/* Secondary row: 3 equal cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-5 md:mt-6">
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8 }}
+            className="group cursor-pointer"
+          >
+            <Link href="/about">
+              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
+                  style={{ backgroundImage: `url('${home.hero.imageUrl}')` }}
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">ABOUT</span>
+                  <h3 className="font-serif text-white text-sm md:text-base leading-snug">FLOG에 대하여</h3>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+            className="group cursor-pointer"
+          >
+            <Link href="/event">
+              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
+                  style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')`, filter: "brightness(0.85)" }}
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">EVENT</span>
+                  <h3 className="font-serif text-white text-sm md:text-base leading-snug">이벤트 &amp; 소식</h3>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="group cursor-pointer"
+          >
+            <Link href="/mind-profile">
+              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
+                <div
+                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
+                  style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')`, filter: "brightness(0.85)" }}
+                />
+                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
+                <div className="absolute bottom-0 left-0 right-0 p-4">
+                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">MIND PROFILE</span>
+                  <h3 className="font-serif text-white text-sm md:text-base leading-snug">20대의 마음을 담다</h3>
+                </div>
+              </div>
+            </Link>
+          </motion.div>
+        </div>
       </section>
-      {/* CTA SECTION */}
-      <section className="py-32 bg-foreground text-background text-center px-6">
+
+      {/* ─── CTA ─── */}
+      <section className="py-24 md:py-32 bg-foreground text-background text-center px-6">
         <motion.div
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 1 }}
-          className="max-w-2xl mx-auto space-y-12"
+          transition={{ duration: 0.9 }}
+          className="max-w-xl mx-auto space-y-8"
         >
-          <h2 className="font-serif text-4xl md:text-6xl italic">{home.cta.title}</h2>
-          <p className="font-sans font-light text-lg text-white/70">{home.cta.desc}</p>
-          <Link href="/join" className="inline-block bg-background text-foreground px-12 py-5 font-sans tracking-widest text-sm uppercase hover:bg-primary hover:text-background transition-colors duration-500">
+          <h2 className="font-serif text-3xl md:text-5xl italic">{home.cta.title}</h2>
+          <p className="font-sans font-light text-base text-white/60 leading-loose">{home.cta.desc}</p>
+          <Link
+            href="/join"
+            className="inline-block border border-white/40 text-white px-10 py-4 font-sans tracking-[0.25em] text-xs uppercase hover:bg-white hover:text-foreground transition-all duration-400"
+          >
             Join Us
           </Link>
         </motion.div>
