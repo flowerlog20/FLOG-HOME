@@ -149,14 +149,6 @@ export default function Home() {
               <span className="font-sans text-[8px] tracking-[0.4em] text-white/25 px-4 uppercase shrink-0">FLower lOG</span>
               <div className="flex-1 h-[1px] bg-white/20"></div>
             </motion.div>
-            <div className="overflow-hidden pl-6 md:pl-12">
-              <motion.h1
-                variants={item}
-                className="font-serif font-light leading-[0.85] tracking-[0.08em] text-[15vw] md:text-[13vw] lg:text-[12vw] text-white/65 pl-[20vw] md:pl-[24vw]"
-              >
-                LOG
-              </motion.h1>
-            </div>
           </motion.div>
         </div>
 
