@@ -293,6 +293,8 @@ export interface HomeData {
     imageUrl: string;
     metaRight: string;
     metaLeft: string;
+    title: string;
+    desc: string;
   };
   philosophy: {
     quote1: string;
@@ -322,6 +324,8 @@ export const DEFAULT_HOME: HomeData = {
     imageUrl: "https://images.unsplash.com/photo-1518895949257-7621c3c786d7?q=80&w=2788&auto=format&fit=crop",
     metaRight: "Seoul · Est. 2026",
     metaLeft: "20대 기록 저장소",
+    title: "",
+    desc: "",
   },
   philosophy: {
     quote1: "우리는 20대를 기록합니다. 가장 젊은 날의 고민, 관계, 라이프스타일 그리고 내면의 목소리까지.",
@@ -352,7 +356,7 @@ export async function getHomeDataFromDB(): Promise<HomeData> {
     const stored = snap.data() as HomeData;
     return {
       heroImages: stored.heroImages ?? DEFAULT_HOME.heroImages,
-      hero: { ...DEFAULT_HOME.hero, ...stored.hero },
+      hero: { ...DEFAULT_HOME.hero, ...stored.hero, title: stored.hero?.title ?? "", desc: stored.hero?.desc ?? "" },
       philosophy: { ...DEFAULT_HOME.philosophy, ...stored.philosophy },
       magazinePreview: { ...DEFAULT_HOME.magazinePreview, ...stored.magazinePreview },
       mindProfilePreview: { ...DEFAULT_HOME.mindProfilePreview, ...stored.mindProfilePreview },
