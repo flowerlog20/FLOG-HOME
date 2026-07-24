@@ -785,20 +785,6 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
         </div>
       </div>
 
-      {/* MIND PROFILE PREVIEW */}
-      <div>
-        <SectionLabel label="04 · Mind Profile Preview" />
-        <div className="space-y-4">
-          <ImageField label="이미지 URL" value={home.mindProfilePreview.imageUrl} onChange={v => setMind("imageUrl", v)} />
-          <Field label="제목">
-            <input className={inputCls} value={home.mindProfilePreview.title} onChange={e => setMind("title", e.target.value)} />
-          </Field>
-          <Field label="설명">
-            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.mindProfilePreview.desc} onChange={e => setMind("desc", e.target.value)} />
-          </Field>
-        </div>
-      </div>
-
       {/* GALLERY */}
       <div>
         <SectionLabel label="06 · 갤러리 이미지 (우측 스크롤 그리드 · 최대 6개)" />
