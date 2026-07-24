@@ -145,49 +145,94 @@ export default function Home() {
       </section>
       {/* ─── EDITORIAL GRID ─── */}
       <section className="bg-white py-12 md:py-16 px-5 md:px-12">
-        {/* Section header */}
-        <div className="flex items-center gap-4 mb-8 md:mb-10">
-          <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">latest issue</span>
-          <div className="flex-1 h-[1px] bg-foreground/10" />
-        </div>
 
-        {/* Grid: left magazine + right scrollable gallery */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 md:items-start">
+        {/* ── Subsection 1: Latest Issue ── */}
+        <div className="mb-16 md:mb-20">
+          <div className="flex items-center gap-4 mb-8 md:mb-10">
+            <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">latest issue</span>
+            <div className="flex-1 h-[1px] bg-foreground/10" />
+          </div>
 
-          {/* Left: Magazine card — A4 ratio */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.8 }}
-            className="group cursor-pointer"
-          >
-            <Link href="/magazine">
-              <div className="relative overflow-hidden" style={{ aspectRatio: "210/297" }}>
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
-                  style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
-                />
-              </div>
-            </Link>
-          </motion.div>
+          {/* Grid: left magazine + right scrollable gallery */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 md:items-start">
 
-          {/* Right: 2×3 scrollable grid, height locked to left card */}
-          <div
-            className="overflow-y-auto hidden-scrollbar"
-            style={{ maxHeight: "calc((50vw - 3.5rem - 1.25rem) * 297 / 210)" }}
-          >
-            <div className="grid grid-cols-2 gap-2">
-              {[mag1, mag2, prof1, mag3, prof2, prof3].map((src, i) => (
-                <div key={i} className="relative overflow-hidden" style={{ aspectRatio: "4/5" }}>
-                  <img
-                    src={src}
-                    alt=""
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.04]"
+            {/* Left: Magazine card — A4 ratio */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.8 }}
+              className="group cursor-pointer"
+            >
+              <Link href="/magazine">
+                <div className="relative overflow-hidden" style={{ aspectRatio: "210/297" }}>
+                  <div
+                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
+                    style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
                   />
                 </div>
-              ))}
+              </Link>
+            </motion.div>
+
+            {/* Right: 2×3 scrollable grid, height locked to left card */}
+            <div
+              className="overflow-y-auto hidden-scrollbar"
+              style={{ maxHeight: "calc((50vw - 3.5rem - 1.25rem) * 297 / 210)" }}
+            >
+              <div className="grid grid-cols-2 gap-2">
+                {[mag1, mag2, prof1, mag3, prof2, prof3].map((src, i) => (
+                  <div key={i} className="relative overflow-hidden" style={{ aspectRatio: "4/5" }}>
+                    <img
+                      src={src}
+                      alt=""
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.04]"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
+          </div>
+        </div>
+
+        {/* ── Subsection 2: Interviews Feed ── */}
+        <div>
+          <div className="flex items-center gap-4 mb-8 md:mb-10">
+            <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">interviews</span>
+            <div className="flex-1 h-[1px] bg-foreground/10" />
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-[2px]">
+            {[
+              { img: prof1, tag: "INTERVIEW", title: "나는 지금 여기 있다", name: "김지수 · 23" },
+              { img: mag1,  tag: "INTERVIEW", title: "관계를 배우는 중입니다", name: "이서윤 · 25" },
+              { img: prof2, tag: "INTERVIEW", title: "계절이 바뀌면 나도 바뀌어", name: "박도현 · 22" },
+              { img: mag2,  tag: "INTERVIEW", title: "아직 모르는 게 더 많아요", name: "최예린 · 24" },
+              { img: prof3, tag: "INTERVIEW", title: "좋아하는 걸 찾는 시간", name: "정민준 · 26" },
+              { img: mag3,  tag: "INTERVIEW", title: "우리의 20대는 진행 중", name: "한소희 · 21" },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.6, delay: (i % 3) * 0.08 }}
+                className="group cursor-pointer relative overflow-hidden"
+                style={{ aspectRatio: "4/5" }}
+              >
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                />
+                {/* hover overlay */}
+                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-400" />
+                <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+                  <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-white/70 block mb-1">{item.tag}</span>
+                  <p className="font-serif text-white text-sm leading-snug">{item.title}</p>
+                  <p className="font-sans text-white/60 text-[10px] mt-1 tracking-wide">{item.name}</p>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
 
