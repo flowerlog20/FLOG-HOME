@@ -258,7 +258,7 @@ export default function Join() {
   }));
 
   return (
-    <div className="bg-background min-h-screen pt-28 pb-24">
+    <div className="bg-white min-h-screen pt-28 pb-24">
       <div className="container mx-auto px-6 md:px-12 max-w-4xl">
 
         {/* Header */}

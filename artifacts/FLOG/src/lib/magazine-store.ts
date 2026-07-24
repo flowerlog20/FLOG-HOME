@@ -280,6 +280,13 @@ export async function saveMagazineIssuesToDB(issues: MagazineIssue[]): Promise<v
 }
 
 /* ─── Home ─── */
+export interface HomeInterview {
+  imageUrl: string;
+  tag: string;
+  title: string;
+  name: string;
+}
+
 export interface HomeData {
   heroImages: string[];
   hero: {
@@ -305,6 +312,8 @@ export interface HomeData {
     title: string;
     desc: string;
   };
+  galleryImages: string[];
+  interviews: HomeInterview[];
 }
 
 export const DEFAULT_HOME: HomeData = {
@@ -332,6 +341,8 @@ export const DEFAULT_HOME: HomeData = {
     title: "우리와 함께 피어나요",
     desc: "FLOG의 에디터, 포토그래퍼, 그리고 모델이 되어주세요.",
   },
+  galleryImages: [],
+  interviews: [],
 };
 
 export async function getHomeDataFromDB(): Promise<HomeData> {
@@ -346,6 +357,8 @@ export async function getHomeDataFromDB(): Promise<HomeData> {
       magazinePreview: { ...DEFAULT_HOME.magazinePreview, ...stored.magazinePreview },
       mindProfilePreview: { ...DEFAULT_HOME.mindProfilePreview, ...stored.mindProfilePreview },
       cta: { ...DEFAULT_HOME.cta, ...stored.cta },
+      galleryImages: stored.galleryImages ?? DEFAULT_HOME.galleryImages,
+      interviews: stored.interviews ?? DEFAULT_HOME.interviews,
     };
   } catch {
     return DEFAULT_HOME;

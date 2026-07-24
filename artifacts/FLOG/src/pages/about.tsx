@@ -11,7 +11,7 @@ export default function About() {
   }, []);
 
   return (
-    <div className="bg-background min-h-screen pt-32 pb-24">
+    <div className="bg-white min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6 md:px-12 max-w-5xl">
         <motion.div
           initial={{ opacity: 0, y: 20 }}

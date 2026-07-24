@@ -36,6 +36,7 @@ import {
   type JoinData,
   type JoinItem,
   type HomeData,
+  type HomeInterview,
 } from "@/lib/magazine-store";
 import {
   FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -808,6 +809,110 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
           <Field label="설명">
             <input className={inputCls} value={home.cta.desc} onChange={e => setCta("desc", e.target.value)} />
           </Field>
+        </div>
+      </div>
+
+      {/* GALLERY */}
+      <div>
+        <SectionLabel label="06 · 갤러리 이미지 (우측 스크롤 그리드 · 최대 6개)" />
+        <p className="font-sans text-[9px] text-foreground/30 mb-4">비워두면 기본 이미지가 사용됩니다. URL 6개를 입력하면 우측 스크롤 갤러리에 표시됩니다.</p>
+        <div className="space-y-3">
+          {Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="flex gap-3 items-center">
+              <span className="font-sans text-[8px] text-foreground/25 w-4 shrink-0 text-right">{i + 1}</span>
+              <input
+                className={`${inputCls} flex-1`}
+                value={home.galleryImages?.[i] ?? ""}
+                onChange={e => {
+                  const next = [...(home.galleryImages ?? ["", "", "", "", "", ""])];
+                  next[i] = e.target.value;
+                  onChange({ ...home, galleryImages: next });
+                }}
+                placeholder="https://..."
+              />
+              {home.galleryImages?.[i] && (
+                <img
+                  src={home.galleryImages[i]}
+                  alt=""
+                  className="w-8 shrink-0 object-cover border border-foreground/8"
+                  style={{ aspectRatio: "4/5" }}
+                  onError={e => (e.currentTarget.style.display = "none")}
+                  onLoad={e => (e.currentTarget.style.display = "block")}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* INTERVIEWS */}
+      <div>
+        <SectionLabel label="07 · 인터뷰 피드" />
+        <div className="space-y-1 mb-4 flex justify-end">
+          <button
+            onClick={() => onChange({ ...home, interviews: [...(home.interviews ?? []), { imageUrl: "", tag: "INTERVIEW", title: "", name: "" }] })}
+            className="flex items-center gap-1.5 font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/40 hover:text-foreground/70 transition-colors border border-foreground/12 px-2.5 py-1"
+          >
+            <FaPlus className="text-[7px]" /> 인터뷰 추가
+          </button>
+        </div>
+        <div className="space-y-4">
+          {(home.interviews ?? []).map((item: HomeInterview, i: number) => (
+            <div key={i} className="border border-foreground/8 p-4 space-y-3">
+              <div className="flex items-center justify-between mb-1">
+                <span className="font-sans text-[8px] tracking-widest text-foreground/25 uppercase">인터뷰 {i + 1}</span>
+                <button
+                  onClick={() => onChange({ ...home, interviews: (home.interviews ?? []).filter((_, idx) => idx !== i) })}
+                  className="text-red-300 hover:text-red-500 transition-colors"
+                >
+                  <FaTrash className="text-[10px]" />
+                </button>
+              </div>
+              <div className="flex gap-3 items-start">
+                <div className="flex-1 space-y-3">
+                  <Field label="이미지 URL">
+                    <input
+                      className={inputCls}
+                      value={item.imageUrl}
+                      onChange={e => { const next = [...(home.interviews ?? [])]; next[i] = { ...item, imageUrl: e.target.value }; onChange({ ...home, interviews: next }); }}
+                      placeholder="https://..."
+                    />
+                  </Field>
+                  <div className="grid grid-cols-2 gap-3">
+                    <Field label="제목">
+                      <input
+                        className={inputCls}
+                        value={item.title}
+                        onChange={e => { const next = [...(home.interviews ?? [])]; next[i] = { ...item, title: e.target.value }; onChange({ ...home, interviews: next }); }}
+                        placeholder="나는 지금 여기 있다"
+                      />
+                    </Field>
+                    <Field label="이름 · 나이">
+                      <input
+                        className={inputCls}
+                        value={item.name}
+                        onChange={e => { const next = [...(home.interviews ?? [])]; next[i] = { ...item, name: e.target.value }; onChange({ ...home, interviews: next }); }}
+                        placeholder="김지수 · 23"
+                      />
+                    </Field>
+                  </div>
+                </div>
+                {item.imageUrl && (
+                  <img
+                    src={item.imageUrl}
+                    alt=""
+                    className="w-14 shrink-0 object-cover border border-foreground/8 mt-5"
+                    style={{ aspectRatio: "4/5" }}
+                    onError={e => (e.currentTarget.style.display = "none")}
+                    onLoad={e => (e.currentTarget.style.display = "block")}
+                  />
+                )}
+              </div>
+            </div>
+          ))}
+          {!(home.interviews?.length) && (
+            <p className="font-sans text-[9px] text-foreground/25 tracking-wide">인터뷰를 추가하면 메인 피드에 표시됩니다. 비워두면 기본 데이터가 사용됩니다.</p>
+          )}
         </div>
       </div>
 

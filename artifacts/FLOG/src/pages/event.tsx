@@ -19,7 +19,7 @@ export default function EventDetail() {
   }, [id]);
 
   if (loading) return (
-    <div className="min-h-screen bg-background flex items-center justify-center">
+    <div className="min-h-screen bg-white flex items-center justify-center">
       <p className="font-sans text-[9px] tracking-widest uppercase text-foreground/25">불러오는 중…</p>
     </div>
   );
@@ -27,7 +27,7 @@ export default function EventDetail() {
   if (!event) return null;
 
   return (
-    <div className="bg-background min-h-screen pt-32 pb-24">
+    <div className="bg-white min-h-screen pt-32 pb-24">
       <div className="container mx-auto px-6 md:px-12 max-w-4xl">
 
         {/* Back */}

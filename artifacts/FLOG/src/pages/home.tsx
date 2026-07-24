@@ -180,7 +180,10 @@ export default function Home() {
               style={{ maxHeight: "calc((50vw - 3.5rem - 1.25rem) * 297 / 210)" }}
             >
               <div className="grid grid-cols-2 gap-2">
-                {[mag1, mag2, prof1, mag3, prof2, prof3].map((src, i) => (
+                {(home.galleryImages?.length
+                  ? home.galleryImages
+                  : [mag1, mag2, prof1, mag3, prof2, prof3] as unknown as string[]
+                ).map((src, i) => (
                   <div key={i} className="relative overflow-hidden" style={{ aspectRatio: "4/5" }}>
                     <img
                       src={src}
@@ -202,14 +205,14 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-[2px]">
-            {[
-              { img: prof1, tag: "INTERVIEW", title: "나는 지금 여기 있다", name: "김지수 · 23" },
-              { img: mag1,  tag: "INTERVIEW", title: "관계를 배우는 중입니다", name: "이서윤 · 25" },
-              { img: prof2, tag: "INTERVIEW", title: "계절이 바뀌면 나도 바뀌어", name: "박도현 · 22" },
-              { img: mag2,  tag: "INTERVIEW", title: "아직 모르는 게 더 많아요", name: "최예린 · 24" },
-              { img: prof3, tag: "INTERVIEW", title: "좋아하는 걸 찾는 시간", name: "정민준 · 26" },
-              { img: mag3,  tag: "INTERVIEW", title: "우리의 20대는 진행 중", name: "한소희 · 21" },
-            ].map((item, i) => (
+            {(home.interviews?.length ? home.interviews : [
+              { imageUrl: prof1 as unknown as string, tag: "INTERVIEW", title: "나는 지금 여기 있다", name: "김지수 · 23" },
+              { imageUrl: mag1 as unknown as string,  tag: "INTERVIEW", title: "관계를 배우는 중입니다", name: "이서윤 · 25" },
+              { imageUrl: prof2 as unknown as string, tag: "INTERVIEW", title: "계절이 바뀌면 나도 바뀌어", name: "박도현 · 22" },
+              { imageUrl: mag2 as unknown as string,  tag: "INTERVIEW", title: "아직 모르는 게 더 많아요", name: "최예린 · 24" },
+              { imageUrl: prof3 as unknown as string, tag: "INTERVIEW", title: "좋아하는 걸 찾는 시간", name: "정민준 · 26" },
+              { imageUrl: mag3 as unknown as string,  tag: "INTERVIEW", title: "우리의 20대는 진행 중", name: "한소희 · 21" },
+            ]).map((item, i) => (
               <motion.div
                 key={i}
                 initial={{ opacity: 0 }}
@@ -220,11 +223,10 @@ export default function Home() {
                 style={{ aspectRatio: "4/5" }}
               >
                 <img
-                  src={item.img}
+                  src={item.imageUrl}
                   alt={item.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                 />
-                {/* hover overlay */}
                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-400" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400">
                   <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-white/70 block mb-1">{item.tag}</span>
