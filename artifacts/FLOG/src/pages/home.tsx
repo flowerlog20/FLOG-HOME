@@ -147,7 +147,7 @@ export default function Home() {
         </div>
 
         {/* Grid: large left + 2 stacked right */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
 
           {/* Featured large card — Magazine */}
           <motion.div
@@ -155,7 +155,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ duration: 0.8 }}
-            className="md:col-span-2 group cursor-pointer"
+            className="group cursor-pointer"
           >
             <Link href="/magazine">
               <div className="relative overflow-hidden" style={{ aspectRatio: "210/297" }}>
