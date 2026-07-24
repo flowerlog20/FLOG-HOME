@@ -22,7 +22,7 @@ export function Navbar() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="sticky top-0 left-0 right-0 z-50 bg-[#fbfaf6] border-b border-black/10"
+        className="sticky top-0 left-0 right-0 z-50 bg-white border-b border-black/10"
       >
         <div className="mx-auto px-6 py-4 md:px-10 flex items-center justify-between text-foreground">
 
