@@ -7,7 +7,7 @@ export function Footer() {
       <div className="container mx-auto px-6 md:px-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
         <div className="col-span-1 md:col-span-2 lg:col-span-2 flex flex-col justify-between">
           <div>
-            <h2 className="font-serif font-light text-6xl md:text-7xl tracking-[0.06em] leading-none mb-4 text-foreground">FLOG</h2>
+            <h2 className="font-serif text-6xl md:text-7xl tracking-[0.06em] leading-none mb-4 text-foreground font-thin">FLOG</h2>
             <div className="flex items-center gap-3 mt-3">
               <div className="w-6 h-[1px] bg-foreground/20"></div>
               <p className="font-sans text-[9px] tracking-[0.4em] text-foreground/40 uppercase font-bold">FLower lOG</p>

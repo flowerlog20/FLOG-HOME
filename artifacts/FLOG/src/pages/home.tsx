@@ -217,7 +217,7 @@ export default function Home() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.08 }}
                 className="group cursor-pointer relative overflow-hidden"
-                style={{ aspectRatio: "4/5" }}
+                style={{ aspectRatio: "3/4" }}
               >
                 <img
                   src={item.imageUrl}
@@ -225,10 +225,10 @@ export default function Home() {
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-400" />
-                <div className="absolute inset-0 flex flex-col justify-end p-4">
-                  <span className="font-sans text-[16px] tracking-[0.35em] uppercase text-white/70 block mb-1">{item.tag}</span>
-                  <p className="font-sans text-white text-[28px] leading-snug">{item.title}</p>
-                  <p className="font-sans text-white/60 text-[20px] mt-1 tracking-wide">{item.name}</p>
+                <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-4">
+                  <span className="font-sans text-[7px] md:text-[16px] tracking-[0.25em] md:tracking-[0.35em] uppercase text-white/70 block mb-0.5 md:mb-1">{item.tag}</span>
+                  <p className="font-sans text-white text-[11px] md:text-[28px] leading-snug">{item.title}</p>
+                  <p className="font-sans text-white/60 text-[9px] md:text-[20px] mt-0.5 md:mt-1 tracking-wide">{item.name}</p>
                 </div>
               </motion.div>
             ))}
