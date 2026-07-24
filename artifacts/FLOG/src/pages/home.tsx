@@ -174,11 +174,8 @@ export default function Home() {
               </Link>
             </motion.div>
 
-            {/* Right: 2×3 scrollable grid, height locked to left card */}
-            <div
-              className="overflow-y-auto hidden-scrollbar"
-              style={{ maxHeight: "calc((50vw - 3.5rem - 1.25rem) * 297 / 210)" }}
-            >
+            {/* Right: 2×3 scrollable grid — desktop: height locked to left card / mobile: all visible */}
+            <div className="gallery-scroll">
               <div className="grid grid-cols-2 gap-2">
                 {(home.galleryImages?.length
                   ? home.galleryImages
