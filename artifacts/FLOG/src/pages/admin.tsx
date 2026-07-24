@@ -799,19 +799,6 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
         </div>
       </div>
 
-      {/* CTA */}
-      <div>
-        <SectionLabel label="05 · CTA" />
-        <div className="space-y-4">
-          <Field label="제목">
-            <input className={inputCls} value={home.cta.title} onChange={e => setCta("title", e.target.value)} />
-          </Field>
-          <Field label="설명">
-            <input className={inputCls} value={home.cta.desc} onChange={e => setCta("desc", e.target.value)} />
-          </Field>
-        </div>
-      </div>
-
       {/* GALLERY */}
       <div>
         <SectionLabel label="06 · 갤러리 이미지 (우측 스크롤 그리드 · 최대 6개)" />
