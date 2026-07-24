@@ -206,60 +206,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Secondary row: 3 equal cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 mt-5 md:mt-6">
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.8 }}
-            className="group cursor-pointer"
-          >
-            <Link href="/about">
-              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
-                  style={{ backgroundImage: `url('${home.hero.imageUrl}')` }}
-                />
-              </div>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.8, delay: 0.1 }}
-            className="group cursor-pointer"
-          >
-            <Link href="/event">
-              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
-                  style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')`, filter: "brightness(0.85)" }}
-                />
-              </div>
-            </Link>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-60px" }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            className="group cursor-pointer"
-          >
-            <Link href="/mind-profile">
-              <div className="relative overflow-hidden" style={{ aspectRatio: "4/3" }}>
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
-                  style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')`, filter: "brightness(0.85)" }}
-                />
-              </div>
-            </Link>
-          </motion.div>
-        </div>
       </section>
 
       {/* ─── CTA ─── */}
