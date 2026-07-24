@@ -747,12 +747,6 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
             />
           </Field>
           <ImageField label="기본 배경 이미지 URL (슬라이드 없을 때 사용)" value={home.hero.imageUrl} onChange={v => setHero("imageUrl", v)} />
-          <Field label="히어로 제목 (슬라이드 위에 표시)">
-            <input className={inputCls} value={home.hero.title ?? ""} onChange={e => setHero("title", e.target.value)} placeholder="예: FLOG SUMMER ISSUE" />
-          </Field>
-          <Field label="히어로 설명">
-            <input className={inputCls} value={home.hero.desc ?? ""} onChange={e => setHero("desc", e.target.value)} placeholder="예: 우리의 계절을 기록합니다" />
-          </Field>
           <ImageField label="매거진 커버 이미지 URL (Latest Issue 좌측 카드)" value={home.magazinePreview.imageUrl} onChange={v => setMag("imageUrl", v)} />
         </div>
       </div>

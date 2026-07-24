@@ -82,29 +82,8 @@ export default function Home() {
         {/* Bottom: title + subtitle + indicators */}
         <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-16 pb-10">
           <div className="max-w-2xl mx-auto text-center">
-            <motion.h2
-              key={`title-${slideIndex}`}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-              className="font-serif text-white text-3xl md:text-5xl leading-tight mb-3"
-            >
-              {home.hero.title}
-            </motion.h2>
-            {home.hero.desc && (
-              <motion.p
-                key={`desc-${slideIndex}`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, delay: 0.15 }}
-                className="font-sans text-white/75 text-sm md:text-base tracking-wide"
-              >
-                {home.hero.desc}
-              </motion.p>
-            )}
-
             {/* Dash indicators */}
-            <div className="flex items-center justify-center gap-2 mt-6">
+            <div className="flex items-center justify-center gap-2">
               {images.length > 1 && (
                 <button
                   onClick={() => setIsPlaying(p => !p)}
