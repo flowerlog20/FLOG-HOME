@@ -181,11 +181,12 @@ export default function Home() {
                   ? home.galleryImages
                   : [mag1, mag2, prof1, mag3, prof2, prof3] as unknown as string[]
                 ).map((src, i) => (
-                  <div key={i} className="relative overflow-hidden" style={{ aspectRatio: "4/5" }}>
+                  <div key={i} className="overflow-hidden">
                     <img
                       src={src}
                       alt=""
-                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.04]"
+                      className="w-full block object-cover transition-transform duration-500 hover:scale-[1.04]"
+                      style={{ aspectRatio: "4/5" }}
                     />
                   </div>
                 ))}
@@ -217,12 +218,12 @@ export default function Home() {
                 viewport={{ once: true, margin: "-40px" }}
                 transition={{ duration: 0.6, delay: (i % 3) * 0.08 }}
                 className="group cursor-pointer relative overflow-hidden"
-                style={{ aspectRatio: "3/4" }}
               >
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  className="w-full block object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  style={{ aspectRatio: "3/4" }}
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-400" />
                 <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-4">
