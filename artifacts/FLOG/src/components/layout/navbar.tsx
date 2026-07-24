@@ -22,13 +22,13 @@ export function Navbar() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="fixed top-0 left-0 right-0 z-50 mix-blend-difference"
+        className="sticky top-0 left-0 right-0 z-50 bg-[#fbfaf6] border-b border-black/10"
       >
-        <div className="mx-auto px-6 py-5 md:px-10 flex items-center justify-between text-[#fbfaf6]">
+        <div className="mx-auto px-6 py-4 md:px-10 flex items-center justify-between text-foreground">
 
           {/* Mobile hamburger */}
           <button
-            className="md:hidden p-1 text-[#fbfaf6]"
+            className="md:hidden p-1 text-foreground"
             onClick={() => setIsOpen(true)}
             aria-label="메뉴 열기"
           >
@@ -39,12 +39,12 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="font-serif font-light text-3xl md:text-4xl tracking-[0.06em] leading-none hover:opacity-70 transition-opacity"
+              className="font-serif font-light text-3xl md:text-4xl tracking-[0.06em] leading-none hover:opacity-60 transition-opacity"
               onClick={() => setIsOpen(false)}
             >
               FLOG
             </Link>
-            <span className="hidden lg:inline-block font-sans text-[9px] tracking-[0.22em] font-bold text-[#fbfaf6]/60 uppercase border-l border-[#fbfaf6]/30 pl-4">
+            <span className="hidden lg:inline-block font-sans text-[9px] tracking-[0.22em] font-bold text-foreground/40 uppercase border-l border-foreground/20 pl-4">
               FLOWER LOG MAGAZINE
             </span>
           </div>
@@ -59,7 +59,7 @@ export function Navbar() {
                   "font-sans text-[10px] lg:text-[11px] tracking-[0.2em] uppercase transition-opacity",
                   location === link.href
                     ? "font-bold opacity-100"
-                    : "font-semibold opacity-60 hover:opacity-90"
+                    : "font-semibold opacity-40 hover:opacity-80"
                 )}
               >
                 {link.label}
@@ -68,7 +68,7 @@ export function Navbar() {
           </nav>
 
           {/* Right info (desktop) */}
-          <div className="hidden md:block font-sans text-[9px] font-bold tracking-[0.2em] uppercase opacity-50">
+          <div className="hidden md:block font-sans text-[9px] font-bold tracking-[0.2em] uppercase opacity-35">
             Seoul · Est. 2026
           </div>
 
