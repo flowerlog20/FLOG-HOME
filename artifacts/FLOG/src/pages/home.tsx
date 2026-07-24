@@ -158,7 +158,7 @@ export default function Home() {
             className="md:col-span-2 group cursor-pointer"
           >
             <Link href="/magazine">
-              <div className="relative overflow-hidden" style={{ aspectRatio: "16/10" }}>
+              <div className="relative overflow-hidden" style={{ aspectRatio: "210/297" }}>
                 <div
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
                   style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
