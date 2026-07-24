@@ -147,7 +147,7 @@ export default function Home() {
       <section className="bg-white py-12 md:py-16 px-5 md:px-12">
         {/* Section header */}
         <div className="flex items-center gap-4 mb-8 md:mb-10">
-          <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">MAGAZINE STORY</span>
+          <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">latest issue</span>
           <div className="flex-1 h-[1px] bg-foreground/10" />
         </div>
 
