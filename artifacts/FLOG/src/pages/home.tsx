@@ -163,14 +163,6 @@ export default function Home() {
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
                   style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')` }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-5 md:p-7">
-                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-2">MAGAZINE</span>
-                  <h3 className="font-serif text-white text-xl md:text-3xl leading-snug">{home.magazinePreview.title}</h3>
-                  {home.magazinePreview.desc && (
-                    <p className="font-sans text-white/70 text-xs md:text-sm mt-2 line-clamp-2">{home.magazinePreview.desc}</p>
-                  )}
-                </div>
               </div>
             </Link>
           </motion.div>
