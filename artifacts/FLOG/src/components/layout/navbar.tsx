@@ -39,7 +39,7 @@ export function Navbar() {
           <div className="flex items-center gap-4">
             <Link
               href="/"
-              className="font-serif font-light text-3xl md:text-4xl tracking-[0.06em] leading-none hover:opacity-60 transition-opacity"
+              className="font-serif text-3xl md:text-4xl tracking-[0.06em] leading-none hover:opacity-60 transition-opacity font-medium"
               onClick={() => setIsOpen(false)}
             >
               FLOG
@@ -76,7 +76,6 @@ export function Navbar() {
           <div className="md:hidden w-[22px]" />
         </div>
       </motion.header>
-
       {/* Mobile overlay */}
       <AnimatePresence>
         {isOpen && (
