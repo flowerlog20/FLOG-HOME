@@ -184,11 +184,6 @@ export default function Home() {
                     className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
                     style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')` }}
                   />
-                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.60) 0%, transparent 55%)" }} />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-                    <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">MIND PROFILE</span>
-                    <h3 className="font-serif text-white text-base md:text-lg leading-snug">{home.mindProfilePreview.title}</h3>
-                  </div>
                 </div>
               </Link>
             </motion.div>
