@@ -229,11 +229,6 @@ export default function Home() {
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
                   style={{ backgroundImage: `url('${home.hero.imageUrl}')` }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">ABOUT</span>
-                  <h3 className="font-serif text-white text-sm md:text-base leading-snug">FLOG에 대하여</h3>
-                </div>
               </div>
             </Link>
           </motion.div>
@@ -251,11 +246,6 @@ export default function Home() {
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
                   style={{ backgroundImage: `url('${home.magazinePreview.imageUrl}')`, filter: "brightness(0.85)" }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">EVENT</span>
-                  <h3 className="font-serif text-white text-sm md:text-base leading-snug">이벤트 &amp; 소식</h3>
-                </div>
               </div>
             </Link>
           </motion.div>
@@ -273,11 +263,6 @@ export default function Home() {
                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
                   style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')`, filter: "brightness(0.85)" }}
                 />
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 55%)" }} />
-                <div className="absolute bottom-0 left-0 right-0 p-4">
-                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/60 block mb-1">MIND PROFILE</span>
-                  <h3 className="font-serif text-white text-sm md:text-base leading-snug">20대의 마음을 담다</h3>
-                </div>
               </div>
             </Link>
           </motion.div>
