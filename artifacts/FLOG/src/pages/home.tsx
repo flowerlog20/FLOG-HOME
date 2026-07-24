@@ -227,8 +227,8 @@ export default function Home() {
                   alt={item.title}
                   className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                 />
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/40 transition-colors duration-400" />
-                <div className="absolute inset-0 flex flex-col justify-end p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-400">
+                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-400" />
+                <div className="absolute inset-0 flex flex-col justify-end p-4">
                   <span className="font-sans text-[8px] tracking-[0.35em] uppercase text-white/70 block mb-1">{item.tag}</span>
                   <p className="font-serif text-white text-sm leading-snug">{item.title}</p>
                   <p className="font-sans text-white/60 text-[10px] mt-1 tracking-wide">{item.name}</p>
