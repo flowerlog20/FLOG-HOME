@@ -1,0 +1,48 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm --filter @workspace/FLOG run build
+        env:
+          PORT: 3000
+          BASE_PATH: /
+          NODE_ENV: production
+
+      - name: Add CNAME
+        run: echo "flowerlog20.com" > artifacts/FLOG/dist/public/CNAME
+
+      - name: Copy index.html as 404.html (SPA routing)
+        run: cp artifacts/FLOG/dist/public/index.html artifacts/FLOG/dist/public/404.html
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: artifacts/FLOG/dist/public
