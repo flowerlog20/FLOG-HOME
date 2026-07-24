@@ -2,6 +2,12 @@ import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
 import { getHomeDataFromDB, DEFAULT_HOME, type HomeData } from "@/lib/magazine-store";
+import mag1 from "@/assets/images/magazine_1.jpg";
+import mag2 from "@/assets/images/magazine_2.jpg";
+import mag3 from "@/assets/images/magazine_3.jpg";
+import prof1 from "@/assets/images/profile_1.jpg";
+import prof2 from "@/assets/images/profile_2.jpg";
+import prof3 from "@/assets/images/profile_3.jpg";
 
 export default function Home() {
   const [home, setHome] = useState<HomeData>(DEFAULT_HOME);
@@ -146,10 +152,10 @@ export default function Home() {
           <div className="flex-1 h-[1px] bg-foreground/10" />
         </div>
 
-        {/* Grid: large left + 2 stacked right */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6">
+        {/* Grid: left magazine + right scrollable gallery */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6 md:items-start">
 
-          {/* Featured large card — Magazine */}
+          {/* Left: Magazine card — A4 ratio */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -167,42 +173,22 @@ export default function Home() {
             </Link>
           </motion.div>
 
-          {/* Right column: 2 stacked cards */}
-          <div className="flex flex-col gap-5 md:gap-6">
-
-            {/* Mind Profile card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.8, delay: 0.1 }}
-              className="group cursor-pointer flex-1"
-            >
-              <Link href="/mind-profile">
-                <div className="relative overflow-hidden h-full" style={{ minHeight: "180px" }}>
-                  <div
-                    className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-[1.03]"
-                    style={{ backgroundImage: `url('${home.mindProfilePreview.imageUrl}')` }}
+          {/* Right: 2×3 scrollable grid, height locked to left card */}
+          <div
+            className="overflow-y-auto hidden-scrollbar"
+            style={{ maxHeight: "calc((50vw - 3.5rem - 1.25rem) * 297 / 210)" }}
+          >
+            <div className="grid grid-cols-2 gap-2">
+              {[mag1, mag2, prof1, mag3, prof2, prof3].map((src, i) => (
+                <div key={i} className="relative overflow-hidden" style={{ aspectRatio: "4/5" }}>
+                  <img
+                    src={src}
+                    alt=""
+                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 hover:scale-[1.04]"
                   />
                 </div>
-              </Link>
-            </motion.div>
-
-            {/* Join / CTA card */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="group cursor-pointer flex-1"
-            >
-              <Link href="/join">
-                <div
-                  className="relative overflow-hidden h-full"
-                  style={{ minHeight: "180px", background: "#1a1a1a" }}
-                />
-              </Link>
-            </motion.div>
+              ))}
+            </div>
           </div>
         </div>
 

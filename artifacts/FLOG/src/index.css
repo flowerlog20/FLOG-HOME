@@ -1,4 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Hahmlet:wght@200;300;400;500&family=Noto+Serif+KR:wght@200;400;600&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+
+.hidden-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
