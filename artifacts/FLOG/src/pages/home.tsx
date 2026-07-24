@@ -143,12 +143,11 @@ export default function Home() {
           </div>
         </div>
       </section>
-
       {/* ─── EDITORIAL GRID ─── */}
       <section className="bg-white py-12 md:py-16 px-5 md:px-12">
         {/* Section header */}
         <div className="flex items-center gap-4 mb-8 md:mb-10">
-          <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">FEATURES</span>
+          <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">MAGAZINE STORY</span>
           <div className="flex-1 h-[1px] bg-foreground/10" />
         </div>
 
@@ -193,7 +192,6 @@ export default function Home() {
         </div>
 
       </section>
-
       {/* ─── CTA ─── */}
       <section className="py-24 md:py-32 bg-foreground text-background text-center px-6">
         <motion.div
