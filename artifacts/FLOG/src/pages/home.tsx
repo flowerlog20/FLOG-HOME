@@ -238,24 +238,6 @@ export default function Home() {
 
       </section>
       {/* ─── CTA ─── */}
-      <section className="py-24 md:py-32 bg-foreground text-background text-center px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.9 }}
-          className="max-w-xl mx-auto space-y-8"
-        >
-          <h2 className="font-serif text-3xl md:text-5xl italic">{home.cta.title}</h2>
-          <p className="font-sans font-light text-base text-white/60 leading-loose">{home.cta.desc}</p>
-          <Link
-            href="/join"
-            className="inline-block border border-white/40 text-white px-10 py-4 font-sans tracking-[0.25em] text-xs uppercase hover:bg-white hover:text-foreground transition-all duration-400"
-          >
-            Join Us
-          </Link>
-        </motion.div>
-      </section>
     </>
   );
 }
