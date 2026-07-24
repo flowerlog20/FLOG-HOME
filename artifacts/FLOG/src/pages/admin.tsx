@@ -758,19 +758,6 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
         </div>
       </div>
 
-      {/* PHILOSOPHY */}
-      <div>
-        <SectionLabel label="02 · Philosophy" />
-        <div className="space-y-4">
-          <Field label="인용문 1">
-            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.philosophy.quote1} onChange={e => setPhil("quote1", e.target.value)} />
-          </Field>
-          <Field label="인용문 2 (들여쓰기됨)">
-            <textarea className={`${inputCls} resize-none min-h-[64px]`} value={home.philosophy.quote2} onChange={e => setPhil("quote2", e.target.value)} />
-          </Field>
-        </div>
-      </div>
-
       {/* GALLERY */}
       <div>
         <SectionLabel label="06 · 갤러리 이미지 (우측 스크롤 그리드 · 최대 6개)" />
