@@ -230,7 +230,7 @@ export default function Home() {
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-400" />
                 <div className="absolute inset-0 flex flex-col justify-end p-4">
                   <span className="font-sans text-[16px] tracking-[0.35em] uppercase text-white/70 block mb-1">{item.tag}</span>
-                  <p className="font-serif text-white text-[28px] leading-snug">{item.title}</p>
+                  <p className="font-sans text-white text-[28px] leading-snug">{item.title}</p>
                   <p className="font-sans text-white/60 text-[20px] mt-1 tracking-wide">{item.name}</p>
                 </div>
               </motion.div>
