@@ -198,16 +198,9 @@ export default function Home() {
             >
               <Link href="/join">
                 <div
-                  className="relative overflow-hidden h-full flex flex-col justify-end p-4 md:p-5"
+                  className="relative overflow-hidden h-full"
                   style={{ minHeight: "180px", background: "#1a1a1a" }}
-                >
-                  <span className="font-sans text-[9px] tracking-[0.4em] uppercase text-white/40 block mb-2">JOIN US</span>
-                  <h3 className="font-serif text-white text-base md:text-lg leading-snug">{home.cta.title}</h3>
-                  <p className="font-sans text-white/50 text-xs mt-2 line-clamp-2">{home.cta.desc}</p>
-                  <span className="inline-block mt-3 font-sans text-[9px] tracking-[0.35em] uppercase text-white/60 border-b border-white/30 pb-0.5 w-fit group-hover:text-white group-hover:border-white transition-colors">
-                    Apply Now
-                  </span>
-                </div>
+                />
               </Link>
             </motion.div>
           </div>
