@@ -747,14 +747,6 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
             />
           </Field>
           <ImageField label="기본 배경 이미지 URL (슬라이드 없을 때 사용)" value={home.hero.imageUrl} onChange={v => setHero("imageUrl", v)} />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Field label="우측 메타 텍스트">
-              <input className={inputCls} value={home.hero.metaRight} onChange={e => setHero("metaRight", e.target.value)} placeholder="Seoul · Est. 2026" />
-            </Field>
-            <Field label="좌측 메타 텍스트">
-              <input className={inputCls} value={home.hero.metaLeft} onChange={e => setHero("metaLeft", e.target.value)} placeholder="20대 기록 저장소" />
-            </Field>
-          </div>
         </div>
       </div>
 
