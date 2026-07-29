@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import heroImg from "@/assets/images/hero.jpg";
+import heroImgFallback from "@/assets/images/hero.jpg";
 import { getAboutDataFromDB, DEFAULT_ABOUT, type AboutData } from "@/lib/magazine-store";
 
 export default function About() {
@@ -31,7 +31,7 @@ export default function About() {
             transition={{ duration: 1 }}
           >
             <div className="aspect-[3/4] bg-muted relative overflow-hidden">
-              <img src={heroImg} alt="Kkotbonabo Philosophy" className="object-cover w-full h-full grayscale-[30%] hover:scale-105 transition-transform duration-1000" />
+              <img src={about.heroImageUrl || heroImgFallback} alt="Kkotbonabo Philosophy" className="object-cover w-full h-full grayscale-[30%] hover:scale-105 transition-transform duration-1000" />
             </div>
           </motion.div>
 

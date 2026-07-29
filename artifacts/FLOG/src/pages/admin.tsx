@@ -993,6 +993,12 @@ function AboutEditor({ about, onChange }: { about: AboutData; onChange: (a: Abou
 
   return (
     <div className="space-y-8">
+      <ImageField
+        label="소개 페이지 이미지 URL (좌측 세로형 사진)"
+        value={about.heroImageUrl ?? ""}
+        onChange={v => onChange({ ...about, heroImageUrl: v })}
+      />
+
       <Field label="우리의 이야기 (본문)">
         <textarea
           className={`${inputCls} resize-none min-h-[100px]`}

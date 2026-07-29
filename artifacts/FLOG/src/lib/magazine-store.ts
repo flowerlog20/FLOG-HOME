@@ -391,6 +391,7 @@ export interface AboutWhatWeDoItem {
 export interface AboutData {
   story: string;
   whatWeDo: AboutWhatWeDoItem[];
+  heroImageUrl?: string;
 }
 
 export const DEFAULT_ABOUT: AboutData = {
