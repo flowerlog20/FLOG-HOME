@@ -127,9 +127,11 @@ export default function Home() {
 
         {/* ── Subsection 1: Latest Issue ── */}
         <div className="mb-16 md:mb-20">
-          <div className="flex items-center gap-4 mb-8 md:mb-10">
-            <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">latest issue</span>
-            <div className="flex-1 h-[1px] bg-foreground/10" />
+          <div className="mb-6 md:mb-8">
+            <h2 className="font-serif text-[28px] md:text-[42px] font-bold tracking-tight text-foreground leading-none mb-3 md:mb-4">
+              LATEST ISSUE
+            </h2>
+            <div className="w-full h-[1.5px] bg-foreground" />
           </div>
 
           {/* Grid: left magazine + right scrollable gallery */}
