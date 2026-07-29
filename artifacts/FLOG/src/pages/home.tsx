@@ -72,16 +72,20 @@ function InterviewModal({ item, onClose }: { item: HomeInterview; onClose: () =>
             </button>
           </div>
 
-          {/* Cover image */}
-          {item.imageUrl && (
-            <div className="w-full overflow-hidden" style={{ aspectRatio: "3/2" }}>
+          {/* Cover image — always shown */}
+          <div className="w-full overflow-hidden" style={{ aspectRatio: "3/2" }}>
+            {item.imageUrl ? (
               <img
                 src={item.imageUrl}
                 alt={item.title}
                 className="w-full h-full object-cover"
               />
-            </div>
-          )}
+            ) : (
+              <div className="w-full h-full bg-foreground/5 flex items-center justify-center">
+                <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-foreground/25">No Image</span>
+              </div>
+            )}
+          </div>
 
           {/* Title & name */}
           <div className="px-6 pt-6 pb-4 border-b border-foreground/8">
