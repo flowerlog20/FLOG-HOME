@@ -181,7 +181,7 @@ export default function Home() {
             <div className="flex-1 h-[1px] bg-foreground/10" />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-[2px]">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
             {(home.interviews?.length ? home.interviews : [
               { imageUrl: prof1 as unknown as string, tag: "INTERVIEW", title: "나는 지금 여기 있다", name: "김지수 · 23" },
               { imageUrl: mag1 as unknown as string,  tag: "INTERVIEW", title: "관계를 배우는 중입니다", name: "이서윤 · 25" },
@@ -192,11 +192,11 @@ export default function Home() {
             ]).map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0 }}
-                whileInView={{ opacity: 1 }}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.6, delay: (i % 3) * 0.08 }}
-                className="group cursor-pointer relative overflow-hidden"
+                transition={{ duration: 0.55, delay: (i % 3) * 0.1, ease: "easeOut" }}
+                className="group cursor-pointer relative overflow-hidden rounded-sm"
               >
                 <img
                   src={item.imageUrl}
@@ -204,11 +204,11 @@ export default function Home() {
                   className="w-full block object-cover transition-transform duration-700 group-hover:scale-[1.04]"
                   style={{ aspectRatio: "3/4" }}
                 />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/50 transition-colors duration-400" />
-                <div className="absolute inset-0 flex flex-col justify-end p-2 md:p-4">
-                  <span className="font-sans text-[7px] md:text-[16px] tracking-[0.25em] md:tracking-[0.35em] uppercase text-white/70 block mb-0.5 md:mb-1">{item.tag}</span>
-                  <p className="font-sans text-white text-[11px] md:text-[28px] leading-snug">{item.title}</p>
-                  <p className="font-sans text-white/60 text-[9px] md:text-[20px] mt-0.5 md:mt-1 tracking-wide">{item.name}</p>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-colors duration-400" />
+                <div className="absolute inset-0 flex flex-col justify-end p-3 md:p-6">
+                  <span className="font-sans text-[7px] md:text-[11px] tracking-[0.3em] uppercase text-white/60 block mb-1 md:mb-2">{item.tag}</span>
+                  <p className="font-sans text-white text-[12px] md:text-[18px] leading-snug font-medium">{item.title}</p>
+                  <p className="font-sans text-white/55 text-[9px] md:text-[13px] mt-1.5 md:mt-2 tracking-wide">{item.name}</p>
                 </div>
               </motion.div>
             ))}
