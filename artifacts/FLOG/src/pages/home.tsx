@@ -139,6 +139,8 @@ export default function Home() {
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [selectedInterview, setSelectedInterview] = useState<HomeInterview | null>(null);
+  const [interviewPage, setInterviewPage] = useState(0);
+  const INTERVIEWS_PER_PAGE = 8;
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -347,7 +349,7 @@ export default function Home() {
         </div>
 
         {/* ── Subsection 2: Interviews Feed ── */}
-        <div>
+        <div id="interviews-section">
           <div className="mb-6 md:mb-8">
             <h2 className="font-serif text-[28px] md:text-[42px] font-bold tracking-tight text-foreground leading-none mb-3 md:mb-4">
               INTERVIEWS
@@ -355,48 +357,73 @@ export default function Home() {
             <div className="w-full h-[1.5px] bg-foreground" />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-5 md:gap-y-10">
-            {loading ? (
-              Array.from({ length: 4 }).map((_, i) => (
-                <div key={i}>
-                  <ImagePlaceholder ratio="3/4" className="mb-3 md:mb-4" />
-                  <div className="h-2 w-16 bg-foreground/10 mb-2 rounded-full" />
-                  <div className="h-3 w-full bg-foreground/10 mb-1 rounded-full" />
-                  <div className="h-2 w-20 bg-foreground/10 rounded-full" />
+          {(() => {
+            const reversed = [...(home?.interviews ?? [])].reverse();
+            const totalPages = Math.ceil(reversed.length / INTERVIEWS_PER_PAGE);
+            const pageItems = reversed.slice(interviewPage * INTERVIEWS_PER_PAGE, (interviewPage + 1) * INTERVIEWS_PER_PAGE);
+            return (
+              <>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-5 md:gap-y-10">
+                  {loading ? (
+                    Array.from({ length: 8 }).map((_, i) => (
+                      <div key={i}>
+                        <ImagePlaceholder ratio="3/4" className="mb-3 md:mb-4" />
+                        <div className="h-2 w-16 bg-foreground/10 mb-2 rounded-full" />
+                        <div className="h-3 w-full bg-foreground/10 mb-1 rounded-full" />
+                        <div className="h-2 w-20 bg-foreground/10 rounded-full" />
+                      </div>
+                    ))
+                  ) : pageItems.map((item, i) => (
+                    <motion.div
+                      key={`${interviewPage}-${i}`}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.4, delay: (i % 4) * 0.06, ease: "easeOut" }}
+                      className="group cursor-pointer"
+                      onClick={() => setSelectedInterview(item)}
+                    >
+                      <div className="overflow-hidden mb-3 md:mb-4">
+                        <img
+                          src={item.imageUrl}
+                          alt={item.title}
+                          className="w-full block object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                          style={{ aspectRatio: "3/4" }}
+                        />
+                      </div>
+                      <span className="font-sans text-[9px] md:text-[11px] tracking-[0.3em] uppercase text-foreground/45 block mb-1.5 md:mb-2">
+                        {item.tag}
+                      </span>
+                      <p className="font-sans text-foreground text-[13px] md:text-[15px] leading-snug font-semibold group-hover:underline underline-offset-2">
+                        {item.title}
+                      </p>
+                      <p className="font-sans text-foreground/50 text-[10px] md:text-[12px] mt-1 tracking-wide">
+                        {item.name}
+                      </p>
+                    </motion.div>
+                  ))}
                 </div>
-              ))
-            ) : home?.interviews?.length ? (
-              home.interviews.map((item, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 12 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-40px" }}
-                  transition={{ duration: 0.5, delay: (i % 4) * 0.08, ease: "easeOut" }}
-                  className="group cursor-pointer"
-                  onClick={() => setSelectedInterview(item)}
-                >
-                  <div className="overflow-hidden mb-3 md:mb-4">
-                    <img
-                      src={item.imageUrl}
-                      alt={item.title}
-                      className="w-full block object-cover transition-transform duration-700 group-hover:scale-[1.03]"
-                      style={{ aspectRatio: "3/4" }}
-                    />
+
+                {/* Pagination */}
+                {!loading && totalPages > 1 && (
+                  <div className="flex items-center justify-center gap-1 mt-12 md:mt-16">
+                    {Array.from({ length: totalPages }).map((_, p) => (
+                      <button
+                        key={p}
+                        onClick={() => { setInterviewPage(p); window.scrollTo({ top: document.getElementById("interviews-section")?.offsetTop ?? 0, behavior: "smooth" }); }}
+                        className={`w-8 h-8 font-sans text-[11px] tracking-wide transition-colors ${
+                          p === interviewPage
+                            ? "bg-foreground text-background"
+                            : "text-foreground/40 hover:text-foreground border border-foreground/15 hover:border-foreground/40"
+                        }`}
+                      >
+                        {p + 1}
+                      </button>
+                    ))}
                   </div>
-                  <span className="font-sans text-[9px] md:text-[11px] tracking-[0.3em] uppercase text-foreground/45 block mb-1.5 md:mb-2">
-                    {item.tag}
-                  </span>
-                  <p className="font-sans text-foreground text-[13px] md:text-[15px] leading-snug font-semibold group-hover:underline underline-offset-2">
-                    {item.title}
-                  </p>
-                  <p className="font-sans text-foreground/50 text-[10px] md:text-[12px] mt-1 tracking-wide">
-                    {item.name}
-                  </p>
-                </motion.div>
-              ))
-            ) : null}
-          </div>
+                )}
+              </>
+            );
+          })()}
         </div>
 
       </section>

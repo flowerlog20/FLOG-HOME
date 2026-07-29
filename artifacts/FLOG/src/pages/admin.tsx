@@ -833,14 +833,49 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
                       </p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 shrink-0 ml-3">
+                  <div className="flex items-center gap-1 shrink-0 ml-3">
+                    {/* 위로 */}
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        if (i === 0) return;
+                        const next = [...(home.interviews ?? [])];
+                        [next[i - 1], next[i]] = [next[i], next[i - 1]];
+                        onChange({ ...home, interviews: next });
+                      }}
+                      disabled={i === 0}
+                      className="p-1 text-foreground/30 hover:text-foreground/70 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                      aria-label="위로"
+                    >
+                      <FaChevronUp className="text-[9px]" />
+                    </button>
+                    {/* 아래로 */}
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        const list = home.interviews ?? [];
+                        if (i === list.length - 1) return;
+                        const next = [...list];
+                        [next[i], next[i + 1]] = [next[i + 1], next[i]];
+                        onChange({ ...home, interviews: next });
+                      }}
+                      disabled={i === (home.interviews ?? []).length - 1}
+                      className="p-1 text-foreground/30 hover:text-foreground/70 disabled:opacity-20 disabled:cursor-not-allowed transition-colors"
+                      aria-label="아래로"
+                    >
+                      <FaChevronDown className="text-[9px]" />
+                    </button>
+                    {/* 삭제 */}
                     <button
                       onClick={e => { e.stopPropagation(); onChange({ ...home, interviews: (home.interviews ?? []).filter((_, idx) => idx !== i) }); }}
-                      className="text-red-300 hover:text-red-500 transition-colors p-1"
+                      className="text-red-300 hover:text-red-500 transition-colors p-1 ml-1"
                     >
                       <FaTrash className="text-[10px]" />
                     </button>
-                    {isOpen ? <FaChevronUp className="text-[9px] text-foreground/30" /> : <FaChevronDown className="text-[9px] text-foreground/30" />}
+                    {/* 펼침 표시 */}
+                    <span className="ml-1 text-foreground/25">
+                      {isOpen ? <FaChevronUp className="text-[9px]" /> : <FaChevronDown className="text-[9px]" />}
+                    </span>
                   </div>
                 </div>
 
