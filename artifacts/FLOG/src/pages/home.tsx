@@ -49,7 +49,7 @@ export default function Home() {
   return (
     <>
       {/* ─── HERO ─── */}
-      <section className="relative bg-black overflow-hidden mx-4 md:mx-10 lg:mx-16 mt-3 md:mt-4" style={{ height: "85vh" }}>
+      <section className="relative w-full bg-black overflow-hidden" style={{ height: "85vh" }}>
 
         {/* Loading state */}
         {loading && (
