@@ -109,7 +109,7 @@ export default function Home() {
             transition={{ duration: 1.4, delay: 0.3, ease: "easeOut" }}
             className="text-center px-6"
           >
-            <p className="font-serif text-[39px] md:text-[36px] lg:text-[44px] font-normal text-white tracking-[0.12em] leading-none drop-shadow-sm">
+            <p className="font-serif text-[10vw] md:text-[36px] lg:text-[44px] font-normal text-white tracking-[0.12em] leading-none drop-shadow-sm">
               FLOWER LOG
             </p>
             <p className="font-sans text-[11px] md:text-[15px] text-white/75 tracking-[0.3em] mt-3 md:mt-5">
