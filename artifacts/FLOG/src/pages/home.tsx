@@ -110,7 +110,7 @@ function InterviewModal({ item, onClose }: { item: HomeInterview; onClose: () =>
                       />
                     </div>
                   )}
-                  <p className="font-sans text-[12px] md:text-[13px] font-semibold text-foreground tracking-wide leading-relaxed mb-3">
+                  <p className="font-sans text-[18px] md:text-[20px] font-semibold text-foreground tracking-wide leading-relaxed mb-3">
                     Q. {qa.question}
                   </p>
                   <p className="font-sans text-[13px] md:text-[15px] text-foreground/75 leading-loose whitespace-pre-line">
