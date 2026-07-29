@@ -101,6 +101,23 @@ export default function Home() {
           </svg>
         </button>
 
+        {/* Center text overlay */}
+        <div className="absolute inset-0 z-10 flex flex-col items-center justify-center pointer-events-none">
+          <motion.div
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.4, delay: 0.3, ease: "easeOut" }}
+            className="text-center px-6"
+          >
+            <p className="font-serif text-[38px] md:text-[72px] lg:text-[88px] font-bold text-white tracking-[0.12em] leading-none drop-shadow-sm">
+              FLOWER LOG
+            </p>
+            <p className="font-sans text-[11px] md:text-[15px] text-white/75 tracking-[0.3em] mt-3 md:mt-5">
+              가장 찬란했던 순간을 기록하다
+            </p>
+          </motion.div>
+        </div>
+
         {/* Dot/dash indicators */}
         <div className="absolute bottom-0 left-0 right-0 z-10 px-6 md:px-16 pb-10">
           <div className="max-w-2xl mx-auto text-center">
