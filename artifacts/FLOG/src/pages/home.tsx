@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "wouter";
-import { getHomeDataFromDB, type HomeData } from "@/lib/magazine-store";
+import { getHomeDataFromDB, type HomeData, type HomeInterview } from "@/lib/magazine-store";
 
 /* ── Loading placeholder ───────────────────────────── */
 function ImagePlaceholder({ ratio, className = "" }: { ratio: string; className?: string }) {
@@ -17,11 +17,124 @@ function ImagePlaceholder({ ratio, className = "" }: { ratio: string; className?
   );
 }
 
+/* ── Interview Modal ───────────────────────────────── */
+function InterviewModal({ item, onClose }: { item: HomeInterview; onClose: () => void }) {
+  // close on Escape
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [onClose]);
+
+  // lock body scroll
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
+    return () => { document.body.style.overflow = ""; };
+  }, []);
+
+  return (
+    <AnimatePresence>
+      {/* Backdrop */}
+      <motion.div
+        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        onClick={onClose}
+      />
+
+      {/* Panel */}
+      <motion.div
+        className="fixed inset-0 z-50 flex items-end md:items-center justify-center pointer-events-none"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div
+          className="pointer-events-auto bg-white w-full md:w-[600px] md:max-w-[90vw] max-h-[92vh] md:max-h-[88vh] overflow-y-auto flex flex-col"
+          initial={{ y: 60, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          exit={{ y: 60, opacity: 0 }}
+          transition={{ duration: 0.35, ease: [0.32, 0.72, 0, 1] }}
+          onClick={e => e.stopPropagation()}
+        >
+          {/* Header bar */}
+          <div className="sticky top-0 bg-white z-10 flex items-center justify-between px-6 py-4 border-b border-foreground/8">
+            <span className="font-sans text-[9px] tracking-[0.35em] uppercase text-foreground/40">{item.tag}</span>
+            <button
+              onClick={onClose}
+              className="w-8 h-8 flex items-center justify-center text-foreground/40 hover:text-foreground transition-colors"
+              aria-label="닫기"
+            >
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M1 1L13 13M13 1L1 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+              </svg>
+            </button>
+          </div>
+
+          {/* Cover image */}
+          {item.imageUrl && (
+            <div className="w-full overflow-hidden" style={{ aspectRatio: "3/2" }}>
+              <img
+                src={item.imageUrl}
+                alt={item.title}
+                className="w-full h-full object-cover"
+              />
+            </div>
+          )}
+
+          {/* Title & name */}
+          <div className="px-6 pt-6 pb-4 border-b border-foreground/8">
+            <h2 className="font-serif text-[22px] md:text-[28px] font-normal text-foreground leading-snug mb-2">
+              {item.title}
+            </h2>
+            <p className="font-sans text-[11px] md:text-[13px] text-foreground/50 tracking-wide">{item.name}</p>
+          </div>
+
+          {/* Q&A content */}
+          {item.content?.length ? (
+            <div className="px-6 py-6 space-y-10">
+              {item.content.map((qa, i) => (
+                <div key={i}>
+                  {qa.imageUrl && (
+                    <div className="w-full overflow-hidden mb-5">
+                      <img
+                        src={qa.imageUrl}
+                        alt=""
+                        className="w-full object-cover"
+                        style={{ aspectRatio: "4/3" }}
+                      />
+                    </div>
+                  )}
+                  <p className="font-sans text-[12px] md:text-[13px] font-semibold text-foreground tracking-wide leading-relaxed mb-3">
+                    Q. {qa.question}
+                  </p>
+                  <p className="font-sans text-[13px] md:text-[15px] text-foreground/75 leading-loose whitespace-pre-line">
+                    {qa.answer}
+                  </p>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="px-6 py-12 text-center">
+              <p className="font-sans text-[11px] tracking-[0.2em] uppercase text-foreground/25">Coming soon</p>
+            </div>
+          )}
+
+          {/* Bottom padding */}
+          <div className="h-8" />
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
+}
+
 export default function Home() {
   const [home, setHome] = useState<HomeData | null>(null);
   const [loading, setLoading] = useState(true);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [selectedInterview, setSelectedInterview] = useState<HomeInterview | null>(null);
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
   useEffect(() => {
@@ -257,6 +370,7 @@ export default function Home() {
                   viewport={{ once: true, margin: "-40px" }}
                   transition={{ duration: 0.5, delay: (i % 4) * 0.08, ease: "easeOut" }}
                   className="group cursor-pointer"
+                  onClick={() => setSelectedInterview(item)}
                 >
                   <div className="overflow-hidden mb-3 md:mb-4">
                     <img
@@ -282,6 +396,14 @@ export default function Home() {
         </div>
 
       </section>
+
+      {/* ─── Interview Modal ─── */}
+      {selectedInterview && (
+        <InterviewModal
+          item={selectedInterview}
+          onClose={() => setSelectedInterview(null)}
+        />
+      )}
     </>
   );
 }

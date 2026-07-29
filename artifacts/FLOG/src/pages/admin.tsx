@@ -37,6 +37,7 @@ import {
   type JoinItem,
   type HomeData,
   type HomeInterview,
+  type InterviewQA,
 } from "@/lib/magazine-store";
 import {
   FaUnlock, FaSignOutAlt, FaPlus, FaTrash,
@@ -809,7 +810,7 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
               </div>
               <div className="flex gap-3 items-start">
                 <div className="flex-1 space-y-3">
-                  <Field label="이미지 URL">
+                  <Field label="커버 이미지 URL">
                     <input
                       className={inputCls}
                       value={item.imageUrl}
@@ -845,6 +846,86 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
                     onError={e => (e.currentTarget.style.display = "none")}
                     onLoad={e => (e.currentTarget.style.display = "block")}
                   />
+                )}
+              </div>
+
+              {/* Q&A 편집 */}
+              <div className="mt-4 border-t border-foreground/8 pt-4 space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="font-sans text-[8px] tracking-widest text-foreground/30 uppercase">Q&amp;A 내용</span>
+                  <button
+                    onClick={() => {
+                      const next = [...(home.interviews ?? [])];
+                      next[i] = { ...item, content: [...(item.content ?? []), { imageUrl: "", question: "", answer: "" }] };
+                      onChange({ ...home, interviews: next });
+                    }}
+                    className="flex items-center gap-1 font-sans text-[8px] tracking-[0.25em] uppercase text-foreground/40 hover:text-foreground/70 transition-colors border border-foreground/12 px-2 py-1"
+                  >
+                    <FaPlus className="text-[7px]" /> Q&amp;A 추가
+                  </button>
+                </div>
+                {(item.content ?? []).map((qa: InterviewQA, qi: number) => (
+                  <div key={qi} className="border border-foreground/8 p-3 space-y-2 bg-foreground/[0.01]">
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-sans text-[7px] tracking-widest text-foreground/20 uppercase">Q{qi + 1}</span>
+                      <button
+                        onClick={() => {
+                          const next = [...(home.interviews ?? [])];
+                          next[i] = { ...item, content: (item.content ?? []).filter((_, ci) => ci !== qi) };
+                          onChange({ ...home, interviews: next });
+                        }}
+                        className="text-red-300 hover:text-red-500 transition-colors"
+                      >
+                        <FaTrash className="text-[9px]" />
+                      </button>
+                    </div>
+                    <Field label="이미지 URL (선택)">
+                      <input
+                        className={inputCls}
+                        value={qa.imageUrl ?? ""}
+                        onChange={e => {
+                          const next = [...(home.interviews ?? [])];
+                          const qNext = [...(item.content ?? [])];
+                          qNext[qi] = { ...qa, imageUrl: e.target.value };
+                          next[i] = { ...item, content: qNext };
+                          onChange({ ...home, interviews: next });
+                        }}
+                        placeholder="https://... (없으면 비워두세요)"
+                      />
+                    </Field>
+                    <Field label="질문">
+                      <input
+                        className={inputCls}
+                        value={qa.question}
+                        onChange={e => {
+                          const next = [...(home.interviews ?? [])];
+                          const qNext = [...(item.content ?? [])];
+                          qNext[qi] = { ...qa, question: e.target.value };
+                          next[i] = { ...item, content: qNext };
+                          onChange({ ...home, interviews: next });
+                        }}
+                        placeholder="가장 기억에 남는 순간은?"
+                      />
+                    </Field>
+                    <Field label="답변">
+                      <textarea
+                        className={`${inputCls} resize-none`}
+                        rows={3}
+                        value={qa.answer}
+                        onChange={e => {
+                          const next = [...(home.interviews ?? [])];
+                          const qNext = [...(item.content ?? [])];
+                          qNext[qi] = { ...qa, answer: e.target.value };
+                          next[i] = { ...item, content: qNext };
+                          onChange({ ...home, interviews: next });
+                        }}
+                        placeholder="답변 내용을 입력하세요..."
+                      />
+                    </Field>
+                  </div>
+                ))}
+                {!(item.content?.length) && (
+                  <p className="font-sans text-[8px] text-foreground/20 tracking-wide">Q&amp;A를 추가하면 팝업에서 인터뷰 내용을 볼 수 있습니다.</p>
                 )}
               </div>
             </div>

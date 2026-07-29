@@ -280,11 +280,18 @@ export async function saveMagazineIssuesToDB(issues: MagazineIssue[]): Promise<v
 }
 
 /* ─── Home ─── */
+export interface InterviewQA {
+  imageUrl?: string;
+  question: string;
+  answer: string;
+}
+
 export interface HomeInterview {
   imageUrl: string;
   tag: string;
   title: string;
   name: string;
+  content?: InterviewQA[];
 }
 
 export interface HomeData {
