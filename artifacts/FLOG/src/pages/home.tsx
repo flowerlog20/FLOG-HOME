@@ -176,12 +176,15 @@ export default function Home() {
 
         {/* ── Subsection 2: Interviews Feed ── */}
         <div>
-          <div className="flex items-center gap-4 mb-8 md:mb-10">
-            <span className="font-sans text-[10px] tracking-[0.35em] uppercase text-foreground/50 shrink-0">interviews</span>
-            <div className="flex-1 h-[1px] bg-foreground/10" />
+          {/* 섹션 타이틀 — TODAY'S PICK 스타일 */}
+          <div className="mb-6 md:mb-8">
+            <h2 className="font-serif text-[28px] md:text-[42px] font-bold tracking-tight text-foreground leading-none mb-3 md:mb-4">
+              INTERVIEWS
+            </h2>
+            <div className="w-full h-[1.5px] bg-foreground" />
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-5">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-8 md:gap-x-5 md:gap-y-10">
             {(home.interviews?.length ? home.interviews : [
               { imageUrl: prof1 as unknown as string, tag: "INTERVIEW", title: "나는 지금 여기 있다", name: "김지수 · 23" },
               { imageUrl: mag1 as unknown as string,  tag: "INTERVIEW", title: "관계를 배우는 중입니다", name: "이서윤 · 25" },
@@ -192,24 +195,31 @@ export default function Home() {
             ]).map((item, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, y: 16 }}
+                initial={{ opacity: 0, y: 12 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-40px" }}
-                transition={{ duration: 0.55, delay: (i % 3) * 0.1, ease: "easeOut" }}
-                className="group cursor-pointer relative overflow-hidden rounded-sm"
+                transition={{ duration: 0.5, delay: (i % 4) * 0.08, ease: "easeOut" }}
+                className="group cursor-pointer"
               >
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className="w-full block object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-                  style={{ aspectRatio: "3/4" }}
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent group-hover:from-black/80 transition-colors duration-400" />
-                <div className="absolute inset-0 flex flex-col justify-end p-3 md:p-6">
-                  <span className="font-sans text-[7px] md:text-[11px] tracking-[0.3em] uppercase text-white/60 block mb-1 md:mb-2">{item.tag}</span>
-                  <p className="font-sans text-white text-[12px] md:text-[18px] leading-snug font-medium">{item.title}</p>
-                  <p className="font-sans text-white/55 text-[9px] md:text-[13px] mt-1.5 md:mt-2 tracking-wide">{item.name}</p>
+                {/* 이미지 */}
+                <div className="overflow-hidden mb-3 md:mb-4">
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    className="w-full block object-cover transition-transform duration-700 group-hover:scale-[1.03]"
+                    style={{ aspectRatio: "3/4" }}
+                  />
                 </div>
+                {/* 텍스트 — 이미지 아래 */}
+                <span className="font-sans text-[9px] md:text-[11px] tracking-[0.3em] uppercase text-foreground/45 block mb-1.5 md:mb-2">
+                  {item.tag}
+                </span>
+                <p className="font-sans text-foreground text-[13px] md:text-[15px] leading-snug font-semibold group-hover:underline underline-offset-2">
+                  {item.title}
+                </p>
+                <p className="font-sans text-foreground/50 text-[10px] md:text-[12px] mt-1 tracking-wide">
+                  {item.name}
+                </p>
               </motion.div>
             ))}
           </div>
