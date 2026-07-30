@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import heroImgFallback from "@/assets/images/hero.jpg";
 import { getAboutDataFromDB, DEFAULT_ABOUT, type AboutData } from "@/lib/magazine-store";
 
 export default function About() {
   const [about, setAbout] = useState<AboutData>(DEFAULT_ABOUT);
+  const [imgLoaded, setImgLoaded] = useState(false);
 
   useEffect(() => {
     getAboutDataFromDB().then(setAbout);
@@ -31,7 +31,14 @@ export default function About() {
             transition={{ duration: 1 }}
           >
             <div className="aspect-[3/4] bg-muted relative overflow-hidden">
-              <img src={about.heroImageUrl || heroImgFallback} alt="Kkotbonabo Philosophy" className="object-cover w-full h-full grayscale-[30%] hover:scale-105 transition-transform duration-1000" />
+              {about.heroImageUrl && (
+                <img
+                  src={about.heroImageUrl}
+                  alt="Kkotbonabo Philosophy"
+                  onLoad={() => setImgLoaded(true)}
+                  className={`object-cover w-full h-full grayscale-[30%] hover:scale-105 transition-all duration-1000 ${imgLoaded ? "opacity-100" : "opacity-0"}`}
+                />
+              )}
             </div>
           </motion.div>
 
