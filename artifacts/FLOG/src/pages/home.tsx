@@ -17,6 +17,17 @@ function ImagePlaceholder({ ratio, className = "" }: { ratio: string; className?
   );
 }
 
+function preloadImage(src: string): Promise<void> {
+  if (!src) return Promise.resolve();
+
+  return new Promise(resolve => {
+    const image = new Image();
+    image.onload = () => resolve();
+    image.onerror = () => resolve();
+    image.src = src;
+  });
+}
+
 /* ── Interview Modal ───────────────────────────────── */
 function InterviewModal({ item, onClose }: { item: HomeInterview; onClose: () => void }) {
   // close on Escape
@@ -136,6 +147,7 @@ function InterviewModal({ item, onClose }: { item: HomeInterview; onClose: () =>
 export default function Home() {
   const [home, setHome] = useState<HomeData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [pageReady, setPageReady] = useState(false);
   const [slideIndex, setSlideIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
   const [selectedInterview, setSelectedInterview] = useState<HomeInterview | null>(null);
@@ -145,10 +157,34 @@ export default function Home() {
   const interviewSectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    getHomeDataFromDB().then(data => {
+    let cancelled = false;
+
+    getHomeDataFromDB().then(async data => {
+      if (cancelled) return;
+
+      const imageUrls = [
+        ...data.heroImages,
+        data.hero.imageUrl,
+        data.magazinePreview.imageUrl,
+        ...data.galleryImages,
+        ...data.interviews.flatMap(interview => [
+          interview.imageUrl,
+          ...(interview.content ?? []).map(qa => qa.imageUrl ?? ""),
+        ]),
+      ].filter(Boolean);
+
+      // Wait for all content images together so the page does not appear progressively.
+      await Promise.all([...new Set(imageUrls)].map(preloadImage));
+
+      if (cancelled) return;
       setHome(data);
       setLoading(false);
+      setPageReady(true);
     });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   const images = home?.heroImages?.length ? home.heroImages : (home?.hero?.imageUrl ? [home.hero.imageUrl] : []);
@@ -182,7 +218,16 @@ export default function Home() {
   const goNext = () => setSlideIndex(i => (i + 1) % images.length);
 
   return (
-    <>
+    <div className="relative" aria-busy={!pageReady}>
+      {!pageReady && (
+        <div className="fixed inset-0 z-40 bg-white flex items-center justify-center">
+          <span className="font-sans text-[10px] tracking-[0.3em] uppercase text-foreground/35">
+            Loading...
+          </span>
+        </div>
+      )}
+
+      <div className={`transition-opacity duration-500 ${pageReady ? "opacity-100" : "opacity-0"}`}>
       {/* ─── HERO ─── */}
       <section className="relative w-full bg-black overflow-hidden" style={{ height: "85vh" }}>
 
@@ -443,6 +488,7 @@ export default function Home() {
           onClose={() => setSelectedInterview(null)}
         />
       )}
-    </>
+      </div>
+    </div>
   );
 }
