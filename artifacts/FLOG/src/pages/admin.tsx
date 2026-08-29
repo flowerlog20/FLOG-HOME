@@ -798,7 +798,7 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
         <SectionLabel label="07 · 인터뷰 피드" />
         <div className="space-y-1 mb-4 flex justify-end">
           <button
-            onClick={() => onChange({ ...home, interviews: [...(home.interviews ?? []), { imageUrl: "", tag: "INTERVIEW", title: "", name: "" }] })}
+            onClick={() => onChange({ ...home, interviews: [...(home.interviews ?? []), { imageUrl: "", tag: "INTERVIEW", title: "", name: "", showOnHome: true }] })}
             className="flex items-center gap-1.5 font-sans text-[8px] tracking-[0.3em] uppercase text-foreground/40 hover:text-foreground/70 transition-colors border border-foreground/12 px-2.5 py-1"
           >
             <FaPlus className="text-[7px]" /> 인터뷰 추가
@@ -834,6 +834,25 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
                     </div>
                   </div>
                   <div className="flex items-center gap-1 shrink-0 ml-3">
+                    {/* 홈페이지 노출 토글 */}
+                    <button
+                      onClick={e => {
+                        e.stopPropagation();
+                        const next = [...(home.interviews ?? [])];
+                        next[i] = { ...item, showOnHome: item.showOnHome !== false ? false : true };
+                        onChange({ ...home, interviews: next });
+                      }}
+                      className="flex items-center gap-1.5 mr-1 px-1 py-1"
+                      aria-label={item.showOnHome === false ? "홈페이지 노출 켜기" : "홈페이지 노출 끄기"}
+                      aria-pressed={item.showOnHome !== false}
+                    >
+                      <span className={`relative w-7 h-4 rounded-full transition-colors ${item.showOnHome === false ? "bg-foreground/15" : "bg-foreground"}`}>
+                        <span className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-transform ${item.showOnHome === false ? "left-0.5" : "left-3.5"}`} />
+                      </span>
+                      <span className={`font-sans text-[8px] tracking-wide whitespace-nowrap ${item.showOnHome === false ? "text-foreground/30" : "text-foreground/60"}`}>
+                        {item.showOnHome === false ? "비노출" : "노출"}
+                      </span>
+                    </button>
                     {/* 위로 */}
                     <button
                       onClick={e => {

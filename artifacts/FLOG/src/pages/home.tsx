@@ -154,7 +154,9 @@ export default function Home() {
   const images = home?.heroImages?.length ? home.heroImages : (home?.hero?.imageUrl ? [home.hero.imageUrl] : []);
 
   // Interviews — reverse order (newest first), paginated
-  const reversedInterviews = [...(home?.interviews ?? [])].reverse();
+  const reversedInterviews = [...(home?.interviews ?? [])]
+    .filter(interview => interview.showOnHome !== false)
+    .reverse();
   const totalInterviewPages = Math.max(1, Math.ceil(reversedInterviews.length / INTERVIEWS_PER_PAGE));
   const pagedInterviews = reversedInterviews.slice(
     interviewPage * INTERVIEWS_PER_PAGE,

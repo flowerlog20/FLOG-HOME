@@ -291,6 +291,7 @@ export interface HomeInterview {
   tag: string;
   title: string;
   name: string;
+  showOnHome?: boolean;
   content?: InterviewQA[];
 }
 
