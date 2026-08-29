@@ -816,6 +816,9 @@ function HomeEditor({ home, onChange }: { home: HomeData; onChange: (h: HomeData
                   onClick={() => toggleInterview(i)}
                 >
                   <div className="flex items-center gap-3 min-w-0">
+                    <span className="w-6 shrink-0 font-sans text-[10px] tracking-widest text-foreground/30 text-center">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
                     {item.imageUrl && (
                       <img
                         src={item.imageUrl}
